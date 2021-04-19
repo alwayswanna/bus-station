@@ -1,6 +1,7 @@
 package a.gleb.bus_station.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "flights")
@@ -32,6 +33,9 @@ public class BusFlights {
     @ManyToOne
     @JoinColumn(name = "type_flight")
     private TypeFlight typeFlight;
+
+    @OneToMany(mappedBy = "busFlights")
+    private List<Ticket> tickets;
 
     public BusFlights(String routeType, String fromCity, String toCity, String timeDeparture, String timeArrival) {
         this.routeType = routeType;
@@ -122,6 +126,14 @@ public class BusFlights {
 
     public void setTypeFlight(TypeFlight typeFlight) {
         this.typeFlight = typeFlight;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override
