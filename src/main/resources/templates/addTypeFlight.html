@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Type flight</title>
+</head>
+<body>
+<div>
+    <h1>Добавить тип рейса:</h1>
+</div>
+<div>
+    <form action="/administrations/add_typeFlight" method="post">
+        <input placeholder="Тип отправления:" type="text" name="type"/>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
+        <button type="submit">Добавить тип</button>
+    </form>
+</div>
+
+</body>
+</html>
