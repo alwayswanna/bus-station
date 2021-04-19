@@ -20,6 +20,10 @@ public class Ticket {
     @JoinColumn(name = "passenger_id")
     private Passengers passengers;
 
+    @ManyToOne
+    @JoinColumn(name = "num_flight")
+    private BusFlights busFlights;
+
     public Ticket(String ticketPlace, String ticketPassenger) {
         this.ticketPlace = ticketPlace;
         this.ticketPassenger = ticketPassenger;
@@ -58,5 +62,13 @@ public class Ticket {
 
     public void setPassengers(Passengers passengers) {
         this.passengers = passengers;
+    }
+
+    public BusFlights getBusFlights() {
+        return busFlights;
+    }
+
+    public void setBusFlights(BusFlights busFlights) {
+        this.busFlights = busFlights;
     }
 }
