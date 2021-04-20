@@ -8,7 +8,7 @@ public class PassengerPassport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idPassenger_passport")
+    @Column(name = "id_passenger_passport")
     private Integer id;
     @Column(name = "passenger_name")
     private String passengerName;

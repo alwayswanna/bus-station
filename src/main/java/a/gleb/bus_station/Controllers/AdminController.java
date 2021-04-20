@@ -1,13 +1,7 @@
 package a.gleb.bus_station.Controllers;
 
-import a.gleb.bus_station.Entity.BusFlights;
-import a.gleb.bus_station.Entity.Drivers;
-import a.gleb.bus_station.Entity.TypeBus;
-import a.gleb.bus_station.Entity.TypeFlight;
-import a.gleb.bus_station.Repositories.DriversRepo;
-import a.gleb.bus_station.Repositories.FlightRepo;
-import a.gleb.bus_station.Repositories.TypeBusRepo;
-import a.gleb.bus_station.Repositories.TypeFlightsRepo;
+import a.gleb.bus_station.Entity.*;
+import a.gleb.bus_station.Repositories.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,9 +18,14 @@ public class AdminController {
     private final DriversRepo driversRepo;
     private final TypeBusRepo typeBusRepo;
     private final TypeFlightsRepo typeFlightsRepo;
+    private final PassengerPassportRepo passengerPassportRepo;
+    private final PassengersRepo passengersRepo;
 
     public AdminController(FlightRepo flightRepo, DriversRepo driversRepo,
-                           TypeBusRepo typeBusRepo, TypeFlightsRepo typeFlightsRepo) {
+                           TypeBusRepo typeBusRepo, TypeFlightsRepo typeFlightsRepo,
+                           PassengerPassportRepo passengerPassportRepo, PassengersRepo passengersRepo) {
+        this.passengerPassportRepo = passengerPassportRepo;
+        this.passengersRepo = passengersRepo;
         this.typeBusRepo = typeBusRepo;
         this.flightRepo = flightRepo;
         this.driversRepo = driversRepo;
@@ -36,6 +35,28 @@ public class AdminController {
     @RequestMapping(value = "/administrator")
     public String administratorPage(Map<String, Object> model){
         return "administrator";
+    }
+
+
+    @RequestMapping(value = "/add_passengerFull", method = RequestMethod.GET)
+    public String adminAddPassengerFullInfoGet(Map<String, Object> model){
+        return "addFullPassenger";
+    }
+
+    @RequestMapping(value = "/add_passengerFull", method = RequestMethod.POST)
+    public String adminAddPassengerFullInfoPost(@RequestParam String numTicket,
+                                                @RequestParam String passengerName,
+                                                @RequestParam String passengerSurname,
+                                                @RequestParam String passengerPhone,
+                                                @RequestParam String passengerDocNum,
+                                                @RequestParam String passengerRegistration,
+                                                @RequestParam String passengerBirthday){
+        Passengers passenger = new Passengers(numTicket);
+        PassengerPassport passengerPassport = new PassengerPassport(passengerName, passengerSurname,
+                                        passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
+        passenger.setPassengerInfo(passengerPassport);
+        passengersRepo.save(passenger);
+    return "redirect:/administrations/administrator";
     }
 
     @RequestMapping(value = "/add_typeFlight", method = RequestMethod.GET)
