@@ -1,6 +1,7 @@
 package a.gleb.bus_station.Entity;
 
 import javax.persistence.*;
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Entity
@@ -34,10 +35,11 @@ public class BusFlights {
     @JoinColumn(name = "type_flight")
     private TypeFlight typeFlight;
 
-    @OneToMany(mappedBy = "busFlights")
+    @OneToMany(mappedBy = "busFlights", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 
-    public BusFlights(String routeType, String fromCity, String toCity, String timeDeparture, String timeArrival) {
+    public BusFlights(String routeType, String fromCity, String toCity,
+                      String timeDeparture, String timeArrival) {
         this.routeType = routeType;
         this.fromCity = fromCity;
         this.toCity = toCity;

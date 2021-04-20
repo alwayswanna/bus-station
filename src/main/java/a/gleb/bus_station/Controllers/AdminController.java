@@ -20,11 +20,13 @@ public class AdminController {
     private final TypeFlightsRepo typeFlightsRepo;
     private final PassengerPassportRepo passengerPassportRepo;
     private final PassengersRepo passengersRepo;
+    private final TicketRepo ticketRepo;
 
     public AdminController(FlightRepo flightRepo, DriversRepo driversRepo,
                            TypeBusRepo typeBusRepo, TypeFlightsRepo typeFlightsRepo,
-                           PassengerPassportRepo passengerPassportRepo, PassengersRepo passengersRepo) {
+                           PassengerPassportRepo passengerPassportRepo, PassengersRepo passengersRepo, TicketRepo ticketRepo) {
         this.passengerPassportRepo = passengerPassportRepo;
+        this.ticketRepo = ticketRepo;
         this.passengersRepo = passengersRepo;
         this.typeBusRepo = typeBusRepo;
         this.flightRepo = flightRepo;
@@ -32,11 +34,24 @@ public class AdminController {
         this.typeFlightsRepo = typeFlightsRepo;
     }
 
-    @RequestMapping(value = "/administrator")
+    @RequestMapping(value = "/administrator", method = RequestMethod.GET)
     public String administratorPage(Map<String, Object> model){
         return "administrator";
     }
 
+    @RequestMapping(value = "/add_ticket", method = RequestMethod.GET)
+    public String adminAddTicketGet(Map<String, Object> model){
+        return "addTicket";
+    }
+
+    @RequestMapping(value = "/add_ticket", method = RequestMethod.POST)
+    public String adminAddTicketPost(@RequestParam String ticketPlace,
+                                     @RequestParam String ticketPassenger,
+                                     Map<String, Object> model){
+        Ticket ticket = new Ticket(ticketPlace, ticketPassenger);
+        ticketRepo.save(ticket);
+    return "redirect:/administrations/administrator";
+    }
 
     @RequestMapping(value = "/add_passengerFull", method = RequestMethod.GET)
     public String adminAddPassengerFullInfoGet(Map<String, Object> model){

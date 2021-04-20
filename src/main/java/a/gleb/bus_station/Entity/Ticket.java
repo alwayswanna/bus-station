@@ -17,11 +17,11 @@ public class Ticket {
     private String ticketPassenger;
 
     @OneToOne
-    @JoinColumn(name = "passenger_id")
+    @JoinColumn(name = "passenger_id", referencedColumnName = "id_passengers")
     private Passengers passengers;
 
     @ManyToOne
-    @JoinColumn(name = "num_flight")
+    @JoinColumn(name = "num_flight", referencedColumnName = "number_flight")
     private BusFlights busFlights;
 
     public Ticket(String ticketPlace, String ticketPassenger) {
