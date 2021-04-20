@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>Добавить пассажира:</h1>
+</div>
+<div>
+    <form action="/administrations/add_passengerFull" method="post">
+        <input type="text" name="numTicket" placeholder="Number of ticket"/>
+        <br>
+        <input type="text" name="passengerName" placeholder="Passenger name:"/>
+        <input type="text" name="passengerSurname" placeholder="Passenger surname:"/>
+        <input type="text" name="passengerPhone" placeholder="Passenger phone:"/>
+        <input type="text" name="passengerDocNum" placeholder="Passenger document number:"/>
+        <input type="text" name="passengerRegistration" placeholder="Living place:">
+        <input type="text" name="passengerBirthday" placeholder="Passenger birthday:">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+        <button type="submit">Добавить пассажира</button>
+    </form>
+</div>
+</body>
+</html>

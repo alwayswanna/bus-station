@@ -9,22 +9,19 @@ public class Passengers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idPassengers")
+    @Column(name = "id_passengers")
     private Integer id;
-    @Column(name = "passenger_passport")
-    private int passengerPassport;
     @Column(name = "num_ticket")
     private String numTicket;
 
     @OneToOne(mappedBy = "passengers")
     private Ticket ticket;
 
-    @OneToOne
-    @JoinColumn(name = "passenger_info")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "passenger_info", referencedColumnName = "id_passenger_passport")
     private PassengerPassport passengerInfo;
 
-    public Passengers(int passengerPassport, String numTicket) {
-        this.passengerPassport = passengerPassport;
+    public Passengers(String numTicket) {
         this.numTicket = numTicket;
     }
 
@@ -37,14 +34,6 @@ public class Passengers {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getPassengerPassport() {
-        return passengerPassport;
-    }
-
-    public void setPassengerPassport(int passengerPassport) {
-        this.passengerPassport = passengerPassport;
     }
 
     public String getNumTicket() {
@@ -75,8 +64,8 @@ public class Passengers {
     public String toString() {
         return "Passengers{" +
                 "id=" + id +
-                ", passengerPassport=" + passengerPassport +
                 ", numTicket='" + numTicket + '\'' +
+                ", ticket=" + ticket +
                 '}';
     }
 }

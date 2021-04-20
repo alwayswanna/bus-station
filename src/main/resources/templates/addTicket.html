@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить билет</title>
+</head>
+<body>
+<div>
+    <h1>Добавить билет</h1>
+</div>
+<div>
+    <form action="/administrations/add_ticket" method="post">
+        <input type="text" name="ticketPlace" placeholder="Place of seat:"/>
+        <input type="text" name="ticketPassenger" placeholder="Passenger"/>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+        <button type="submit">Добавить билет</button>
+    </form>
+</div>
+
+</body>
+</html>

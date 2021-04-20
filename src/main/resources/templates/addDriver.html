@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add driver</title>
+</head>
+<body>
+<div>
+    <h1>Добавить водителя:</h1>
+</div>
+<div>
+    <form action="/administrations/add_driver" method="post">
+        <input placeholder="Имя водителя:" type="text" name="driverName">
+        <input placeholder="Фамилия водителя:" type="text" name="driverSurname">
+        <input placeholder="Телефон водителя:" type="text" name="driverPhone">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
+        <button type="submit">Добавить водителя</button>
+    </form>
+</div>
+
+</body>
+</html>
