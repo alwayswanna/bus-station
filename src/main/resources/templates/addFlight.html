@@ -11,11 +11,11 @@
 </div>
     <div>
         <form action="/administrations/add_flight" method="post">
-            <input placeholder="Тип маршрута" type="text" name="routeType"/>
             <input placeholder="Из города" type="text" name="fromCity"/>
             <input placeholder="В город" type="text" name="toCity"/>
             <input placeholder="Время отправления" type="text" name="timeDeparture"/>
             <input placeholder="Время прибытия" type="text" name="timeArrival"/>
+            <input placeholder="Дата рейса:" type="text" name="dateFlight"/>
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
             <button type="submit">Добавить рейс</button>
         </form>

@@ -125,16 +125,28 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/add_flight", method = RequestMethod.POST)
-    public String adminAddFlightPost(@RequestParam String routeType,
+    public String adminAddFlightPost(
                                  @RequestParam String fromCity,
                                  @RequestParam String toCity,
                                  @RequestParam String timeDeparture,
                                  @RequestParam String timeArrival,
+                                 @RequestParam String dateFlight,
                                  Map<String, Object> model
                                  ){
-        BusFlights busFlight = new BusFlights(routeType, fromCity, toCity,
-                timeDeparture, timeArrival);
+        String type;
+        String str = String.valueOf(Math.random()*(94-33));
+        String numberFlightUnique = String.valueOf(fromCity.charAt(0) + toCity.charAt(0)) + "_" + str;
+        if (fromCity.equals("Ufa") | fromCity.equals("Уфа")){
+            type = "Отбывающий";
+        }else if (!fromCity.equals("Ufa") | !fromCity.equals("Уфа")){
+            type = "Прибывающий";
+        }else{
+            type = "Проездной";
+        }
+        BusFlights busFlight = new BusFlights(type, fromCity, toCity,
+                timeDeparture, timeArrival, dateFlight, numberFlightUnique);
         flightRepo.save(busFlight);
     return "redirect:/administrations/administrator";
     }
+
 }

@@ -11,6 +11,9 @@ import a.gleb.bus_station.Repositories.TypeFlightsRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Component
 public class StartAppLoadToDataBase implements CommandLineRunner {
 
@@ -18,6 +21,10 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
     private final DriversRepo driversRepo;
     private final TypeBusRepo typeBusRepo;
     private final TypeFlightsRepo typeFlightsRepo;
+
+    Date date = new Date();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    String dateOfFlight = simpleDateFormat.format(date);
 
     public StartAppLoadToDataBase(FlightRepo flightRepo, DriversRepo driversRepo,
                                   TypeBusRepo typeBusRepo, TypeFlightsRepo typeFlightsRepo) {
@@ -57,23 +64,23 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         typeFlightsRepo.save(intercityTypeFlight);
         typeFlightsRepo.save(suburbanTypeFlight);
         // Adding flights for BusFlights:
-        BusFlights firstBusFlight = new BusFlights("null", "Ufa", "Belebei", "10:00", "12:55");
+        BusFlights firstBusFlight = new BusFlights("null", "Ufa", "Belebei", "10:00", "12:55", dateOfFlight, "null");
         firstBusFlight.setDrivers(firstDriver);
         firstBusFlight.setTypeBus(thirdTypeBus);
         firstBusFlight.setTypeFlight(suburbanTypeFlight);
-        BusFlights secondBusFlight = new BusFlights("null", "Ufa", "Kazan`", "13:30", "19:00");
+        BusFlights secondBusFlight = new BusFlights("null", "Ufa", "Kazan`", "13:30", "19:00", dateOfFlight, "null");
         secondBusFlight.setDrivers(fourthDriver);
         secondBusFlight.setTypeBus(fourthTypeBus);
         secondBusFlight.setTypeFlight(suburbanTypeFlight);
-        BusFlights thirdBusFlight = new BusFlights("null", "Ufa", "Samara", "15:15", "12:55");
+        BusFlights thirdBusFlight = new BusFlights("null", "Ufa", "Samara", "15:15", "12:55", dateOfFlight, "null");
         thirdBusFlight.setDrivers(thirdDriver);
         thirdBusFlight.setTypeBus(firstTypeBus);
         thirdBusFlight.setTypeFlight(intercityTypeFlight);
-        BusFlights fourthBusFlight = new BusFlights("null", "Ufa", "Neftekamsk", "17:00", "20:00");
+        BusFlights fourthBusFlight = new BusFlights("null", "Ufa", "Neftekamsk", "17:00", "20:00", dateOfFlight, "null");
         fourthBusFlight.setDrivers(fourthDriver);
         fourthBusFlight.setTypeBus(fifthTypeBus);
         fourthBusFlight.setTypeFlight(suburbanTypeFlight);
-        BusFlights fifthBusFlight = new BusFlights("null", "Ufa", "Moscow", "19:00", "09:55");
+        BusFlights fifthBusFlight = new BusFlights("null", "Ufa", "Moscow", "19:00", "09:55", dateOfFlight, "null");
         fifthBusFlight.setDrivers(fifthDriver);
         fifthBusFlight.setTypeBus(secondTypeBus);
         fifthBusFlight.setTypeFlight(intercityTypeFlight);
