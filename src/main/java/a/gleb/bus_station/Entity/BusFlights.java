@@ -43,6 +43,7 @@ public class BusFlights {
 
     public BusFlights(String routeType, String fromCity, String toCity,
                       String timeDeparture, String timeArrival, String dateFlight, String numberFlightUnique) {
+        this.numberFlightUnique = numberFlightUnique;
         this.dateFlight = dateFlight;
         this.routeType = routeType;
         this.fromCity = fromCity;

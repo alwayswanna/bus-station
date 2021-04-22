@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/administrations")
@@ -124,7 +123,9 @@ public class AdminController {
     @RequestMapping(value = "/add_flight", method = RequestMethod.GET)
     public String adminAddFlightGet(Map<String, Object> model){
         Iterable<Drivers> drivers = driversRepo.findAll();
+        Iterable<TypeBus> typeBuses = typeBusRepo.findAll();
         model.put("drivers", drivers);
+        model.put("buses", typeBuses);
         return "addFlight";
     }
 
@@ -136,10 +137,12 @@ public class AdminController {
                                  @RequestParam String timeArrival,
                                  @RequestParam String dateFlight,
                                  @RequestParam Integer id,
+                                 @RequestParam String busModel,
                                  Map<String, Object> model
                                  ){
         int driverId = id;
         Drivers driver = driversRepo.findById(driverId);
+        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
         String type;
         String numberFlightUnique = Character.toString(fromCity.charAt(0)) + Character.toString(toCity.charAt(0))
                 + "-" + Integer.toString((int)Math.random()*(100 - 55) + 55);
@@ -154,6 +157,7 @@ public class AdminController {
         BusFlights busFlight = new BusFlights(type, fromCity, toCity,
                 timeDeparture, timeArrival, dateFlight, numberFlightUnique);
         busFlight.setDrivers(driver);
+        busFlight.setTypeBus(typeBus);
         flightRepo.save(busFlight);
 
     return "redirect:/administrations/administrator";

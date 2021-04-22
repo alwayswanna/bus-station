@@ -9,4 +9,5 @@ public interface DriversRepo extends CrudRepository<Drivers, Integer> {
     Drivers findByDriverSurname(String surname);
     Drivers findById(int i);
     Drivers findByDriverNameAndDriverSurname(String driverSurname, String driverName);
+
 }

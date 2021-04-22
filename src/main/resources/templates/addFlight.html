@@ -16,6 +16,9 @@
             <input placeholder="Время отправления" type="text" name="timeDeparture"/>
             <input placeholder="Время прибытия" type="text" name="timeArrival"/>
             <input placeholder="Дата рейса:" type="text" name="dateFlight"/>
+            <select name="busModel">
+                <option th:each="el :${buses}" th:text="${el.busModel}" name="busModel"/>
+            </select>
             <select name="id">
                 <option th:each="el : ${drivers}" th:text="${el.id}" name="id"/>
             </select>
