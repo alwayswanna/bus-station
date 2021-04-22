@@ -1,6 +1,6 @@
-package a.gleb.bus_station.Repositories;
+package a.gleb.bus_station.repositories;
 
-import a.gleb.bus_station.Entity.TypeFlight;
+import a.gleb.bus_station.dto.TypeFlight;
 import org.springframework.data.repository.CrudRepository;
 
 public interface TypeFlightsRepo extends CrudRepository<TypeFlight, Integer> {

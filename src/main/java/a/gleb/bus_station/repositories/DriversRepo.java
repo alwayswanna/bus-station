@@ -1,6 +1,6 @@
-package a.gleb.bus_station.Repositories;
+package a.gleb.bus_station.repositories;
 
-import a.gleb.bus_station.Entity.Drivers;
+import a.gleb.bus_station.dto.Drivers;
 import org.springframework.data.repository.CrudRepository;
 
 public interface DriversRepo extends CrudRepository<Drivers, Integer> {

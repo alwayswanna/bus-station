@@ -1,6 +1,4 @@
-package a.gleb.bus_station.Entity;
-
-import lombok.Cleanup;
+package a.gleb.bus_station.dto;
 
 import javax.persistence.*;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package a.gleb.bus_station.Entity;
+package a.gleb.bus_station.dto;
 
 import javax.persistence.*;
 import java.util.List;

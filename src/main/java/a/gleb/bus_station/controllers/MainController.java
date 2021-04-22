@@ -1,17 +1,15 @@
-package a.gleb.bus_station.Controllers;
+package a.gleb.bus_station.controllers;
 
-import a.gleb.bus_station.Entity.BusFlights;
-import a.gleb.bus_station.Entity.TypeBus;
-import a.gleb.bus_station.Repositories.FlightRepo;
-import a.gleb.bus_station.Repositories.TypeBusRepo;
+import a.gleb.bus_station.dto.BusFlights;
+import a.gleb.bus_station.repositories.FlightRepo;
+import a.gleb.bus_station.repositories.TypeBusRepo;
+import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -33,15 +31,10 @@ public class MainController {
 
     @RequestMapping(value = "/flight/{id}")
     public String aboutFlight(@PathVariable(value = "id") Integer id, Map<String, Object> model){
-        if (!flightRepo.existsById(id)){
-            return "redirect:/";
-        }
-        Optional<BusFlights> flight = flightRepo.findById(id);
-        ArrayList<BusFlights> busFlight = new ArrayList<>();
-        flight.ifPresent(busFlight::add);
-        model.put("flight", busFlight);
+        if (SystemMethods.checkIdForFlight(id, model, flightRepo)) return "redirect:/";
         return "aboutFlight";
     }
+
 
 
 }

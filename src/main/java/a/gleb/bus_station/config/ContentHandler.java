@@ -1,4 +1,4 @@
-package a.gleb.bus_station.Config;
+package a.gleb.bus_station.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
