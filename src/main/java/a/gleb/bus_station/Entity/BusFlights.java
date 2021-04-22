@@ -1,7 +1,6 @@
 package a.gleb.bus_station.Entity;
 
 import javax.persistence.*;
-import java.lang.reflect.Type;
 import java.util.List;
 
 @Entity
@@ -22,6 +21,10 @@ public class BusFlights {
     private String timeDeparture;
     @Column(name = "time_arrival")
     private String timeArrival;
+    @Column(name = "date")
+    private String dateFlight;
+    @Column(name = "num_flight")
+    private String numberFlightUnique;
 
     @ManyToOne
     @JoinColumn(name = "driver_info")
@@ -39,13 +42,16 @@ public class BusFlights {
     private List<Ticket> tickets;
 
     public BusFlights(String routeType, String fromCity, String toCity,
-                      String timeDeparture, String timeArrival) {
+                      String timeDeparture, String timeArrival, String dateFlight, String numberFlightUnique) {
+        this.numberFlightUnique = numberFlightUnique;
+        this.dateFlight = dateFlight;
         this.routeType = routeType;
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.timeDeparture = timeDeparture;
         this.timeArrival = timeArrival;
     }
+
 
     public BusFlights() {
     }
@@ -102,6 +108,14 @@ public class BusFlights {
         return drivers;
     }
 
+    public String getDateFlight() {
+        return dateFlight;
+    }
+
+    public void setDateFlight(String dateFlight) {
+        this.dateFlight = dateFlight;
+    }
+
     public void setDrivers(Drivers drivers) {
         this.drivers = drivers;
     }
@@ -116,6 +130,14 @@ public class BusFlights {
 
     public TypeBus getTypeBus() {
         return typeBus;
+    }
+
+    public String getNumberFlightUnique() {
+        return numberFlightUnique;
+    }
+
+    public void setNumberFlightUnique(String numberFlightUnique) {
+        this.numberFlightUnique = numberFlightUnique;
     }
 
     public void setTypeBus(TypeBus typeBus) {

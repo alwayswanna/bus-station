@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 @Controller
@@ -121,20 +122,45 @@ public class AdminController {
 
     @RequestMapping(value = "/add_flight", method = RequestMethod.GET)
     public String adminAddFlightGet(Map<String, Object> model){
+        Iterable<Drivers> drivers = driversRepo.findAll();
+        Iterable<TypeBus> typeBuses = typeBusRepo.findAll();
+        model.put("drivers", drivers);
+        model.put("buses", typeBuses);
         return "addFlight";
     }
 
     @RequestMapping(value = "/add_flight", method = RequestMethod.POST)
-    public String adminAddFlightPost(@RequestParam String routeType,
+    public String adminAddFlightPost(
                                  @RequestParam String fromCity,
                                  @RequestParam String toCity,
                                  @RequestParam String timeDeparture,
                                  @RequestParam String timeArrival,
+                                 @RequestParam String dateFlight,
+                                 @RequestParam Integer id,
+                                 @RequestParam String busModel,
                                  Map<String, Object> model
                                  ){
-        BusFlights busFlight = new BusFlights(routeType, fromCity, toCity,
-                timeDeparture, timeArrival);
+        int driverId = id;
+        Drivers driver = driversRepo.findById(driverId);
+        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
+        String type;
+        String numberFlightUnique = Character.toString(fromCity.charAt(0)) + Character.toString(toCity.charAt(0))
+                + "-" + Integer.toString((int)Math.random()*(100 - 55) + 55);
+        System.out.println(numberFlightUnique);
+        if (fromCity.equals("Ufa") | fromCity.equals("Уфа")){
+            type = "Отбывающий";
+        }else if (!fromCity.equals("Ufa") | !fromCity.equals("Уфа")){
+            type = "Прибывающий";
+        }else{
+            type = "Проездной";
+        }
+        BusFlights busFlight = new BusFlights(type, fromCity, toCity,
+                timeDeparture, timeArrival, dateFlight, numberFlightUnique);
+        busFlight.setDrivers(driver);
+        busFlight.setTypeBus(typeBus);
         flightRepo.save(busFlight);
+
     return "redirect:/administrations/administrator";
     }
+
 }
