@@ -42,27 +42,34 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         Drivers thirdDriver = new Drivers("Vasili", "Petrov", "+79875696365");
         Drivers fourthDriver = new Drivers("Egor", "Kowtow", "+79856565855");
         Drivers fifthDriver = new Drivers("Semen", "Kuznetsov", "+79056363859");
-        driversRepo.save(firstDriver);
-        driversRepo.save(secondDriver);
-        driversRepo.save(thirdDriver);
-        driversRepo.save(fourthDriver);
-        driversRepo.save(fifthDriver);
+        if (driversRepo.findAll() == null){
+            driversRepo.save(fifthDriver);
+            driversRepo.save(firstDriver);
+            driversRepo.save(secondDriver);
+            driversRepo.save(thirdDriver);
+            driversRepo.save(fourthDriver);
+            driversRepo.save(fifthDriver);
+        }
         // Adding default buses for TypeBus:
         TypeBus firstTypeBus = new TypeBus("Intercity", 60, "Mercedes A-314");
         TypeBus secondTypeBus = new TypeBus("Intercity", 60, "Ford LA-600");
         TypeBus thirdTypeBus = new TypeBus("Suburban", 20, "Opel S-30");
         TypeBus fourthTypeBus = new TypeBus("Suburban", 20, "Opel S-40");
         TypeBus fifthTypeBus = new TypeBus("Suburban", 25, "Mercedes S-400");
-        typeBusRepo.save(firstTypeBus);
-        typeBusRepo.save(secondTypeBus);
-        typeBusRepo.save(thirdTypeBus);
-        typeBusRepo.save(fourthTypeBus);
-        typeBusRepo.save(fifthTypeBus);
+        if (typeBusRepo.findAll() == null){
+            typeBusRepo.save(firstTypeBus);
+            typeBusRepo.save(secondTypeBus);
+            typeBusRepo.save(thirdTypeBus);
+            typeBusRepo.save(fourthTypeBus);
+            typeBusRepo.save(fifthTypeBus);
+        }
         // Adding default types of flights for TypeFlight:
         TypeFlight intercityTypeFlight = new TypeFlight("Intercity");
         TypeFlight suburbanTypeFlight = new TypeFlight("Suburban");
-        typeFlightsRepo.save(intercityTypeFlight);
-        typeFlightsRepo.save(suburbanTypeFlight);
+        if (typeFlightsRepo.findAll() == null){
+            typeFlightsRepo.save(intercityTypeFlight);
+            typeFlightsRepo.save(suburbanTypeFlight);
+        }
         // Adding flights for BusFlights:
         BusFlights firstBusFlight = new BusFlights("null", "Ufa", "Belebei", "10:00", "12:55", dateOfFlight, "null");
         firstBusFlight.setDrivers(firstDriver);
@@ -84,11 +91,13 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         fifthBusFlight.setDrivers(fifthDriver);
         fifthBusFlight.setTypeBus(secondTypeBus);
         fifthBusFlight.setTypeFlight(intercityTypeFlight);
-        flightRepo.save(firstBusFlight);
-        flightRepo.save(secondBusFlight);
-        flightRepo.save(thirdBusFlight);
-        flightRepo.save(fourthBusFlight);
-        flightRepo.save(fifthBusFlight);
+        if (flightRepo.findAll() == null){
+            flightRepo.save(firstBusFlight);
+            flightRepo.save(secondBusFlight);
+            flightRepo.save(thirdBusFlight);
+            flightRepo.save(fourthBusFlight);
+            flightRepo.save(fifthBusFlight);
+        }
         // Done output, information:
         System.out.println("In data base was added:" +
                 "\n Drivers: [Oleg, Ivan, Vasili, Egor, Semen]" +
