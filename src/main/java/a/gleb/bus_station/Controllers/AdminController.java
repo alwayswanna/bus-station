@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/administrations")
@@ -121,6 +123,8 @@ public class AdminController {
 
     @RequestMapping(value = "/add_flight", method = RequestMethod.GET)
     public String adminAddFlightGet(Map<String, Object> model){
+        Iterable<Drivers> drivers = driversRepo.findAll();
+        model.put("drivers", drivers);
         return "addFlight";
     }
 
@@ -131,11 +135,15 @@ public class AdminController {
                                  @RequestParam String timeDeparture,
                                  @RequestParam String timeArrival,
                                  @RequestParam String dateFlight,
+                                 @RequestParam Integer id,
                                  Map<String, Object> model
                                  ){
+        int driverId = id;
+        Drivers driver = driversRepo.findById(driverId);
         String type;
-        String str = String.valueOf(Math.random()*(94-33));
-        String numberFlightUnique = String.valueOf(fromCity.charAt(0) + toCity.charAt(0)) + "_" + str;
+        String numberFlightUnique = Character.toString(fromCity.charAt(0)) + Character.toString(toCity.charAt(0))
+                + "-" + Integer.toString((int)Math.random()*(100 - 55) + 55);
+        System.out.println(numberFlightUnique);
         if (fromCity.equals("Ufa") | fromCity.equals("Уфа")){
             type = "Отбывающий";
         }else if (!fromCity.equals("Ufa") | !fromCity.equals("Уфа")){
@@ -145,7 +153,9 @@ public class AdminController {
         }
         BusFlights busFlight = new BusFlights(type, fromCity, toCity,
                 timeDeparture, timeArrival, dateFlight, numberFlightUnique);
+        busFlight.setDrivers(driver);
         flightRepo.save(busFlight);
+
     return "redirect:/administrations/administrator";
     }
 
