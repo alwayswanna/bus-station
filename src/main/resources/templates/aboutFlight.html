@@ -24,15 +24,15 @@
                         <table>
                             <thead>
                             <tr>
-                                <th><h6>Автобус:</h6></th>
-                                <th><h6>Количество мест:</h6></th>
+                                <th><h6>Время отправления:</h6></th>
+                                <th><h6>Время пребытия:</h6></th>
                             </tr>
                             </thead>
 
                             <tbody>
                             <tr>
-                                <td th:text="${el.getTypeBus().getBusModel()}"/>
-                                <td th:text="${el.getTypeBus().getNumberOfSeats()}"/>
+                                <td th:text="${el.timeDeparture}"/>
+                                <td th:text="${el.timeArrival}"/>
                             </tr>
                             <tr>
                                 <td><h6>Автобус:</h6></td>
