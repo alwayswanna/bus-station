@@ -54,7 +54,7 @@
                         </table>
                     </div>
                     <div class="card-action">
-                        <a href="'/buyTicket/' + ${el.id}">
+                        <a th:href="'/flight/' + ${el.id} + '/buy_ticket'">
                             <button class="btn waves-effect waves-light" type="submit" name="action">Приобрести билет
                                 <i class="material-icons right">send</i>
                             </button>
