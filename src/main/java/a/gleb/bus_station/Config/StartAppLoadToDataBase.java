@@ -66,7 +66,7 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         // Adding default types of flights for TypeFlight:
         TypeFlight intercityTypeFlight = new TypeFlight("Междугородний");
         TypeFlight suburbanTypeFlight = new TypeFlight("Пригородный");
-        if (typeFlightsRepo.findByTypeEquals("Пригородный") == null){
+        if (typeFlightsRepo.findAllById(1) == null){
             typeFlightsRepo.save(intercityTypeFlight);
             typeFlightsRepo.save(suburbanTypeFlight);
         }
@@ -91,7 +91,7 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         fifthBusFlight.setDrivers(fifthDriver);
         fifthBusFlight.setTypeBus(secondTypeBus);
         fifthBusFlight.setTypeFlight(intercityTypeFlight);
-        if (flightRepo.findAllByFromCity("Уфа") == null){
+        if (flightRepo.findAllById(1) == null){
             flightRepo.save(firstBusFlight);
             flightRepo.save(secondBusFlight);
             flightRepo.save(thirdBusFlight);
