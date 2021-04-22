@@ -1,10 +1,27 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Main</title>
+    <link rel="icon" href="/static/img/bus.png">
 </head>
 <body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
 
+            </div>
+        </div>
+    </div>
+</main>
+
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer" >
+</footer>
 </body>
+
 </html>

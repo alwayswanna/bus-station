@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -31,7 +33,14 @@ public class MainController {
 
     @RequestMapping(value = "/flight/{id}")
     public String aboutFlight(@PathVariable(value = "id") Integer id, Map<String, Object> model){
-        if (SystemMethods.checkIdForFlight(id, model, flightRepo)) return "redirect:/";
+        if (SystemMethods.checkIdForFlight(id, model, flightRepo)) {
+            return "redirect:/";
+        }else {
+            Optional<BusFlights> flight = flightRepo.findById(id);
+            ArrayList<BusFlights> busFlight = new ArrayList<>();
+            flight.ifPresent(busFlight::add);
+            model.put("flight", busFlight);
+        }
         return "aboutFlight";
     }
 
