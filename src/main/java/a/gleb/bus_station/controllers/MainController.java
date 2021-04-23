@@ -31,7 +31,7 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = "/flight/{id}")
+    @RequestMapping(value = "/flight/{id}", method = RequestMethod.GET)
     public String aboutFlight(@PathVariable(value = "id") Integer id, Map<String, Object> model){
         if (SystemMethods.checkIdForFlight(id, model, flightRepo)) {
             return "redirect:/";
@@ -42,6 +42,13 @@ public class MainController {
             model.put("flight", busFlight);
         }
         return "aboutFlight";
+    }
+
+    @RequestMapping(value = "/flights/arrival", method = RequestMethod.GET)
+    public String getAllArrivalFlights(Map<String, Object> model){
+        Iterable<BusFlights> arrivalFlights = flightRepo.findAllByRouteType("Прибывающий");
+        model.put("arrival", arrivalFlights);
+        return "arrivalFlights";
     }
 
 
