@@ -51,6 +51,13 @@ public class MainController {
         return "arrivalFlights";
     }
 
+    @RequestMapping(value = "/flights/departure", method = RequestMethod.GET)
+    public String getAllDepartureFlights(Map<String, Object> model){
+        Iterable<BusFlights> departureFlights = flightRepo.findAllByRouteType("Отбывающий");
+        model.put("departure", departureFlights);
+        return "departureFlights";
+    }
+
 
 
 }
