@@ -102,4 +102,29 @@ public class ClientController {
 
         return "redirect:" + redirect;
     }
+
+    @RequestMapping(value = "/check_ticket", method = RequestMethod.GET)
+    public String checkTicketGet(Map<String, Object> model){
+        return "checkTicket";
+    }
+
+    @RequestMapping(value = "/check_ticket", method = RequestMethod.POST)
+    public String checkTicketPost(@RequestParam String passengerDocNum,
+                                  @RequestParam String numTicket,
+                                  Map<String, Object> model){
+        if (!passengerDocNum.equals("")){
+            PassengerPassport passengerPassport = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
+            Passengers passenger = passengerPassport.getPassengers();
+            Ticket ticket = passenger.getTicket();
+            BusFlights flight = ticket.getBusFlights();
+            model.put("passport", passengerPassport);
+            return "checkTicket";
+        }else if (numTicket.equals("")){
+
+        }
+
+
+
+        return "checkTicket";
+    }
 }
