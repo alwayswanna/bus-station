@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <link rel="icon" href="/static/img/bus.png">
+</head>
+<body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s6" th:each="el : ${flight}">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/static/img/route.jpg">
+                        <span class="card-title">
+                            <h3 class="black-text" th:text="${el.fromCity} + ' - ' + ${el.toCity}"></h3>
+                        </span>
+                    </div>
+                    <div class="card-content">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><h6>Номер рейса:</h6></th>
+                                <th><h6 th:text="${el.numberFlightUnique}"/></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td><h6>Тип отправления:</h6></td>
+                                <td><h6 th:text="${el.routeType}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Межгород/Пригород</h6></td>
+                                <td><h6 th:text="${el.getTypeFlight().getType()}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Дата:</h6></td>
+                                <td><h6>Количество мест:</h6></td>
+                            </tr>
+                            <tr>
+                                <td><h6 th:text="${el.dateFlight}"/></td>
+                                <td><h6 th:text="${el.getTypeBus().getNumberOfSeats()}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Отправление:</h6></td>
+                                <td><h6>Прибытие:</h6></td>
+                            </tr>
+                            <tr>
+                                <td><h6 th:text="${el.timeDeparture}"/></td>
+                                <td><h6 th:text="${el.timeArrival}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Автобус:</h6></td>
+                                <td><h6 th:text="${el.getTypeBus().getBusModel()}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Водитель:</h6></td>
+                                <td><h6>Номер телефона:</h6></td>
+                            </tr>
+                            <tr>
+                                <td th:text="${el.getDrivers().getDriverSurname()} + ' ' + ${el.getDrivers().getDriverName()}"/>
+                                <td th:text="${el.getDrivers().getDriverPhone()}"/>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col s6" th:each="el : ${flight}">
+                <h5>Приобрести билет:</h5>
+                <form th:action="'/flight/' + ${el.id} + '/buy_ticket'" , method="post">
+                    <input name="passengerName" placeholder="Имя" type="text" class="validate">
+                    <input name="passengerSurname" placeholder="Фамилия" type="text" class="validate">
+                    <input name="passengerPhone" placeholder="Номер телефона" type="text" class="validate">
+                    <input name="passengerRegistration" placeholder="Место жительства" type="text" class="validate">
+                    <input name="passengerBirthday" placeholder="День рождения" type="text" class="validate">
+                    <input name="passengerDocNum" placeholder="Номер/Серия паспорта" type="text" class="validate">
+                    <button type="submit" class="waves-effect waves-light btn">Купить билет</button>
+                </form>
+                <div>
+                    <br>
+                    <h6 class="green-text" th:if="${message}" th:text="${message}"/>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer">
+</footer>
+</body>
+
+</html>

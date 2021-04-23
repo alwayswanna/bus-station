@@ -1,13 +1,13 @@
-package a.gleb.bus_station.Config;
+package a.gleb.bus_station.config;
 
-import a.gleb.bus_station.Entity.BusFlights;
-import a.gleb.bus_station.Entity.Drivers;
-import a.gleb.bus_station.Entity.TypeBus;
-import a.gleb.bus_station.Entity.TypeFlight;
-import a.gleb.bus_station.Repositories.DriversRepo;
-import a.gleb.bus_station.Repositories.FlightRepo;
-import a.gleb.bus_station.Repositories.TypeBusRepo;
-import a.gleb.bus_station.Repositories.TypeFlightsRepo;
+import a.gleb.bus_station.dto.BusFlights;
+import a.gleb.bus_station.dto.Drivers;
+import a.gleb.bus_station.dto.TypeBus;
+import a.gleb.bus_station.dto.TypeFlight;
+import a.gleb.bus_station.repositories.DriversRepo;
+import a.gleb.bus_station.repositories.FlightRepo;
+import a.gleb.bus_station.repositories.TypeBusRepo;
+import a.gleb.bus_station.repositories.TypeFlightsRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

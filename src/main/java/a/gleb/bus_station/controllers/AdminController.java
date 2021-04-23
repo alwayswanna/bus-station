@@ -1,13 +1,12 @@
-package a.gleb.bus_station.Controllers;
+package a.gleb.bus_station.controllers;
 
-import a.gleb.bus_station.Entity.*;
-import a.gleb.bus_station.Repositories.*;
+import a.gleb.bus_station.dto.*;
+import a.gleb.bus_station.repositories.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.lang.reflect.Type;
 import java.util.Map;
 
 @Controller

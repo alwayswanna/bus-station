@@ -1,6 +1,6 @@
-package a.gleb.bus_station.Repositories;
+package a.gleb.bus_station.repositories;
 
-import a.gleb.bus_station.Entity.PassengerPassport;
+import a.gleb.bus_station.dto.PassengerPassport;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PassengerPassportRepo extends CrudRepository<PassengerPassport, Integer> {
