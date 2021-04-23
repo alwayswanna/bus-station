@@ -39,10 +39,10 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/flight/{id}/buy_ticket", method = RequestMethod.GET)
-    public String buyTicketGet(@PathVariable(value = "id") Integer id, Map<String, Object> model){
+    public String buyTicketGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         if (SystemMethods.checkIdForFlight(id, model, flightRepo)) {
             return "redirect:/";
-        }else{
+        } else {
             Optional<BusFlights> busFlights = flightRepo.findById(id);
             ArrayList<BusFlights> busFlightsModel = new ArrayList<>();
             busFlights.ifPresent(busFlightsModel::add);
@@ -60,14 +60,14 @@ public class ClientController {
                                 @RequestParam String passengerRegistration,
                                 @RequestParam String passengerBirthday,
                                 Map<String, Object> model,
-                                RedirectAttributes redirectAttributes){
-        String redirect = "/flight/"+ id + "/buy_ticket";
+                                RedirectAttributes redirectAttributes) {
+        String redirect = "/flight/" + id + "/buy_ticket";
         if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
-                passengerPhone.equals("") | passengerDocNum.equals("")| passengerBirthday.equals("")){
+                passengerPhone.equals("") | passengerDocNum.equals("") | passengerBirthday.equals("")) {
             String errorStr = "Вы заполнили не все поля! Обновите страницу";
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirect;
-        }else {
+        } else {
 
             Optional<BusFlights> busFlights = flightRepo.findById(id);
             ArrayList<BusFlights> busFlightsArrayList = new ArrayList<>();
@@ -101,9 +101,8 @@ public class ClientController {
         }
 
 
-    return "redirect:" + redirect;
+        return "redirect:" + redirect;
     }
-
 
 
 }

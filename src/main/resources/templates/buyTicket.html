@@ -12,8 +12,8 @@
 <main>
     <div class="container">
         <div class="row">
-            <div class="col s6">
-                <div class="card" th:each="el : ${flight}">
+            <div class="col s6" th:each="el : ${flight}">
+                <div class="card">
                     <div class="card-image">
                         <img src="/static/img/route.jpg">
                         <span class="card-title">
@@ -74,13 +74,13 @@
             <div class="col s6" th:each="el : ${flight}">
                 <h5>Приобрести билет:</h5>
                 <form th:action="'/flight/' + ${el.id} + '/buy_ticket'" , method="post">
-                <input name="passengerName" placeholder="Имя" type="text" class="validate">
-                <input name="passengerSurname" placeholder="Фамилия" type="text" class="validate">
-                <input name="passengerPhone" placeholder="Номер телефона" type="text" class="validate">
-                <input name="passengerRegistration" placeholder="Место жительства" type="text" class="validate">
-                <input name="passengerBirthday" placeholder="День рождения" type="text" class="validate">
-                <input name="passengerDocNum" placeholder="Номер/Серия паспорта" type="text" class="validate">
-                <button type="submit" class="waves-effect waves-light btn">Купить билет</button>
+                    <input name="passengerName" placeholder="Имя" type="text" class="validate">
+                    <input name="passengerSurname" placeholder="Фамилия" type="text" class="validate">
+                    <input name="passengerPhone" placeholder="Номер телефона" type="text" class="validate">
+                    <input name="passengerRegistration" placeholder="Место жительства" type="text" class="validate">
+                    <input name="passengerBirthday" placeholder="День рождения" type="text" class="validate">
+                    <input name="passengerDocNum" placeholder="Номер/Серия паспорта" type="text" class="validate">
+                    <button type="submit" class="waves-effect waves-light btn">Купить билет</button>
                 </form>
                 <div>
                     <br>
@@ -93,7 +93,7 @@
 </main>
 
 <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-<footer th:insert="blocks/footer.html :: footer" >
+<footer th:insert="blocks/footer.html :: footer">
 </footer>
 </body>
 
