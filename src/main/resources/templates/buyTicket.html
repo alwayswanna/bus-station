@@ -31,16 +31,32 @@
 
                             <tbody>
                             <tr>
-                                <td>Тип отправления:</td>
-                                <td th:text="${el.type}"/>
+                                <td><h6>Тип отправления:</h6></td>
+                                <td><h6 th:text="${el.routeType}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Межгород/Пригород</h6></td>
+                                <td><h6 th:text="${el.getTypeFlight().getType()}"/></td>
                             </tr>
                             <tr>
                                 <td><h6>Дата:</h6></td>
                                 <td><h6>Количество мест:</h6></td>
                             </tr>
                             <tr>
-                                <td th:text="${el.dateFlight}"/>
-                                <td th:text="${el.getTypeBus().getNumberOfSeats()}"/>
+                                <td><h6 th:text="${el.dateFlight}"/></td>
+                                <td><h6 th:text="${el.getTypeBus().getNumberOfSeats()}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Отправление:</h6></td>
+                                <td><h6>Прибытие:</h6></td>
+                            </tr>
+                            <tr>
+                                <td><h6 th:text="${el.timeDeparture}"/></td>
+                                <td><h6 th:text="${el.timeArrival}"/></td>
+                            </tr>
+                            <tr>
+                                <td><h6>Автобус:</h6></td>
+                                <td><h6 th:text="${el.getTypeBus().getBusModel()}"/></td>
                             </tr>
                             <tr>
                                 <td><h6>Водитель:</h6></td>
@@ -53,13 +69,19 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="card-action">
-                        <a href="#">This is a link</a>
-                    </div>
                 </div>
             </div>
-            <div class="col s6">
-                <h5></h5>
+            <div class="col s6" th:each="el : ${flight}">
+                <h5>Приобрести билет:</h5>
+                <form th:action="'/flight/' + ${el.id} + '/buy_ticket'" , method="post">
+                <input name="passengerName" placeholder="Имя" type="text" class="validate">
+                <input name="passengerSurname" placeholder="Фамилия" type="text" class="validate">
+                <input name="passengerPhone" placeholder="Номер телефона" type="text" class="validate">
+                <input name="passengerRegistration" placeholder="Место жительства" type="text" class="validate">
+                <input name="passengerBirthday" placeholder="День рождения" type="text" class="validate">
+                <input name="passengerDocNum" placeholder="Номер/Серия паспорта" type="text" class="validate">
+                <button type="submit" class="waves-effect waves-light btn">Купить билет</button>
+                </form>
             </div>
         </div>
     </div>
