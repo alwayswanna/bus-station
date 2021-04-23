@@ -9,7 +9,6 @@ import a.gleb.bus_station.repositories.PassengerPassportRepo;
 import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
 import a.gleb.bus_station.service.SystemMethods;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,6 +102,4 @@ public class ClientController {
 
         return "redirect:" + redirect;
     }
-
-
 }
