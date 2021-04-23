@@ -82,6 +82,11 @@
                 <input name="passengerDocNum" placeholder="Номер/Серия паспорта" type="text" class="validate">
                 <button type="submit" class="waves-effect waves-light btn">Купить билет</button>
                 </form>
+                <div>
+                    <br>
+                    <h6 class="green-text" th:if="${message}" th:text="${message}"/>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
             </div>
         </div>
     </div>
