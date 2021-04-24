@@ -12,7 +12,7 @@
 <main>
     <div class="container">
         <div class="row">
-            <h5 class="green-text">Для того чтобы выполнить проверку билета введите номер паспорта или уникальный номер
+            <h5 class="green-text">Для того чтобы выполнить проверку билета введите номер паспорта или уникальный номер:
                 билета</h5>
             <div class="col s6">
                 <form action="/check_ticket" method="post">
@@ -29,13 +29,13 @@
 
     <div class="container">
         <div class="row"  th:each="el: ${passport}">
-            <h5>Информация о билете:</h5>
+            <h4>Информация о билете:</h4>
             <table>
                 <thead>
                 <tr>
-                    <th><h6>Фамилия:</h6></th>
-                    <th><h6>Имя:</h6></th>
-                    <th><h6>Номер паспорта:</h6></th>
+                    <th><h6 class="green-text">Фамилия пассажира:</h6></th>
+                    <th><h6 class="green-text">Имя пассажира:</h6></th>
+                    <th><h6 class="green-text">Номер паспорта:</h6></th>
                 </tr>
                 </thead>
 
@@ -46,14 +46,64 @@
                     <td><h6 th:text="${el.passengerDocNum}"/></td>
                 </tr>
                 <tr>
-                    <td><h6>Пункт отправления:</h6></td>
-                    <td><h6>Пункт назначения:</h6></td>
-                    <td><h6>Дата поездки:</h6></td>
+                    <td><h6 class="green-text">Пункт отправления:</h6></td>
+                    <td><h6 class="green-text">Пункт назначения:</h6></td>
+                    <td><h6 class="green-text">Дата поездки:</h6></td>
                 </tr>
                 <tr th:each="flight : ${flight}">
                     <td><h6 th:text="${flight.fromCity}"/></td>
                     <td><h6 th:text="${flight.toCity}"/></td>
                     <td><h6 th:text="${flight.dateFlight}"/></td>
+                </tr>
+                <tr>
+                    <td><h6 class="green-text">Время отправления:</h6></td>
+                    <td><h6 class="green-text">Время прибытия:</h6></td>
+                    <td><h6></h6></td>
+                </tr>
+                <tr th:each="flight : ${flight}">
+                    <td><h6 th:text="${flight.timeDeparture}"/></td>
+                    <td><h6 th:text="${flight.timeArrival}"/></td>
+                    <td><h6></h6></td>
+                </tr>
+                <tr>
+                    <td><h6 class="green-text">Место:</h6></td>
+                    <td><h6></h6></td>
+                    <td><h6></h6></td>
+                </tr>
+                <tr th:each="ticket : ${ticket}">
+                    <td><h6 th:text="${ticket.ticketPlace}"/></td>
+                    <td><h6></h6></td>
+                    <td><h6></h6></td>
+                </tr>
+                <tr>
+                    <td><h6 class="green-text">Уникальный номер билета:</h6></td>
+                    <td><h6></h6></td>
+                    <td><h6></h6></td>
+                </tr>
+                <tr th:each="passenger : ${passenger}">
+                    <td><h6 th:text="${passenger.numTicket}"/></td>
+                    <td><h6></h6></td>
+                    <td><h6></h6></td>
+                </tr>
+                <tr>
+                    <td><h6 class="green-text">Автобус:</h6></td>
+                    <td><h6 class="green-text">Количество мест:</h6></td>
+                    <td><h6 class="green-text">Водитель:</h6></td>
+                </tr>
+                <tr th:each="flight : ${flight}">
+                    <td><h6 th:text="${flight.getTypeBus().getBusModel()}"/></td>
+                    <td><h6 th:text="${flight.getTypeBus().getNumberOfSeats()}"/></td>
+                    <td><h6 th:text="${flight.getDrivers().getDriverName()} + ' ' + ${flight.getDrivers().getDriverSurname()}"/></td>
+                </tr>
+                <tr>
+                    <td><h6 class="green-text">Тип автобуса:</h6></td>
+                    <td><h6></h6></td>
+                    <td><h6></h6></td>
+                </tr>
+                <tr th:each="flight : ${flight}">
+                    <td><h6 th:text="${flight.getTypeBus().getType()}"/></td>
+                    <td><h6/></td>
+                    <td><h6/></td>
                 </tr>
                 </tbody>
             </table>
