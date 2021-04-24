@@ -21,12 +21,14 @@
                     <button type="submit" class="waves-effect waves-light btn">Проверить билет</button>
                 </form>
             </div>
-            <div class="col s6"></div>
+            <div class="col s6">
+                <h6 class="red-text" th:if="${error}" th:text="${error}"/>
+            </div>
         </div>
     </div>
 
-    <div class="container" th:each="el: ${passport}">
-        <div class="row">
+    <div class="container">
+        <div class="row"  th:each="el: ${passport}">
             <h5>Информация о билете:</h5>
             <table>
                 <thead>
@@ -48,10 +50,10 @@
                     <td><h6>Пункт назначения:</h6></td>
                     <td><h6>Дата поездки:</h6></td>
                 </tr>
-                <tr>
-                    <td><h6 th:text="{el.getPassenger().getTicket().getFlight().getFromCity()}"/></td>
-                    <td><h6 th:text="{el.getPassenger().getTicket().getFlight().getToCity()}"/></td>
-                    <td><h6 th:text="{el.getPassenger().getTicket().getFlight().dateFlight}"/></td>
+                <tr th:each="flight : ${flight}">
+                    <td><h6 th:text="${flight.fromCity}"/></td>
+                    <td><h6 th:text="${flight.toCity}"/></td>
+                    <td><h6 th:text="${flight.dateFlight}"/></td>
                 </tr>
                 </tbody>
             </table>
