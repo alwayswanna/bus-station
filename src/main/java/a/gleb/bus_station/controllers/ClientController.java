@@ -10,6 +10,7 @@ import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
 import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -101,5 +102,51 @@ public class ClientController {
 
 
         return "redirect:" + redirect;
+    }
+
+    @RequestMapping(value = "/check_ticket", method = RequestMethod.GET)
+    public String checkTicketGet(Map<String, Object> model){
+        return "checkTicket";
+    }
+
+    @RequestMapping(value = "/check_ticket", method = RequestMethod.POST)
+    public String checkTicketPost(@RequestParam String passengerDocNum,
+                                  @RequestParam String numTicket,
+                                  Map <String, Object> model,
+                                  RedirectAttributes redirectAttributes){
+        if (!passengerDocNum.equals("")){
+            PassengerPassport passengerPassport = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
+            Passengers passenger = passengerPassport.getPassengers();
+            Ticket ticket = passenger.getTicket();
+            BusFlights flight = ticket.getBusFlights();
+            model.put("passport", passengerPassport);
+            model.put("ticket", ticket);
+            model.put("passenger", passenger);
+            model.put("flight",  flight);
+            return "checkTicket";
+        }else if (!numTicket.equals("")){
+            Passengers passenger = passengersRepo.findByNumTicket(numTicket);
+            PassengerPassport passengerPassport = passenger.getPassengerInfo();
+            Ticket ticket = passenger.getTicket();
+            BusFlights flight = ticket.getBusFlights();
+            model.put("passenger", passenger);
+            model.put("passport", passengerPassport);
+            model.put("ticket", ticket);
+            model.put("flight", flight);
+        }else if (!passengerDocNum.equals("") & !numTicket.equals("")){
+            Passengers passenger = passengersRepo.findByNumTicket(numTicket);
+            PassengerPassport passengerPassport = passenger.getPassengerInfo();
+            Ticket ticket = passenger.getTicket();
+            BusFlights flight = ticket.getBusFlights();
+            model.put("passenger", passenger);
+            model.put("passport", passengerPassport);
+            model.put("ticket", ticket);
+            model.put("flight", flight);
+        }else{
+            String errorMsg = "Вы не указали требуемы данных.";
+            redirectAttributes.addFlashAttribute("error", errorMsg);
+            return "redirect:/check_ticket";
+        }
+        return "checkTicket";
     }
 }
