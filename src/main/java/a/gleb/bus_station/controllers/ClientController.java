@@ -115,12 +115,12 @@ public class ClientController {
                                   RedirectAttributes redirectAttributes) {
         PassengerPassport passport = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
         Passengers passenger = passengersRepo.findByNumTicket(numTicket);
-        if (passport == null & passenger == null){
+        if (passport == null & passenger == null) {
             String errorMsg = "Вы не указали требуемых данных или данные оказались некорректными. Попробуйте повторить попытку вновь.";
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:/check_ticket";
-        }else if (passport == null | passengerDocNum.equals("")){
-           PassengerPassport passengerPassport = passenger.getPassengerInfo();
+        } else if (passport == null | passengerDocNum.equals("")) {
+            PassengerPassport passengerPassport = passenger.getPassengerInfo();
             Ticket ticket = passenger.getTicket();
             BusFlights flight = ticket.getBusFlights();
             model.put("passport", passengerPassport);
@@ -128,8 +128,8 @@ public class ClientController {
             model.put("passenger", passenger);
             model.put("flight", flight);
             return "checkTicket";
-        }else if (passenger == null | numTicket.equals("")){
-           Passengers passengerFormDoc = passport.getPassengers();
+        } else if (passenger == null | numTicket.equals("")) {
+            Passengers passengerFormDoc = passport.getPassengers();
             Ticket ticket = passengerFormDoc.getTicket();
             BusFlights flight = ticket.getBusFlights();
             model.put("passport", passport);
