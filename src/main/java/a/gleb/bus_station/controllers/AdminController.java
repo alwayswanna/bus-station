@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Type;
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -184,6 +185,12 @@ public class AdminController {
             Optional<BusFlights> flight = flightRepo.findById(id);
             ArrayList<BusFlights> flightModel = new ArrayList<>();
             flight.ifPresent(flightModel::add);
+            Drivers driver = flightModel.get(0).getDrivers();
+            TypeBus typeBus = flightModel.get(0).getTypeBus();
+            TypeFlight typeFlight = flightModel.get(0).getTypeFlight();
+            model.put("type", typeFlight);
+            model.put("buses", typeBus);
+            model.put("drivers", driver);
             model.put("flight", flightModel);
         }
         return "administratorEditFlight";
@@ -196,12 +203,14 @@ public class AdminController {
                                       @RequestParam String timeDeparture,
                                       @RequestParam String timeArrival,
                                       @RequestParam String dateFlight,
-                                      @RequestParam Integer idDriver,
-                                      @RequestParam String busModel,
-                                      @RequestParam Integer idType,
                                       Map<String, Object> model){
-
-
+        BusFlights busFlights = flightRepo.findById(id).orElseThrow();
+        busFlights.setFromCity(fromCity);
+        busFlights.setToCity(toCity);
+        busFlights.setTimeDeparture(timeDeparture);
+        busFlights.setTimeArrival(timeArrival);
+        busFlights.setDateFlight(dateFlight);
+        flightRepo.save(busFlights);
         return "redirect:/administrations/administrator";
     }
 

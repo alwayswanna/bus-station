@@ -1,10 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Администратор: изменить рейс</title>
+    <link rel="icon" href="/static/img/bus.png">
 </head>
 <body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12" th:each="el : ${flight}">
+                <h5>Редактировать рейс (Сменить автобус, водителя, тип поездки невозможно):</h5>
+                <form th:action="'/administrations/flight/' + ${el.id} + '/edit'" method="post">
+                    <input type="text" name="fromCity" th:value="${el.fromCity}">
+                    <input type="text" name="toCity" th:value="${el.toCity}">
+                    <input type="text" name="timeDeparture" th:value="${el.timeDeparture}">
+                    <input type="text" name="timeArrival" th:value="${el.timeArrival}">
+                    <input type="text" name="dateFlight" th:value="${el.dateFlight}">
+                    <!--need find solution for <select>
+                    bus, type, driver
+                    -->
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
+                    <button type="submit">Изменить рейс</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
+</main>
+
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer">
+</footer>
 </body>
+
 </html>
