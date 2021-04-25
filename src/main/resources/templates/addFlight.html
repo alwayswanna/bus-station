@@ -19,8 +19,11 @@
             <select name="busModel">
                 <option th:each="el :${buses}" th:text="${el.busModel}" name="busModel"/>
             </select>
-            <select name="id">
-                <option th:each="el : ${drivers}" th:text="${el.id}" name="id"/>
+            <select name="driverSurname">
+                <option th:each="el : ${drivers}" th:text="${el.driverSurname}" name="driverSurname"/>
+            </select>
+            <select name="typeFlight">
+                <option th:each="el : ${type}" th:text="${el.typeOfFlight}" name="typeFlight"/>
             </select>
 
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>

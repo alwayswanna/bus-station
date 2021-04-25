@@ -77,7 +77,7 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         TypeFlight intercityTypeFlight = new TypeFlight("Междугородний");
         TypeFlight suburbanTypeFlight = new TypeFlight("Пригородный");
         try{
-            if (typeFlightsRepo.findByTypeEquals("Пригородный") == null){
+            if (typeFlightsRepo.findByTypeOfFlight("Пригородный") == null){
                 typeFlightsRepo.save(intercityTypeFlight);
                 typeFlightsRepo.save(suburbanTypeFlight);
             }else{
