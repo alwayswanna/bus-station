@@ -24,8 +24,10 @@
                     bus, type, driver
                     -->
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
-                    <button type="submit">Изменить рейс</button>
+                    <button  class="waves-effect waves-light btn" type="submit">Изменить рейс</button>
                 </form>
+                <br>
+                <a type="submit" class="waves-effect waves-light btn" th:href="'/administrations/flight/' + ${el.id} + '/del'">Удалить рейс</a>
             </div>
         </div>
     </div>

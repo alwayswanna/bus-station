@@ -214,5 +214,12 @@ public class AdminController {
         return "redirect:/administrations/administrator";
     }
 
+    @RequestMapping(value = "/flight/{id}/del", method = RequestMethod.GET)
+    public String adminRemoveFlightPost(@PathVariable(value = "id")Integer id, Map<String, Object> model){
+        BusFlights busFlight = flightRepo.findById(id).orElseThrow();
+        flightRepo.delete(busFlight);
+        return "redirect:/administrations/administrator";
+    }
+
 
 }
