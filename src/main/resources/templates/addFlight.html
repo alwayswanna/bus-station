@@ -4,31 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Администратор: добавить рейс</title>
+    <link rel="icon" href="/static/img/bus.png">
 </head>
 <body>
-<div>
-    <h1>Добавить рейс:</h1>
-</div>
-    <div>
-        <form action="/administrations/add_flight" method="post">
-            <input placeholder="Из города" type="text" name="fromCity"/>
-            <input placeholder="В город" type="text" name="toCity"/>
-            <input placeholder="Время отправления" type="text" name="timeDeparture"/>
-            <input placeholder="Время прибытия" type="text" name="timeArrival"/>
-            <input placeholder="Дата рейса:" type="text" name="dateFlight"/>
-            <select name="busModel">
-                <option th:each="el :${buses}" th:text="${el.busModel}" name="busModel"/>
-            </select>
-            <select name="id">
-                <option th:each="el : ${drivers}" th:text="${el.id}" name="id"/>
-            </select>
-
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
-            <button type="submit">Добавить рейс</button>
-        </form>
-
-
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h5>Добавить рейс</h5>
+                <form action="/administrations/add_flight" method="post">
+                    <input placeholder="Из города" type="text" name="fromCity"/>
+                    <input placeholder="В город" type="text" name="toCity"/>
+                    <input placeholder="Время отправления" type="text" name="timeDeparture"/>
+                    <input placeholder="Время прибытия" type="text" name="timeArrival"/>
+                    <input placeholder="Дата рейса:" type="text" name="dateFlight"/>
+                    <label>Автобус:</label>
+                    <select name="busModel">
+                        <option th:each="el :${buses}" th:text="${el.busModel}" name="busModel"></option>
+                    </select>
+                    <label>Водитель:</label>
+                    <select name="driverSurname">
+                        <option th:each="el : ${drivers}" th:text="${el.driverSurname}" name="driverSurname"></option>
+                    </select>
+                    <label>Тип рейса:</label>
+                    <select name="typeFlight">
+                        <option th:each="el: ${type}" th:text="${el.typeOfFlight}" name="typeFlight"></option>
+                    </select>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
+                    <button  class="waves-effect waves-light btn" type="submit">Добавить рейс</button>
+                </form>
+            </div>
+        </div>
     </div>
 
+
+</main>
+<script type="text/javascript" src="/static/js/index.js"></script>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer">
+</footer>
 </body>
+
 </html>

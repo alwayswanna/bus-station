@@ -11,6 +11,7 @@ import a.gleb.bus_station.repositories.TypeFlightsRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.sql.Driver;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,13 +38,16 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Adding default values for Drivers:
+        Drivers defaultDriver = new Drivers("смена водителя", "Идет", "Не определен");
         Drivers firstDriver = new Drivers("Олег", "Иванов", "+79068568585");
         Drivers secondDriver = new Drivers("Иван", "Меньшов", "+79058569645");
         Drivers thirdDriver = new Drivers("Василий", "Петров", "+79875696365");
         Drivers fourthDriver = new Drivers("Егор", "Котов", "+79856565855");
         Drivers fifthDriver = new Drivers("Семен", "Кузнецов", "+79056363859");
+        defaultDriver.setId(1);
         try{
             if (driversRepo.findByDriverSurname("Кузнецов") == null){
+                driversRepo.save(defaultDriver);
                 driversRepo.save(fifthDriver);
                 driversRepo.save(firstDriver);
                 driversRepo.save(secondDriver);
@@ -77,7 +81,7 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         TypeFlight intercityTypeFlight = new TypeFlight("Междугородний");
         TypeFlight suburbanTypeFlight = new TypeFlight("Пригородный");
         try{
-            if (typeFlightsRepo.findByTypeEquals("Пригородный") == null){
+            if (typeFlightsRepo.findByTypeOfFlight("Пригородный") == null){
                 typeFlightsRepo.save(intercityTypeFlight);
                 typeFlightsRepo.save(suburbanTypeFlight);
             }else{

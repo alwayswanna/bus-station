@@ -12,13 +12,13 @@ public class TypeFlight {
     @Column(name = "num_flight")
     private Integer id;
     @Column(name = "type")
-    private String type;
+    private String typeOfFlight;
 
     @OneToMany(mappedBy = "typeFlight")
     private List<BusFlights> busFlights;
 
-    public TypeFlight(String type) {
-        this.type = type;
+    public TypeFlight(String typeOfFlight) {
+        this.typeOfFlight = typeOfFlight;
     }
 
     public TypeFlight() {
@@ -32,12 +32,12 @@ public class TypeFlight {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getTypeOfFlight() {
+        return typeOfFlight;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeOfFlight(String type) {
+        this.typeOfFlight = type;
     }
 
     public List<BusFlights> getBusFlights() {
@@ -52,7 +52,7 @@ public class TypeFlight {
     public String toString() {
         return "TypeFlight{" +
                 "id=" + id +
-                ", type='" + type + '\'' +
+                ", type='" + typeOfFlight + '\'' +
                 '}';
     }
 }

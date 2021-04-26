@@ -3,11 +3,14 @@ package a.gleb.bus_station.controllers;
 import a.gleb.bus_station.dto.*;
 import a.gleb.bus_station.repositories.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/administrations")
@@ -34,27 +37,29 @@ public class AdminController {
         this.typeFlightsRepo = typeFlightsRepo;
     }
 
-    @RequestMapping(value = "/administrator", method = RequestMethod.GET)
-    public String administratorPage(Map<String, Object> model){
-        return "administrator";
+    @RequestMapping(value = "/administrator/drivers", method = RequestMethod.GET)
+    public String administratorPageDrivers(Map<String, Object> model) {
+        Iterable<Drivers> drivers = driversRepo.findAll();
+        model.put("drivers", drivers);
+        return "administratorDrivers";
     }
 
     @RequestMapping(value = "/add_ticket", method = RequestMethod.GET)
-    public String adminAddTicketGet(Map<String, Object> model){
+    public String adminAddTicketGet(Map<String, Object> model) {
         return "addTicket";
     }
 
     @RequestMapping(value = "/add_ticket", method = RequestMethod.POST)
     public String adminAddTicketPost(@RequestParam String ticketPlace,
                                      @RequestParam String ticketPassenger,
-                                     Map<String, Object> model){
+                                     Map<String, Object> model) {
         Ticket ticket = new Ticket(ticketPlace, ticketPassenger);
         ticketRepo.save(ticket);
-    return "redirect:/administrations/administrator";
+        return "redirect:/administrations/administrator";
     }
 
     @RequestMapping(value = "/add_passengerFull", method = RequestMethod.GET)
-    public String adminAddPassengerFullInfoGet(Map<String, Object> model){
+    public String adminAddPassengerFullInfoGet(Map<String, Object> model) {
         return "addFullPassenger";
     }
 
@@ -65,101 +70,40 @@ public class AdminController {
                                                 @RequestParam String passengerPhone,
                                                 @RequestParam String passengerDocNum,
                                                 @RequestParam String passengerRegistration,
-                                                @RequestParam String passengerBirthday){
+                                                @RequestParam String passengerBirthday) {
         Passengers passenger = new Passengers(numTicket);
         PassengerPassport passengerPassport = new PassengerPassport(passengerName, passengerSurname,
-                                        passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
+                passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
         passenger.setPassengerInfo(passengerPassport);
         passengersRepo.save(passenger);
-    return "redirect:/administrations/administrator";
+        return "redirect:/administrations/administrator";
     }
 
     @RequestMapping(value = "/add_typeFlight", method = RequestMethod.GET)
-    public String adminAddTypeFlightGet(Map<String, Object> model){
+    public String adminAddTypeFlightGet(Map<String, Object> model) {
         return "addTypeFlight";
     }
 
     @RequestMapping(value = "/add_typeFlight", method = RequestMethod.POST)
     public String adminAddTypeFlightPost(@RequestParam String type
-                                        ,Map<String, Object> model){
+            , Map<String, Object> model) {
         TypeFlight typeFlight = new TypeFlight(type);
         typeFlightsRepo.save(typeFlight);
-    return "redirect:/administrations/administrator";
+        return "redirect:/administrations/administrator";
     }
 
     @RequestMapping(value = "/add_typeBus", method = RequestMethod.GET)
-    public String adminAddTypeBusGet(Map<String, Object> model){
+    public String adminAddTypeBusGet(Map<String, Object> model) {
         return "addTypeBus";
     }
 
     @RequestMapping(value = "/add_typeBus", method = RequestMethod.POST)
     public String adminAddTypeBusPost(@RequestParam String type,
-                                  @RequestParam Integer numberOfSeats,
-                                  @RequestParam String busModel,
-                                  Map<String, Object> model){
+                                      @RequestParam Integer numberOfSeats,
+                                      @RequestParam String busModel,
+                                      Map<String, Object> model) {
         TypeBus bus = new TypeBus(type, numberOfSeats, busModel);
         typeBusRepo.save(bus);
-    return "redirect:/administrations/administrator";
+        return "redirect:/administrations/administrator";
     }
-
-
-    @RequestMapping(value = "/add_driver", method = RequestMethod.GET)
-    public String adminAddDriverGet(Map<String, Object> model){
-        return "addDriver";
-    }
-
-    @RequestMapping(value = "/add_driver", method = RequestMethod.POST)
-    public String adminAddDriverPost(@RequestParam String driverName,
-                                     @RequestParam String driverSurname,
-                                     @RequestParam String driverPhone,
-                                     Map<String, Object> model){
-        Drivers driver = new Drivers(driverName, driverSurname, driverPhone);
-        driversRepo.save(driver);
-    return "redirect:/administrations/administrator";
-    }
-
-
-    @RequestMapping(value = "/add_flight", method = RequestMethod.GET)
-    public String adminAddFlightGet(Map<String, Object> model){
-        Iterable<Drivers> drivers = driversRepo.findAll();
-        Iterable<TypeBus> typeBuses = typeBusRepo.findAll();
-        model.put("drivers", drivers);
-        model.put("buses", typeBuses);
-        return "addFlight";
-    }
-
-    @RequestMapping(value = "/add_flight", method = RequestMethod.POST)
-    public String adminAddFlightPost(
-                                 @RequestParam String fromCity,
-                                 @RequestParam String toCity,
-                                 @RequestParam String timeDeparture,
-                                 @RequestParam String timeArrival,
-                                 @RequestParam String dateFlight,
-                                 @RequestParam Integer id,
-                                 @RequestParam String busModel,
-                                 Map<String, Object> model
-                                 ){
-        int driverId = id;
-        Drivers driver = driversRepo.findById(driverId);
-        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
-        String type;
-        String numberFlightUnique = Character.toString(fromCity.charAt(0)) + Character.toString(toCity.charAt(0))
-                + "-" + Integer.toString((int)Math.random()*(100 - 55) + 55);
-        System.out.println(numberFlightUnique);
-        if (fromCity.equals("Ufa") | fromCity.equals("Уфа")){
-            type = "Отбывающий";
-        }else if (!fromCity.equals("Ufa") | !fromCity.equals("Уфа")){
-            type = "Прибывающий";
-        }else{
-            type = "Проездной";
-        }
-        BusFlights busFlight = new BusFlights(type, fromCity, toCity,
-                timeDeparture, timeArrival, dateFlight, numberFlightUnique);
-        busFlight.setDrivers(driver);
-        busFlight.setTypeBus(typeBus);
-        flightRepo.save(busFlight);
-
-    return "redirect:/administrations/administrator";
-    }
-
 }
