@@ -185,12 +185,12 @@ public class AdminController {
             Optional<BusFlights> flight = flightRepo.findById(id);
             ArrayList<BusFlights> flightModel = new ArrayList<>();
             flight.ifPresent(flightModel::add);
-            Drivers driver = flightModel.get(0).getDrivers();
-            TypeBus typeBus = flightModel.get(0).getTypeBus();
-            TypeFlight typeFlight = flightModel.get(0).getTypeFlight();
+            Iterable<Drivers> drivers = driversRepo.findAll();
+            Iterable<TypeBus> typeBus = typeBusRepo.findAll();
+            Iterable<TypeFlight> typeFlight = typeFlightsRepo.findAll();
             model.put("type", typeFlight);
             model.put("buses", typeBus);
-            model.put("drivers", driver);
+            model.put("drivers", drivers);
             model.put("flight", flightModel);
         }
         return "administratorEditFlight";
@@ -203,8 +203,17 @@ public class AdminController {
                                       @RequestParam String timeDeparture,
                                       @RequestParam String timeArrival,
                                       @RequestParam String dateFlight,
+                                      @RequestParam String driverSurname,
+                                      @RequestParam String busModel,
+                                      @RequestParam String typeOfFlight,
                                       Map<String, Object> model){
+        Drivers driver = driversRepo.findByDriverSurname(driverSurname);
+        TypeFlight typeFlight = typeFlightsRepo.findByTypeOfFlight(typeOfFlight);
+        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
         BusFlights busFlights = flightRepo.findById(id).orElseThrow();
+        busFlights.setDrivers(driver);
+        busFlights.setTypeBus(typeBus);
+        busFlights.setTypeFlight(typeFlight);
         busFlights.setFromCity(fromCity);
         busFlights.setToCity(toCity);
         busFlights.setTimeDeparture(timeDeparture);
