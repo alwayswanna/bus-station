@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Администратор: добавить водителя</title>
+    <link rel="icon" href="/static/img/bus.png">
 </head>
 <body>
-<div>
-    <h1>Добавить водителя:</h1>
-</div>
-<div>
-    <form action="/administrations/add_driver" method="post">
-        <input placeholder="Имя водителя:" type="text" name="driverName">
-        <input placeholder="Фамилия водителя:" type="text" name="driverSurname">
-        <input placeholder="Телефон водителя:" type="text" name="driverPhone">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
-        <button type="submit">Добавить водителя</button>
-    </form>
-</div>
-
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h5>Добавить водителя:</h5>
+                <form action="/administrations/add_driver" method="post">
+                    <input placeholder="Имя водителя:" type="text" name="driverName">
+                    <input placeholder="Фамилия водителя:" type="text" name="driverSurname">
+                    <input placeholder="Телефон водителя:" type="text" name="driverPhone">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
+                    <button class="waves-effect waves-light btn" type="submit">Добавить водителя</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer">
+</footer>
 </body>
 </html>

@@ -19,7 +19,7 @@ public class Drivers {
     @Column(name = "driver_phone")
     private String driverPhone;
 
-    @OneToMany(mappedBy = "drivers")
+    @OneToMany(mappedBy = "drivers", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<BusFlights> busFlights;
 
     public Drivers(String driverName, String driverSurname, String driverPhone) {

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор: главная</title>
+    <link rel="icon" href="/static/img/bus.png">
+</head>
+<body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="row">
+
+        <div class="col s3">
+            <h4>Доступные разделы:</h4>
+            <div class="collection">
+                <a href="/administrations/administrator/flights" class="collection-item"><span class="badge"></span>Рейсы</a>
+                <a href="/administrations/administrator/drivers" class="collection-item"><span class="badge"></span>Водители</a>
+                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Автобусы</a>
+                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Типы автобусов</a>
+                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Билеты</a>
+                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Пасажиры</a>
+            </div>
+        </div>
+
+        <div class="col s9">
+            <br><br><br>
+            <ul class="collection with-header">
+                <li class="collection-header"><h4>Водители:</h4></li>
+            </ul>
+            <table>
+                <thead>
+                <tr>
+                    <th>Фамилия:</th>
+                    <th>Имя:</th>
+                    <th>Номер телефона:</th>
+                    <th>Редактировать:</th>
+                    <th>Удалить:</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="el : ${drivers}">
+                    <td th:text="${el.driverSurname}"/>
+                    <td th:text="${el.driverName}">
+                    <td th:text="${el.driverPhone}"/>
+                    <td>
+                        <a th:href="'/administrations/administrator/drivers/' + ${el.id} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
+                    </td>
+                    <td>
+                        <a th:href="'/administrations/administrator/drivers/' + ${el.id} + '/del'" class="waves-effect waves-light btn">Удалить</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br><br>
+            <a href="/administrations/add_driver" class="waves-effect waves-light btn">Добавить водителя</a>
+        </div>
+
+    </div>
+</main>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer" >
+</footer>
+</body>
+</html>

@@ -15,6 +15,7 @@
         <div class="col s3">
             <h4>Доступные разделы:</h4>
             <div class="collection">
+                <a href="/administrations/administrator/flights" class="collection-item"><span class="badge"></span>Рейсы</a>
                 <a href="/administrations/administrator/drivers" class="collection-item"><span class="badge"></span>Водители</a>
                 <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Автобусы</a>
                 <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Типы автобусов</a>
@@ -50,7 +51,8 @@
                         <a th:href="'/flight/' + ${el.id}" class="waves-effect waves-light btn">Подробнее</a>
                     </td>
                     <td>
-                        <a th:href="'/administrations/flight/' + ${el.id} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
+                        <a th:href="'/administrations/flight/' + ${el.id} + '/edit'"
+                           class="waves-effect waves-light btn">Редактировать</a>
                     </td>
                 </tr>
                 </tbody>
@@ -61,8 +63,8 @@
 
     </div>
 </main>
-    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-    <footer th:insert="blocks/footer.html :: footer" >
-    </footer>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer">
+</footer>
 </body>
 </html>

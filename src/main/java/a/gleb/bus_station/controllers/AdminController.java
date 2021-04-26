@@ -2,15 +2,12 @@ package a.gleb.bus_station.controllers;
 
 import a.gleb.bus_station.dto.*;
 import a.gleb.bus_station.repositories.*;
-import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.lang.reflect.Type;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -40,11 +37,11 @@ public class AdminController {
         this.typeFlightsRepo = typeFlightsRepo;
     }
 
-    @RequestMapping(value = "/administrator", method = RequestMethod.GET)
-    public String administratorPage(Map<String, Object> model) {
-        Iterable<BusFlights> busFlights = flightRepo.findAll();
-        model.put("flights", busFlights);
-        return "administrator";
+    @RequestMapping(value = "/administrator/drivers", method = RequestMethod.GET)
+    public String administratorPageDrivers(Map<String, Object> model) {
+        Iterable<Drivers> drivers = driversRepo.findAll();
+        model.put("drivers", drivers);
+        return "administratorDrivers";
     }
 
     @RequestMapping(value = "/add_ticket", method = RequestMethod.GET)
@@ -123,112 +120,44 @@ public class AdminController {
                                      Map<String, Object> model) {
         Drivers driver = new Drivers(driverName, driverSurname, driverPhone);
         driversRepo.save(driver);
-        return "redirect:/administrations/administrator";
+        return "redirect:/administrations/administrator/drivers";
     }
 
-
-    @RequestMapping(value = "/add_flight", method = RequestMethod.GET)
-    public String adminAddFlightGet(Map<String, Object> model) {
-        Iterable<Drivers> drivers = driversRepo.findAll();
-        Iterable<TypeBus> typeBuses = typeBusRepo.findAll();
-        Iterable<TypeFlight> typeFlights = typeFlightsRepo.findAll();
-        model.put("type", typeFlights);
-        model.put("drivers", drivers);
-        model.put("buses", typeBuses);
-        return "addFlight";
+    @RequestMapping(value = "/administrator/drivers/{id}/edit", method = RequestMethod.GET)
+    public String administratorDriverEditGet(@PathVariable(value = "id") Integer id,
+                                             Map<String, Object> model) {
+        Optional<Drivers> driver = driversRepo.findById(id);
+        ArrayList<Drivers> driverModel = new ArrayList<>();
+        driver.ifPresent(driverModel::add);
+        model.put("driver", driverModel);
+        return "administratorEditDriver";
     }
 
-    @RequestMapping(value = "/add_flight", method = RequestMethod.POST)
-    public String adminAddFlightPost(
-            @RequestParam String fromCity,
-            @RequestParam String toCity,
-            @RequestParam String timeDeparture,
-            @RequestParam String timeArrival,
-            @RequestParam String dateFlight,
-            @RequestParam String driverSurname,
-            @RequestParam String busModel,
-            @RequestParam String typeFlight,
-            Map<String, Object> model
-    ) {
-        //int typeId = idType;
-        //int driverId = id;
-        Drivers driver = driversRepo.findByDriverSurname(driverSurname);
-        TypeFlight typeOfFlight = typeFlightsRepo.findByTypeOfFlight(typeFlight);
-        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
-        String type;
-        String numberFlightUnique = Character.toString(fromCity.charAt(0)) + Character.toString(toCity.charAt(0))
-                + "-" + Integer.toString((int) Math.random() * (100 - 55) + 55);
-        System.out.println(numberFlightUnique);
-        if (fromCity.equals("Ufa") | fromCity.equals("Уфа")) {
-            type = "Отбывающий";
-        } else if (!fromCity.equals("Ufa") | !fromCity.equals("Уфа")) {
-            type = "Прибывающий";
-        } else {
-            type = "Проездной";
+    @RequestMapping(value = "/administrator/drivers/{id}/edit", method = RequestMethod.POST)
+    public String administratorDriverEditPost(@PathVariable(value = "id") Integer id,
+                                              @RequestParam String driverName,
+                                              @RequestParam String driverSurname,
+                                              @RequestParam String driverPhone,
+                                              Map<String, Object> model) {
+        int driverId = id;
+        Drivers driver = driversRepo.findById(driverId);
+        driver.setDriverName(driverName);
+        driver.setDriverSurname(driverSurname);
+        driver.setDriverPhone(driverPhone);
+        driversRepo.save(driver);
+        return "redirect:/administrations/administrator/drivers";
+    }
+
+    @RequestMapping(value = "/administrator/drivers/{id}/del", method = RequestMethod.GET)
+    public String administratorDriverDelete(@PathVariable(value = "id") Integer id,
+                                            Map<String, Object> model) {
+        int driverId = id;
+        Drivers driver = driversRepo.findById(driverId);
+        Iterable<BusFlights> flights = driver.getBusFlights();
+        for (BusFlights flight:flights) {
+            flight.setDrivers(null);
         }
-        BusFlights busFlight = new BusFlights(type, fromCity, toCity,
-                timeDeparture, timeArrival, dateFlight, numberFlightUnique);
-        busFlight.setDrivers(driver);
-        busFlight.setTypeBus(typeBus);
-        busFlight.setTypeFlight(typeOfFlight);
-        flightRepo.save(busFlight);
-
-        return "redirect:/administrations/administrator";
+        driversRepo.delete(driver);
+        return "redirect:/administrations/administrator/drivers";
     }
-
-    @RequestMapping(value = "/flight/{id}/edit", method = RequestMethod.GET)
-    public String adminEditFlightGet(@PathVariable(value = "id") Integer id,
-                                     Map<String, Object> model) {
-        if (SystemMethods.checkIdForFlight(id, model, flightRepo)) {
-            return "redirect:/administrations/administrator";
-        } else {
-            Optional<BusFlights> flight = flightRepo.findById(id);
-            ArrayList<BusFlights> flightModel = new ArrayList<>();
-            flight.ifPresent(flightModel::add);
-            Iterable<Drivers> drivers = driversRepo.findAll();
-            Iterable<TypeBus> typeBus = typeBusRepo.findAll();
-            Iterable<TypeFlight> typeFlight = typeFlightsRepo.findAll();
-            model.put("type", typeFlight);
-            model.put("buses", typeBus);
-            model.put("drivers", drivers);
-            model.put("flight", flightModel);
-        }
-        return "administratorEditFlight";
-    }
-
-    @RequestMapping(value = "/flight/{id}/edit", method = RequestMethod.POST)
-    public String adminEditFlightPost(@PathVariable(value = "id") Integer id,
-                                      @RequestParam String fromCity,
-                                      @RequestParam String toCity,
-                                      @RequestParam String timeDeparture,
-                                      @RequestParam String timeArrival,
-                                      @RequestParam String dateFlight,
-                                      @RequestParam String driverSurname,
-                                      @RequestParam String busModel,
-                                      @RequestParam String typeOfFlight,
-                                      Map<String, Object> model){
-        Drivers driver = driversRepo.findByDriverSurname(driverSurname);
-        TypeFlight typeFlight = typeFlightsRepo.findByTypeOfFlight(typeOfFlight);
-        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
-        BusFlights busFlights = flightRepo.findById(id).orElseThrow();
-        busFlights.setDrivers(driver);
-        busFlights.setTypeBus(typeBus);
-        busFlights.setTypeFlight(typeFlight);
-        busFlights.setFromCity(fromCity);
-        busFlights.setToCity(toCity);
-        busFlights.setTimeDeparture(timeDeparture);
-        busFlights.setTimeArrival(timeArrival);
-        busFlights.setDateFlight(dateFlight);
-        flightRepo.save(busFlights);
-        return "redirect:/administrations/administrator";
-    }
-
-    @RequestMapping(value = "/flight/{id}/del", method = RequestMethod.GET)
-    public String adminRemoveFlightPost(@PathVariable(value = "id")Integer id, Map<String, Object> model){
-        BusFlights busFlight = flightRepo.findById(id).orElseThrow();
-        flightRepo.delete(busFlight);
-        return "redirect:/administrations/administrator";
-    }
-
-
 }
