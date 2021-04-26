@@ -155,7 +155,7 @@ public class AdminController {
         Drivers driver = driversRepo.findById(driverId);
         Iterable<BusFlights> flights = driver.getBusFlights();
         for (BusFlights flight:flights) {
-            flight.setDrivers(null);
+            flight.setDrivers(driversRepo.findById(1));
         }
         driversRepo.delete(driver);
         return "redirect:/administrations/administrator/drivers";
