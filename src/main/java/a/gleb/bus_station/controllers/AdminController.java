@@ -38,10 +38,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = "/add_passengerFull", method = RequestMethod.GET)
-    public String adminAddPassengerFullInfoGet(Map<String, Object> model) {
-        return "addFullPassenger";
-    }
+
 
     @RequestMapping(value = "/add_passengerFull", method = RequestMethod.POST)
     public String adminAddPassengerFullInfoPost(@RequestParam String numTicket,
