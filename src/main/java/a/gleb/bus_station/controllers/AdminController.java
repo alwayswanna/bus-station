@@ -37,26 +37,6 @@ public class AdminController {
         this.typeFlightsRepo = typeFlightsRepo;
     }
 
-    @RequestMapping(value = "/administrator/drivers", method = RequestMethod.GET)
-    public String administratorPageDrivers(Map<String, Object> model) {
-        Iterable<Drivers> drivers = driversRepo.findAll();
-        model.put("drivers", drivers);
-        return "administratorDrivers";
-    }
-
-    @RequestMapping(value = "/add_ticket", method = RequestMethod.GET)
-    public String adminAddTicketGet(Map<String, Object> model) {
-        return "addTicket";
-    }
-
-    @RequestMapping(value = "/add_ticket", method = RequestMethod.POST)
-    public String adminAddTicketPost(@RequestParam String ticketPlace,
-                                     @RequestParam String ticketPassenger,
-                                     Map<String, Object> model) {
-        Ticket ticket = new Ticket(ticketPlace, ticketPassenger);
-        ticketRepo.save(ticket);
-        return "redirect:/administrations/administrator";
-    }
 
     @RequestMapping(value = "/add_passengerFull", method = RequestMethod.GET)
     public String adminAddPassengerFullInfoGet(Map<String, Object> model) {

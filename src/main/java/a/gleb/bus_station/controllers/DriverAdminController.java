@@ -23,6 +23,13 @@ public class DriverAdminController {
         this.driversRepo = driversRepo;
     }
 
+    @RequestMapping(value = "/administrator/drivers", method = RequestMethod.GET)
+    public String administratorPageDrivers(Map<String, Object> model) {
+        Iterable<Drivers> drivers = driversRepo.findAll();
+        model.put("drivers", drivers);
+        return "administratorDrivers";
+    }
+
     @RequestMapping(value = "/add_driver", method = RequestMethod.GET)
     public String adminAddDriverGet(Map<String, Object> model) {
         return "addDriver";
@@ -69,7 +76,7 @@ public class DriverAdminController {
         int driverId = id;
         Drivers driver = driversRepo.findById(driverId);
         Iterable<BusFlights> flights = driver.getBusFlights();
-        for (BusFlights flight:flights) {
+        for (BusFlights flight : flights) {
             flight.setDrivers(driversRepo.findById(1));
         }
         driversRepo.delete(driver);
@@ -78,7 +85,7 @@ public class DriverAdminController {
 
     @RequestMapping(value = "/administrator/driver/{id}/get_flights", method = RequestMethod.GET)
     public String administratorDriverGetFlightsGet(@PathVariable(value = "id") Integer id,
-                                                   Map<String, Object> model){
+                                                   Map<String, Object> model) {
         int driverId = id;
         Drivers drivers = driversRepo.findById(driverId);
         Iterable<BusFlights> flights = drivers.getBusFlights();
