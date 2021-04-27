@@ -6,5 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 public interface TypeBusRepo extends CrudRepository<TypeBus, Integer> {
 
     Iterable<TypeBus> findAllById(int i);
+
     TypeBus findByBusModel(String busModel);
+
+    TypeBus findById(int i);
 }
