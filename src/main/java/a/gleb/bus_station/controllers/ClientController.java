@@ -62,7 +62,7 @@ public class ClientController {
                                 RedirectAttributes redirectAttributes) {
         String redirect = "/flight/" + id + "/buy_ticket";
         if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
-                passengerPhone.equals("") | passengerDocNum.equals("") | passengerBirthday.equals("")) {
+                passengerPhone.equals("") | passengerDocNum.equals("") | passengerRegistration.equals("")) {
             String errorStr = "Вы заполнили не все поля! Обновите страницу";
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirect;

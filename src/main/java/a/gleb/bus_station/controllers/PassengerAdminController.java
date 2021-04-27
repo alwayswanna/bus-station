@@ -76,27 +76,36 @@ public class PassengerAdminController {
                                                  @RequestParam String passengerBirthday,
                                                  @RequestParam String passengerRegistration,
                                                  @RequestParam String numberFlightUnique,
-                                                 Map<String, Object> model){
-        int passengerId = id;
-        String uuid = UUID.randomUUID().toString();
-        PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
-        Passengers passenger = passengerPassport.getPassengers();
-        Ticket ticket = passenger.getTicket();
-        BusFlights busFlights = flightRepo.findByNumberFlightUnique(numberFlightUnique);
-        String numTicket_new = numberFlightUnique + "_" + uuid.substring(0,4);
+                                                 Map<String, Object> model,
+                                                 RedirectAttributes redirectAttributes){
+        String redirectLink = "/administrations/administrator/passenger/"+ id +"/edit";
+        if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
+                passengerPhone.equals("") | passengerDocNum.equals("") | numberFlightUnique.equals("")) {
+            String errorStr = "Вы заполнили не все поля! Обновите страницу";
+            redirectAttributes.addFlashAttribute("error", errorStr);
+            return "redirect:" + redirectLink;
+        }else {
+            int passengerId = id;
+            String uuid = UUID.randomUUID().toString();
+            PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
+            Passengers passenger = passengerPassport.getPassengers();
+            Ticket ticket = passenger.getTicket();
+            BusFlights busFlights = flightRepo.findByNumberFlightUnique(numberFlightUnique);
+            String numTicket_new = numberFlightUnique + "_" + uuid.substring(0, 4);
 
-        passenger.setNumTicket(numTicket_new);
-        passenger.setPassengerInfo(passengerPassport);
-        ticket.setPassengers(passenger);
-        ticket.setBusFlights(busFlights);
-        ticket.setTicketPassenger(passengerSurname);
-        passengerPassport.setPassengerSurname(passengerSurname);
-        passengerPassport.setPassengerName(passengerName);
-        passengerPassport.setPassengerPhone(passengerPhone);
-        passengerPassport.setPassengerDocNum(passengerDocNum);
-        passengerPassport.setPassengerBirthday(passengerBirthday);
-        passengerPassport.setPassengerRegistration(passengerRegistration);
-        passengerPassportRepo.save(passengerPassport);
+            passenger.setNumTicket(numTicket_new);
+            passenger.setPassengerInfo(passengerPassport);
+            ticket.setPassengers(passenger);
+            ticket.setBusFlights(busFlights);
+            ticket.setTicketPassenger(passengerSurname);
+            passengerPassport.setPassengerSurname(passengerSurname);
+            passengerPassport.setPassengerName(passengerName);
+            passengerPassport.setPassengerPhone(passengerPhone);
+            passengerPassport.setPassengerDocNum(passengerDocNum);
+            passengerPassport.setPassengerBirthday(passengerBirthday);
+            passengerPassport.setPassengerRegistration(passengerRegistration);
+            passengerPassportRepo.save(passengerPassport);
+        }
         return "redirect:/administrations/administrator/passengers";
     }
 
@@ -120,7 +129,7 @@ public class PassengerAdminController {
         String uuid = UUID.randomUUID().toString();
         String redirectLink = "/administrations/administrator/buy_ticket";
         if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
-                passengerPhone.equals("") | passengerDocNum.equals("") | passengerBirthday.equals("")) {
+                passengerPhone.equals("") | passengerDocNum.equals("") | passengerRegistration.equals("")) {
             String errorStr = "Вы заполнили не все поля! Обновите страницу";
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirectLink;
