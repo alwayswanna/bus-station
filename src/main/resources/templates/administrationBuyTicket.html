@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор: билеты</title>
+    <link rel="icon" href="/static/img/bus.png">
+</head>
+<body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s4">
+                <h5>Приобрести билет:</h5>
+                <form action="/administrations/administrator/buy_ticket" , method="post">
+                    <input name="passengerName" placeholder="Имя" type="text" class="validate">
+                    <input name="passengerSurname" placeholder="Фамилия" type="text" class="validate">
+                    <input name="passengerPhone" placeholder="Номер телефона" type="text" class="validate">
+                    <input name="passengerRegistration" placeholder="Место жительства" type="text" class="validate">
+                    <input name="passengerBirthday" placeholder="День рождения" type="text" class="validate">
+                    <input name="passengerDocNum" placeholder="Номер/Серия паспорта" type="text" class="validate">
+                    <select name="numberFlightUnique">
+                        <option th:each="fl : ${flights}" th:text="${fl.numberFlightUnique}"></option>
+                    </select>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
+                    <button type="submit" class="waves-effect waves-light btn">Купить билет</button>
+                </form>
+                <div>
+                    <br>
+                    <h6 class="green-text" th:if="${message}" th:text="${message}"/>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
+            </div>
+            <div class="col s8">
+                <h5>Автобусные рейсы:</h5>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Номер маршрута:</th>
+                        <th>Пункт отправления:</th>
+                        <th>Пункт назначения:</th>
+                        <th>Дата:</th>
+                        <th>Подробнее:</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="el : ${flights}">
+                        <td th:text="${el.numberFlightUnique}"/>
+                        <td th:text="${el.fromCity}"/>
+                        <td th:text="${el.toCity}"/>
+                        <td th:text="${el.dateFlight}"/>
+                        <td>
+                            <a th:href="'/flight/' + ${el.id}" class="waves-effect waves-light btn">Подробнее</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript" src="/static/js/index.js"></script>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer" >
+</footer>
+</body>
+</html>
