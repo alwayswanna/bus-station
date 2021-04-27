@@ -23,7 +23,7 @@ public class PassengerPassport {
     @Column(name = "passenger_birthday")
     private String passengerBirthday;
 
-    @OneToOne(mappedBy = "passengerInfo")
+    @OneToOne(mappedBy = "passengerInfo", cascade = CascadeType.ALL)
     private Passengers passengers;
 
     public PassengerPassport(String passengerName, String passengerSurname, String passengerPhone, String passengerDocNum, String passengerRegistration, String passengerBirthday) {

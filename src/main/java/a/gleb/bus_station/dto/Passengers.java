@@ -14,7 +14,7 @@ public class Passengers {
     @Column(name = "num_ticket")
     private String numTicket;
 
-    @OneToOne(mappedBy = "passengers")
+    @OneToOne(mappedBy = "passengers", cascade = CascadeType.ALL)
     private Ticket ticket;
 
     @OneToOne(cascade = CascadeType.ALL)
