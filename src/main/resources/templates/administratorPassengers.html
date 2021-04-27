@@ -20,7 +20,8 @@
                 <a href="/administrations/administrator/passengers" class="collection-item"><span class="badge"></span>Пасажиры</a>
                 <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Автобусы</a>
                 <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Билеты</a>
-                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Типы автобусов</a>
+                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Типы
+                    автобусов</a>
 
             </div>
         </div>
@@ -49,10 +50,12 @@
                     <td th:text="${el.passengerName}"/>
                     <td th:text="${el.passengerDocNum}"/>
                     <td>
-                        <a th:href="'/administrations/administrator/passenger/' + ${el.id} + '/edit_data'" class="waves-effect waves-light btn">Редактировать</a>
+                        <a th:href="'/administrations/administrator/passenger/' + ${el.id} + '/edit_data'"
+                           class="waves-effect waves-light btn">Редактировать</a>
                     </td>
                     <td>
-                        <a th:href="'/administrations/administrator/passenger/' + ${el.id} + '/del'" class="waves-effect waves-light btn">Удалить</a>
+                        <a th:href="'/administrations/administrator/passenger/' + ${el.id} + '/del'"
+                           class="waves-effect waves-light btn">Удалить</a>
                     </td>
                 </tr>
                 </tbody>
@@ -64,7 +67,7 @@
     </div>
 </main>
 <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-<footer th:insert="blocks/footer.html :: footer" >
+<footer th:insert="blocks/footer.html :: footer">
 </footer>
 </body>
 </html>

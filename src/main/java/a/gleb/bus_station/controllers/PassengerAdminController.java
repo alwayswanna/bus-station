@@ -36,7 +36,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/passengers", method = RequestMethod.GET)
-    public String administratorPassengersGet(Map<String, Object> model){
+    public String administratorPassengersGet(Map<String, Object> model) {
         Iterable<PassengerPassport> passengers = passengerPassportRepo.findAll();
         Iterable<Passengers> passengersNumTicket = passengersRepo.findAll();
         model.put("passenger_ticket", passengersNumTicket);
@@ -46,7 +46,7 @@ public class PassengerAdminController {
 
     @RequestMapping(value = "/administrator/passenger/{id}/del", method = RequestMethod.GET)
     public String administratorPassengerDelete(@PathVariable(value = "id") Integer id,
-                                               Map<String, Object> model){
+                                               Map<String, Object> model) {
         int passengerId = id;
         PassengerPassport passenger = passengerPassportRepo.findById(passengerId);
         passengerPassportRepo.delete(passenger);
@@ -54,7 +54,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.GET)
-    public String administratorPassengerEditGet(@PathVariable(value = "id")Integer id, Map<String, Object> model){
+    public String administratorPassengerEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         int passengerId = id;
         PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
         Passengers passenger = passengerPassport.getPassengers();
@@ -77,14 +77,14 @@ public class PassengerAdminController {
                                                  @RequestParam String passengerRegistration,
                                                  @RequestParam String numberFlightUnique,
                                                  Map<String, Object> model,
-                                                 RedirectAttributes redirectAttributes){
-        String redirectLink = "/administrations/administrator/passenger/"+ id +"/edit_data";
+                                                 RedirectAttributes redirectAttributes) {
+        String redirectLink = "/administrations/administrator/passenger/" + id + "/edit_data";
         if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
                 passengerPhone.equals("") | passengerDocNum.equals("") | numberFlightUnique.equals("")) {
             String errorStr = "Вы заполнили не все поля! Обновите страницу";
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirectLink;
-        }else {
+        } else {
             int passengerId = id;
             String uuid = UUID.randomUUID().toString();
             PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
@@ -110,7 +110,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.GET)
-    public String administratorBuyTicketGet(Map<String, Object> model){
+    public String administratorBuyTicketGet(Map<String, Object> model) {
         Iterable<BusFlights> flights = flightRepo.findAll();
         model.put("flights", flights);
         return "administrationBuyTicket";
@@ -125,7 +125,7 @@ public class PassengerAdminController {
                                              @RequestParam String passengerBirthday,
                                              @RequestParam String numberFlightUnique,
                                              Map<String, Object> model,
-                                             RedirectAttributes redirectAttributes){
+                                             RedirectAttributes redirectAttributes) {
         String uuid = UUID.randomUUID().toString();
         String redirectLink = "/administrations/administrator/buy_ticket";
         if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
@@ -140,7 +140,7 @@ public class PassengerAdminController {
             Passengers passenger = new Passengers();
             passenger.setPassengerInfo(passengerPassport);
             passenger.setNumTicket(
-                    flight.getNumberFlightUnique() + "_" + uuid.substring(0,4)
+                    flight.getNumberFlightUnique() + "_" + uuid.substring(0, 4)
             );
             Ticket ticket = new Ticket();
             ticket.setTicketPlace("Сидячее");
@@ -155,7 +155,7 @@ public class PassengerAdminController {
                     "\n Фамилия пассажира - " + passengerSurname +
                     "\n Имя пассажира - " + passengerName +
                     "\n Номер пасспорта пассажира - " + passengerDocNum +
-                    "\n Номер билета пассажира - " + flight.getNumberFlightUnique() + "_" + uuid.substring(0,4) +
+                    "\n Номер билета пассажира - " + flight.getNumberFlightUnique() + "_" + uuid.substring(0, 4) +
                     " Обновите страницу если хотите приобрести еще!";
             redirectAttributes.addFlashAttribute("message", callBack);
         }
