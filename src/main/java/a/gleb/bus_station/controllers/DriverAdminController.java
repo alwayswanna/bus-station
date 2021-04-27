@@ -32,7 +32,7 @@ public class DriverAdminController {
 
     @RequestMapping(value = "/add_driver", method = RequestMethod.GET)
     public String adminAddDriverGet(Map<String, Object> model) {
-        return "addDriver";
+        return "administrationAddDriver";
     }
 
     @RequestMapping(value = "/add_driver", method = RequestMethod.POST)
