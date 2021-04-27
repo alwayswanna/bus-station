@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Администратор: главная</title>
+    <title>Администратор: билеты</title>
     <link rel="icon" href="/static/img/bus.png">
 </head>
 <body>
@@ -19,47 +19,46 @@
                 <a href="/administrations/administrator/drivers" class="collection-item"><span class="badge"></span>Водители</a>
                 <a href="/administrations/administrator/passengers" class="collection-item"><span class="badge"></span>Пасажиры</a>
                 <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Автобусы</a>
-                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Типы автобусов</a>
                 <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Билеты</a>
+                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Типы автобусов</a>
+
             </div>
         </div>
 
         <div class="col s9">
             <br><br><br>
             <ul class="collection with-header">
-                <li class="collection-header"><h4>Водители:</h4></li>
+                <li class="collection-header"><h4>Билеты:</h4></li>
             </ul>
             <table>
                 <thead>
                 <tr>
+                    <th>Номер билета:</th>
                     <th>Фамилия:</th>
                     <th>Имя:</th>
-                    <th>Номер телефона:</th>
-                    <th>Рейсы:</th>
-                    <th>Редактировать:</th>
-                    <th>Удалить:</th>
+                    <th>Номер паспорта:</th>
+                    <th>Редактировать данные:</th>
+                    <th>Вернуть билет:</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr th:each="el : ${drivers}">
-                    <td th:text="${el.driverSurname}"/>
-                    <td th:text="${el.driverName}">
-                    <td th:text="${el.driverPhone}"/>
+                <tr th:each="el : ${passengers}">
+                    <td th:text="${el.passengers.getNumTicket()}"/>
+                    <td th:text="${el.passengerSurname}">
+                    <td th:text="${el.passengerName}"/>
+                    <td th:text="${el.passengerDocNum}"/>
                     <td>
-                        <a th:href="'/administrations/administrator/driver/' + ${el.id} + '/get_flights'" class="waves-effect waves-light btn">Рейсы</a>
+                        <a th:href="'/administrations/administrator/passenger/' + ${el.id} + '/edit_data'" class="waves-effect waves-light btn">Редактировать</a>
                     </td>
                     <td>
-                        <a th:href="'/administrations/administrator/drivers/' + ${el.id} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
-                    </td>
-                    <td>
-                        <a th:href="'/administrations/administrator/drivers/' + ${el.id} + '/del'" class="waves-effect waves-light btn">Удалить</a>
+                        <a th:href="'/administrations/administrator/passenger/' + ${el.id} + '/del'" class="waves-effect waves-light btn">Удалить</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
             <br><br>
-            <a href="/administrations/add_driver" class="waves-effect waves-light btn">Добавить водителя</a>
+            <a href="/administrations/add_driver" class="waves-effect waves-light btn">Купить билет</a>
         </div>
 
     </div>
