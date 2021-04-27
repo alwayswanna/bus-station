@@ -36,6 +36,7 @@
                     <th>Пункт отправления:</th>
                     <th>Пункт назначения:</th>
                     <th>Дата:</th>
+                    <th>Номер:</th>
                     <th>Подробнее:</th>
                     <th>Редактировать:</th>
                 </tr>
@@ -44,9 +45,10 @@
                 <tbody>
                 <tr th:each="el : ${flights}">
                     <td th:text="${el.routeType}"/>
-                    <td th:text="${el.fromCity}">
+                    <td th:text="${el.fromCity}"/>
                     <td th:text="${el.toCity}"/>
                     <td th:text="${el.dateFlight}"/>
+                    <td th:text="${el.numberFlightUnique}"/>
                     <td>
                         <a th:href="'/flight/' + ${el.id}" class="waves-effect waves-light btn">Подробнее</a>
                     </td>

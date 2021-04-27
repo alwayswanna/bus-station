@@ -78,7 +78,7 @@ public class PassengerAdminController {
                                                  @RequestParam String numberFlightUnique,
                                                  Map<String, Object> model,
                                                  RedirectAttributes redirectAttributes){
-        String redirectLink = "/administrations/administrator/passenger/"+ id +"/edit";
+        String redirectLink = "/administrations/administrator/passenger/"+ id +"/edit_data";
         if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
                 passengerPhone.equals("") | passengerDocNum.equals("") | numberFlightUnique.equals("")) {
             String errorStr = "Вы заполнили не все поля! Обновите страницу";
