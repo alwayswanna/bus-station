@@ -140,6 +140,6 @@ public class FlightAdminController {
     public String administratorPageFlight(Map<String, Object> model) {
         Iterable<BusFlights> busFlights = flightRepo.findAll();
         model.put("flights", busFlights);
-        return "administratorFlights";
+        return "administrationFlights";
     }
 }

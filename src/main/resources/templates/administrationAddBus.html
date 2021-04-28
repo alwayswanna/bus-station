@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор: добавить водителя</title>
+    <link rel="icon" href="/static/img/bus.png">
+</head>
+<body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h5>Добавить автобус:</h5>
+                <form action="/administrations/administrator/add_bus" method="post">
+                    <input placeholder="Модель автобуса:" type="text" name="busModel">
+                    <input placeholder="Тип автобуса:" type="text" name="type">
+                    <input placeholder="Количество мест:" type="text" name="numberOfSeats">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
+                    <button class="waves-effect waves-light btn" type="submit">Добавить автобус</button>
+                </form>
+                <div>
+                    <br>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer">
+</footer>
+</body>
+</html>

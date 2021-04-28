@@ -61,13 +61,16 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
 
         }
         // Adding default buses for TypeBus:
+        TypeBus defaultBus = new TypeBus("Не определен", 0,"Не определен");
         TypeBus firstTypeBus = new TypeBus("Междугородний", 60, "Mercedes A-314");
         TypeBus secondTypeBus = new TypeBus("Междугородний", 60, "Ford LA-600");
         TypeBus thirdTypeBus = new TypeBus("Пригородный", 20, "Opel S-30");
         TypeBus fourthTypeBus = new TypeBus("Пригородный", 20, "Opel S-40");
         TypeBus fifthTypeBus = new TypeBus("Пригородный", 25, "Mercedes S-400");
+        defaultBus.setId(1);
         try{
             if (typeBusRepo.findByBusModel("Mercedes A-314") == null){
+                typeBusRepo.save(defaultBus);
                 typeBusRepo.save(firstTypeBus);
                 typeBusRepo.save(secondTypeBus);
                 typeBusRepo.save(thirdTypeBus);
@@ -126,8 +129,8 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         }
         // Done output, information:
         System.out.println("In data base was added:" +
-                "\n Drivers: [Олег, Иван, Василий, Егор, Семен]" +
-                "\n TypeBus: [Mercedes A-314, Ford LA-600, Opel S-30, Opel S-40, Mercedes S-400]" +
+                "\n Drivers: [default, Олег, Иван, Василий, Егор, Семен]" +
+                "\n TypeBus: [default, Mercedes A-314, Ford LA-600, Opel S-30, Opel S-40, Mercedes S-400]" +
                 "\n TypeFlight: [Пригородный, Междугородний]" +
                 "\n FlightsTo: [Белебей, Казань, Самара, Нефтекамск, Москва]" +
                 "\n" +
