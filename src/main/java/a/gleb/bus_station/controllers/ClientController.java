@@ -1,9 +1,6 @@
 package a.gleb.bus_station.controllers;
 
-import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.PassengerPassport;
-import a.gleb.bus_station.dto.Passengers;
-import a.gleb.bus_station.dto.Ticket;
+import a.gleb.bus_station.dto.*;
 import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.PassengerPassportRepo;
 import a.gleb.bus_station.repositories.PassengersRepo;
@@ -16,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class ClientController {
@@ -74,33 +68,38 @@ public class ClientController {
             BusFlights busFlight = busFlightsArrayList.get(0);
             model.put("flight", busFlight);
 
-            String uuid = UUID.randomUUID().toString();
-            String numTicket = busFlight.getNumberFlightUnique() + "_" + uuid.substring(0, 4);
-            PassengerPassport passengerPassport = new PassengerPassport(passengerName, passengerSurname,
-                    passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
-            Passengers passenger = new Passengers();
-            passenger.setPassengerInfo(passengerPassport);
-            passenger.setNumTicket(numTicket);
-            Ticket ticket = new Ticket();
-            ticket.setPassengers(passenger);
-            ticket.setTicketPassenger(passengerSurname);
-            ticket.setTicketPlace("Сидячее");
-            ticket.setBusFlights(busFlight);
-            passengerPassportRepo.save(passengerPassport);
-            passengersRepo.save(passenger);
-            ticketRepo.save(ticket);
-            String callBack = "Билет успешно приобретен." +
-                    "\n Сверьте данные, в случае неточности обратитесь в службу техничесой поддержки автовокзала:" +
-                    "\n Фамилия пассажира - " + passengerSurname +
-                    "\n Имя пассажира - " + passengerName +
-                    "\n Номер пасспорта пассажира - " + passengerDocNum +
-                    "\n Номер билета пассажира - " + numTicket +
-                    " Обновите страницу если хотите приобрести еще!";
-            redirectAttributes.addFlashAttribute("message", callBack);
+            if (SystemMethods.checkSpaceForTicket(busFlight.getTypeBus(), busFlight.getTickets())) {
+
+                String uuid = UUID.randomUUID().toString();
+                String numTicket = busFlight.getNumberFlightUnique() + "_" + uuid.substring(0, 4);
+                PassengerPassport passengerPassport = new PassengerPassport(passengerName, passengerSurname,
+                        passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
+                Passengers passenger = new Passengers();
+                passenger.setPassengerInfo(passengerPassport);
+                passenger.setNumTicket(numTicket);
+                Ticket ticket = new Ticket();
+                ticket.setPassengers(passenger);
+                ticket.setTicketPassenger(passengerSurname);
+                ticket.setTicketPlace("Сидячее");
+                ticket.setBusFlights(busFlight);
+                passengerPassportRepo.save(passengerPassport);
+                passengersRepo.save(passenger);
+                ticketRepo.save(ticket);
+                String callBack = "Билет успешно приобретен." +
+                        "\n Сверьте данные, в случае неточности обратитесь в службу техничесой поддержки автовокзала:" +
+                        "\n Фамилия пассажира - " + passengerSurname +
+                        "\n Имя пассажира - " + passengerName +
+                        "\n Номер пасспорта пассажира - " + passengerDocNum +
+                        "\n Номер билета пассажира - " + numTicket +
+                        " Обновите страницу если хотите приобрести еще!";
+                redirectAttributes.addFlashAttribute("message", callBack);
+            } else {
+                String errorMsg = "К сожалению все места на данный рейс заняты. Приносим свои извинения";
+                redirectAttributes.addFlashAttribute("error", errorMsg);
+                return "redirect:" + redirect;
+            }
+            return "redirect:" + redirect;
         }
-
-
-        return "redirect:" + redirect;
     }
 
     @RequestMapping(value = "/check_ticket", method = RequestMethod.GET)
