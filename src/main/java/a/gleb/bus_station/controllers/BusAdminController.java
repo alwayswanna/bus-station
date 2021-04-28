@@ -77,4 +77,34 @@ public class BusAdminController {
 
     }
 
+    @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.GET)
+    public String administratorAddBusGet(Map<String, Object> model) {
+        return "administrationAddBus";
+    }
+
+    @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.POST)
+    public String administratorAddBusPost(@RequestParam String busModel,
+                                          @RequestParam String type,
+                                          @RequestParam String numberOfSeats,
+                                          Map<String, Object> model,
+                                          RedirectAttributes redirectAttributes) {
+        if (busModel.equals("") | type.equals("") | numberOfSeats.equals("")) {
+            String errorMsg = "Вы заполнили не все поля!";
+            redirectAttributes.addFlashAttribute("error", errorMsg);
+            return "redirect:/administrations/administrator/add_bus";
+        } else {
+            int seats;
+            try{
+                seats = Integer.parseInt(numberOfSeats);
+            }catch (NumberFormatException e){
+                String errorMsg = "Вы нерпавильно ввели количество мест, поле требует цифрогового значения!";
+                redirectAttributes.addFlashAttribute("error", errorMsg);
+                return "redirect:/administrations/administrator/add_bus";
+            }
+            TypeBus bus = new TypeBus(type, seats, busModel);
+            busRepo.save(bus);
+            return "redirect:/administrations/administrator/buses";
+        }
+    }
+
 }
