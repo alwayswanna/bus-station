@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Прибывающие</title>
+    <title>Рейсы</title>
     <link rel="icon" href="/static/img/bus.png">
 </head>
 <body>
@@ -28,9 +28,9 @@
                     </thead>
 
                     <tbody>
-                    <tr th:each="el : ${arrival}">
+                    <tr th:each="el : ${flights}">
                         <td th:text="${el.routeType}"/>
-                        <td th:text="${el.fromCity}">
+                        <td th:text="${el.fromCity}"/>
                         <td th:text="${el.toCity}"/>
                         <td th:text="${el.dateFlight}"/>
                         <td>
@@ -43,10 +43,8 @@
         </div>
     </div>
 </main>
-
 <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-<footer th:insert="blocks/footer.html :: footer" >
+<footer th:insert="blocks/footer.html :: footer">
 </footer>
 </body>
-
 </html>
