@@ -2,7 +2,6 @@ package a.gleb.bus_station.controllers;
 
 
 import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.TypeFlight;
 import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.TypeFlightsRepo;
 import org.springframework.stereotype.Controller;

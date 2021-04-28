@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -39,10 +40,17 @@ public class DriverAdminController {
     public String adminAddDriverPost(@RequestParam String driverName,
                                      @RequestParam String driverSurname,
                                      @RequestParam String driverPhone,
-                                     Map<String, Object> model) {
-        Drivers driver = new Drivers(driverName, driverSurname, driverPhone);
-        driversRepo.save(driver);
-        return "redirect:/administrations/administrator/drivers";
+                                     Map<String, Object> model,
+                                     RedirectAttributes redirectAttributes) {
+        if (driverName.equals("") | driverSurname.equals("") | driverPhone.equals("")) {
+            String errorMsg = "Вы заполнили не все поля!";
+            redirectAttributes.addFlashAttribute("error", errorMsg);
+            return "redirect:/administrations/administrator/drivers/add_driver";
+        } else {
+            Drivers driver = new Drivers(driverName, driverSurname, driverPhone);
+            driversRepo.save(driver);
+            return "redirect:/administrations/administrator/drivers";
+        }
     }
 
     @RequestMapping(value = "/administrator/drivers/{id}/edit", method = RequestMethod.GET)
@@ -60,14 +68,21 @@ public class DriverAdminController {
                                               @RequestParam String driverName,
                                               @RequestParam String driverSurname,
                                               @RequestParam String driverPhone,
-                                              Map<String, Object> model) {
-        int driverId = id;
-        Drivers driver = driversRepo.findById(driverId);
-        driver.setDriverName(driverName);
-        driver.setDriverSurname(driverSurname);
-        driver.setDriverPhone(driverPhone);
-        driversRepo.save(driver);
-        return "redirect:/administrations/administrator/drivers";
+                                              Map<String, Object> model,
+                                              RedirectAttributes redirectAttributes) {
+        if (driverName.equals("") | driverSurname.equals("") | driverPhone.equals("")) {
+            String errorMsg = "Вы заполнили не все поля!";
+            redirectAttributes.addFlashAttribute("error", errorMsg);
+            return "redirect:/administrations/administrator/drivers/" + id + "/edit";
+        } else {
+            int driverId = id;
+            Drivers driver = driversRepo.findById(driverId);
+            driver.setDriverName(driverName);
+            driver.setDriverSurname(driverSurname);
+            driver.setDriverPhone(driverPhone);
+            driversRepo.save(driver);
+            return "redirect:/administrations/administrator/drivers";
+        }
     }
 
     @RequestMapping(value = "/administrator/drivers/{id}/del", method = RequestMethod.GET)

@@ -21,6 +21,10 @@
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
                     <button class="waves-effect waves-light btn" type="submit">Добавить водителя</button>
                 </form>
+                <div>
+                    <br>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
             </div>
         </div>
     </div>
