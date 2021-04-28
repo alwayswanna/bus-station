@@ -8,6 +8,7 @@ import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.PassengerPassportRepo;
 import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
+import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,28 +86,36 @@ public class PassengerAdminController {
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirectLink;
         } else {
-            int passengerId = id;
-            String uuid = UUID.randomUUID().toString();
-            PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
-            Passengers passenger = passengerPassport.getPassengers();
-            Ticket ticket = passenger.getTicket();
             BusFlights busFlights = flightRepo.findByNumberFlightUnique(numberFlightUnique);
-            String numTicket_new = numberFlightUnique + "_" + uuid.substring(0, 4);
 
-            passenger.setNumTicket(numTicket_new);
-            passenger.setPassengerInfo(passengerPassport);
-            ticket.setPassengers(passenger);
-            ticket.setBusFlights(busFlights);
-            ticket.setTicketPassenger(passengerSurname);
-            passengerPassport.setPassengerSurname(passengerSurname);
-            passengerPassport.setPassengerName(passengerName);
-            passengerPassport.setPassengerPhone(passengerPhone);
-            passengerPassport.setPassengerDocNum(passengerDocNum);
-            passengerPassport.setPassengerBirthday(passengerBirthday);
-            passengerPassport.setPassengerRegistration(passengerRegistration);
-            passengerPassportRepo.save(passengerPassport);
+            if (SystemMethods.checkSpaceForTicket(busFlights.getTypeBus(), busFlights.getTickets())) {
+
+                int passengerId = id;
+                String uuid = UUID.randomUUID().toString();
+                PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
+                Passengers passenger = passengerPassport.getPassengers();
+                Ticket ticket = passenger.getTicket();
+                String numTicket_new = numberFlightUnique + "_" + uuid.substring(0, 4);
+
+                passenger.setNumTicket(numTicket_new);
+                passenger.setPassengerInfo(passengerPassport);
+                ticket.setPassengers(passenger);
+                ticket.setBusFlights(busFlights);
+                ticket.setTicketPassenger(passengerSurname);
+                passengerPassport.setPassengerSurname(passengerSurname);
+                passengerPassport.setPassengerName(passengerName);
+                passengerPassport.setPassengerPhone(passengerPhone);
+                passengerPassport.setPassengerDocNum(passengerDocNum);
+                passengerPassport.setPassengerBirthday(passengerBirthday);
+                passengerPassport.setPassengerRegistration(passengerRegistration);
+                passengerPassportRepo.save(passengerPassport);
+                return "redirect:/administrations/administrator/passengers";
+            } else {
+                String errorMsg = "К сожалению все места на данный рейс заняты. Приносим свои извинения";
+                redirectAttributes.addFlashAttribute("error", errorMsg);
+                return "redirect:" + redirectLink;
+            }
         }
-        return "redirect:/administrations/administrator/passengers";
     }
 
     @RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.GET)
@@ -135,31 +144,38 @@ public class PassengerAdminController {
             return "redirect:" + redirectLink;
         } else {
             BusFlights flight = flightRepo.findByNumberFlightUnique(numberFlightUnique);
-            PassengerPassport passengerPassport = new PassengerPassport(passengerName, passengerSurname,
-                    passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
-            Passengers passenger = new Passengers();
-            passenger.setPassengerInfo(passengerPassport);
-            passenger.setNumTicket(
-                    flight.getNumberFlightUnique() + "_" + uuid.substring(0, 4)
-            );
-            Ticket ticket = new Ticket();
-            ticket.setTicketPlace("Сидячее");
-            ticket.setTicketPassenger(passengerSurname);
-            ticket.setPassengers(passenger);
-            ticket.setBusFlights(flight);
-            passengerPassportRepo.save(passengerPassport);
-            passengersRepo.save(passenger);
-            ticketRepo.save(ticket);
-            String callBack = "Билет успешно приобретен." +
-                    "\n Сверьте данные, в случае неточности обратитесь в службу техничесой поддержки автовокзала:" +
-                    "\n Фамилия пассажира - " + passengerSurname +
-                    "\n Имя пассажира - " + passengerName +
-                    "\n Номер пасспорта пассажира - " + passengerDocNum +
-                    "\n Номер билета пассажира - " + flight.getNumberFlightUnique() + "_" + uuid.substring(0, 4) +
-                    " Обновите страницу если хотите приобрести еще!";
-            redirectAttributes.addFlashAttribute("message", callBack);
-        }
 
-        return "redirect:" + redirectLink;
+            if (SystemMethods.checkSpaceForTicket(flight.getTypeBus(), flight.getTickets())){
+
+                PassengerPassport passengerPassport = new PassengerPassport(passengerName, passengerSurname,
+                        passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
+                Passengers passenger = new Passengers();
+                passenger.setPassengerInfo(passengerPassport);
+                passenger.setNumTicket(
+                        flight.getNumberFlightUnique() + "_" + uuid.substring(0, 4)
+                );
+                Ticket ticket = new Ticket();
+                ticket.setTicketPlace("Сидячее");
+                ticket.setTicketPassenger(passengerSurname);
+                ticket.setPassengers(passenger);
+                ticket.setBusFlights(flight);
+                passengerPassportRepo.save(passengerPassport);
+                passengersRepo.save(passenger);
+                ticketRepo.save(ticket);
+                String callBack = "Билет успешно приобретен." +
+                        "\n Сверьте данные, в случае неточности обратитесь в службу техничесой поддержки автовокзала:" +
+                        "\n Фамилия пассажира - " + passengerSurname +
+                        "\n Имя пассажира - " + passengerName +
+                        "\n Номер пасспорта пассажира - " + passengerDocNum +
+                        "\n Номер билета пассажира - " + flight.getNumberFlightUnique() + "_" + uuid.substring(0, 4) +
+                        " Обновите страницу если хотите приобрести еще!";
+                redirectAttributes.addFlashAttribute("message", callBack);
+                return "redirect:" + redirectLink;
+            }else{
+                String errorMsg = "К сожалению все места на данный рейс заняты. Приносим свои извинения.";
+                redirectAttributes.addFlashAttribute("error", errorMsg);
+                return "redirect:" + redirectLink;
+            }
+        }
     }
 }
