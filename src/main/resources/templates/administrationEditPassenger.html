@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col s4" th:each="el : ${passenger}">
                 <h5>Редактировать пассажира:</h5>
-                <form th:action="'/administrations/administrator/passenger/' + ${el.id} + '/edit'" method="post">
+                <form th:action="'/administrations/administrator/passenger/' + ${el.id} + '/edit_data'" method="post">
                     <input th:placeholder="${el.passengerSurname}" type="text" name="passengerSurname">
                     <input th:placeholder="${el.passengerName}" type="text" name="passengerName">
                     <input th:placeholder="${el.passengerPhone}" type="text" name="passengerPhone">

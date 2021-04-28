@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор: главная</title>
+    <link rel="icon" href="/static/img/bus.png">
+</head>
+<body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="row">
+
+        <div class="col s3">
+            <h4>Доступные разделы:</h4>
+            <div class="collection">
+                <a href="#" class="collection-item"><span class="badge"></span>Пользователи</a>
+                <a href="/administrations/administrator/flights" class="collection-item"><span class="badge"></span>Рейсы</a>
+                <a href="/administrations/administrator/drivers" class="collection-item"><span class="badge"></span>Водители</a>
+                <a href="/administrations/administrator/passengers" class="collection-item"><span class="badge"></span>Пасажиры</a>
+                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Автобусы</a>
+                <a href="/administrations/administrator/type_flights" class="collection-item"><span class="badge"></span>Типы рейсов</a>
+            </div>
+        </div>
+
+        <div class="col s9">
+            <div class="row">
+                <ul class="collection with-header">
+                    <li class="collection-header"><h4>Типы поездок:</h4></li>
+                </ul>
+                <div class="col s4">
+                    <a href="/administrations/administrator/type_flights" class="waves-effect waves-light btn">Все</a>
+                </div>
+                <div class="col s4">
+                    <a href="/administrations/administrator/type_flight/arrival" class="waves-effect waves-light btn">Прибывающие</a>
+                </div>
+                <div class="col s4">
+                    <a href="/administrations/administrator/type_flight/departure" class="waves-effect waves-light btn">Отбывающие</a>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Тип маршрута:</th>
+                                <th>Пункт отправления:</th>
+                                <th>Пункт назначения:</th>
+                                <th>Дата:</th>
+                                <th>Номер:</th>
+                                <th>Подробнее:</th>
+                                <th>Редактировать:</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="el : ${type_flight}">
+                                <td th:text="${el.routeType}"/>
+                                <td th:text="${el.fromCity}"/>
+                                <td th:text="${el.toCity}"/>
+                                <td th:text="${el.dateFlight}"/>
+                                <td th:text="${el.numberFlightUnique}"/>
+                                <td>
+                                    <a th:href="'/flight/' + ${el.id}" class="waves-effect waves-light btn">Подробнее</a>
+                                </td>
+                                <td>
+                                    <a th:href="'/administrations/flight/' + ${el.id} + '/edit'"
+                                       class="waves-effect waves-light btn">Редактировать</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br><br>
+                        <a href="/administrations/add_flight" class="waves-effect waves-light btn">Добавить рейс</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer" >
+</footer>
+</body>
+</html>

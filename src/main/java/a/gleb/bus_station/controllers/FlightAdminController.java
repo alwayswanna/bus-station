@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -35,8 +36,8 @@ public class FlightAdminController {
         this.flightRepo = flightRepo;
     }
 
-    @RequestMapping(value = "/add_flight", method = RequestMethod.GET)
-    public String adminAddFlightGet(Map<String, Object> model) {
+    @RequestMapping(value = "/administrator/add_flight", method = RequestMethod.GET)
+    public String administratorAddFlightGet(Map<String, Object> model) {
         Iterable<Drivers> drivers = driversRepo.findAll();
         Iterable<TypeBus> typeBuses = typeBusRepo.findAll();
         Iterable<TypeFlight> typeFlights = typeFlightsRepo.findAll();
@@ -46,8 +47,8 @@ public class FlightAdminController {
         return "addFlight";
     }
 
-    @RequestMapping(value = "/add_flight", method = RequestMethod.POST)
-    public String adminAddFlightPost(
+    @RequestMapping(value = "/administrator/add_flight", method = RequestMethod.POST)
+    public String administratorAddFlightPost(
             @RequestParam String fromCity,
             @RequestParam String toCity,
             @RequestParam String timeDeparture,
@@ -56,34 +57,41 @@ public class FlightAdminController {
             @RequestParam String driverSurname,
             @RequestParam String busModel,
             @RequestParam String typeFlight,
-            Map<String, Object> model
-    ) {
-        Drivers driver = driversRepo.findByDriverSurname(driverSurname);
-        TypeFlight typeOfFlight = typeFlightsRepo.findByTypeOfFlight(typeFlight);
-        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
-        String type;
-        String numberFlightUnique = Character.toString(fromCity.charAt(0)) + Character.toString(toCity.charAt(0))
-                + "-" + Integer.toString((int) Math.random() * (100 - 55) + 55);
-        System.out.println(numberFlightUnique);
-        if (fromCity.equals("Ufa") | fromCity.equals("Уфа")) {
-            type = "Отбывающий";
-        } else if (!fromCity.equals("Ufa") | !fromCity.equals("Уфа")) {
-            type = "Прибывающий";
+            Map<String, Object> model,
+            RedirectAttributes redirectAttributes) {
+        if (fromCity.equals("") | toCity.equals("") | timeDeparture.equals("") | timeArrival.equals("") |
+                dateFlight.equals("") | driverSurname.equals("") | busModel.equals("") | typeFlight.equals("")) {
+            String errorMsg = "Вы заполнили не все поля!";
+            redirectAttributes.addFlashAttribute("error", errorMsg);
+            return "redirect:/administrations/administrator/add_flight";
         } else {
-            type = "Проездной";
-        }
-        BusFlights busFlight = new BusFlights(type, fromCity, toCity,
-                timeDeparture, timeArrival, dateFlight, numberFlightUnique);
-        busFlight.setDrivers(driver);
-        busFlight.setTypeBus(typeBus);
-        busFlight.setTypeFlight(typeOfFlight);
-        flightRepo.save(busFlight);
+            Drivers driver = driversRepo.findByDriverSurname(driverSurname);
+            TypeFlight typeOfFlight = typeFlightsRepo.findByTypeOfFlight(typeFlight);
+            TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
+            String type;
+            String numberFlightUnique = Character.toString(fromCity.charAt(0)) + Character.toString(toCity.charAt(0))
+                    + "-" + Integer.toString((int) Math.random() * (100 - 55) + 55);
+            System.out.println(numberFlightUnique);
+            if (fromCity.equals("Ufa") | fromCity.equals("Уфа")) {
+                type = "Отбывающий";
+            } else if (!fromCity.equals("Ufa") | !fromCity.equals("Уфа")) {
+                type = "Прибывающий";
+            } else {
+                type = "Проездной";
+            }
+            BusFlights busFlight = new BusFlights(type, fromCity, toCity,
+                    timeDeparture, timeArrival, dateFlight, numberFlightUnique);
+            busFlight.setDrivers(driver);
+            busFlight.setTypeBus(typeBus);
+            busFlight.setTypeFlight(typeOfFlight);
+            flightRepo.save(busFlight);
 
-        return "redirect:/administrations/administrator/flights";
+            return "redirect:/administrations/administrator/flights";
+        }
     }
 
-    @RequestMapping(value = "/flight/{id}/edit", method = RequestMethod.GET)
-    public String adminEditFlightGet(@PathVariable(value = "id") Integer id,
+    @RequestMapping(value = "/administrator/flight/{id}/edit", method = RequestMethod.GET)
+    public String administratorEditFlightGet(@PathVariable(value = "id") Integer id,
                                      Map<String, Object> model) {
         if (SystemMethods.checkIdForFlight(id, model, flightRepo)) {
             return "redirect:/administrations/administrator/flights";
@@ -102,8 +110,8 @@ public class FlightAdminController {
         return "administratorEditFlight";
     }
 
-    @RequestMapping(value = "/flight/{id}/edit", method = RequestMethod.POST)
-    public String adminEditFlightPost(@PathVariable(value = "id") Integer id,
+    @RequestMapping(value = "/administrator/flight/{id}/edit", method = RequestMethod.POST)
+    public String administratorEditFlightPost(@PathVariable(value = "id") Integer id,
                                       @RequestParam String fromCity,
                                       @RequestParam String toCity,
                                       @RequestParam String timeDeparture,
@@ -112,25 +120,33 @@ public class FlightAdminController {
                                       @RequestParam String driverSurname,
                                       @RequestParam String busModel,
                                       @RequestParam String typeOfFlight,
-                                      Map<String, Object> model) {
-        Drivers driver = driversRepo.findByDriverSurname(driverSurname);
-        TypeFlight typeFlight = typeFlightsRepo.findByTypeOfFlight(typeOfFlight);
-        TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
-        BusFlights busFlights = flightRepo.findById(id).orElseThrow();
-        busFlights.setDrivers(driver);
-        busFlights.setTypeBus(typeBus);
-        busFlights.setTypeFlight(typeFlight);
-        busFlights.setFromCity(fromCity);
-        busFlights.setToCity(toCity);
-        busFlights.setTimeDeparture(timeDeparture);
-        busFlights.setTimeArrival(timeArrival);
-        busFlights.setDateFlight(dateFlight);
-        flightRepo.save(busFlights);
-        return "redirect:/administrations/administrator/flights";
+                                      Map<String, Object> model,
+                                      RedirectAttributes redirectAttributes) {
+        if (fromCity.equals("") | toCity.equals("") | timeDeparture.equals("") | timeArrival.equals("") |
+                dateFlight.equals("") | driverSurname.equals("") | busModel.equals("") | typeOfFlight.equals("")) {
+            String errorMsg = "Вы заполнили не все поля!";
+            redirectAttributes.addFlashAttribute("error", errorMsg);
+            return "redirect:/administrations/administrator/flight/"+ id + "/edit";
+        } else {
+            Drivers driver = driversRepo.findByDriverSurname(driverSurname);
+            TypeFlight typeFlight = typeFlightsRepo.findByTypeOfFlight(typeOfFlight);
+            TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
+            BusFlights busFlights = flightRepo.findById(id).orElseThrow();
+            busFlights.setDrivers(driver);
+            busFlights.setTypeBus(typeBus);
+            busFlights.setTypeFlight(typeFlight);
+            busFlights.setFromCity(fromCity);
+            busFlights.setToCity(toCity);
+            busFlights.setTimeDeparture(timeDeparture);
+            busFlights.setTimeArrival(timeArrival);
+            busFlights.setDateFlight(dateFlight);
+            flightRepo.save(busFlights);
+            return "redirect:/administrations/administrator/flights";
+        }
     }
 
-    @RequestMapping(value = "/flight/{id}/del", method = RequestMethod.GET)
-    public String adminRemoveFlightPost(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
+    @RequestMapping(value = "/administrator/flight/{id}/del", method = RequestMethod.GET)
+    public String administratorRemoveFlightPost(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         BusFlights busFlight = flightRepo.findById(id).orElseThrow();
         flightRepo.delete(busFlight);
         return "redirect:/administrations/administrator/flights";

@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col s12">
                 <h5>Добавить рейс</h5>
-                <form action="/administrations/add_flight" method="post">
+                <form action="/administrations/administrator/add_flight" method="post">
                     <input placeholder="Из города" type="text" name="fromCity"/>
                     <input placeholder="В город" type="text" name="toCity"/>
                     <input placeholder="Время отправления" type="text" name="timeDeparture"/>
@@ -35,6 +35,10 @@
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
                     <button  class="waves-effect waves-light btn" type="submit">Добавить рейс</button>
                 </form>
+                <div>
+                    <br>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
             </div>
         </div>
     </div>

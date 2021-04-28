@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col s12" th:each="el : ${flight}">
                 <h5>Редактировать рейс:</h5>
-                <form th:action="'/administrations/flight/' + ${el.id} + '/edit'" method="post">
+                <form th:action="'/administrations/administrator/flight/' + ${el.id} + '/edit'" method="post">
                     <input type="text" name="fromCity" th:value="${el.fromCity}">
                     <input type="text" name="toCity" th:value="${el.toCity}">
                     <input type="text" name="timeDeparture" th:value="${el.timeDeparture}">
@@ -35,8 +35,12 @@
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}}"/>
                     <button  class="waves-effect waves-light btn" type="submit">Изменить рейс</button>
                 </form>
+                <div>
+                    <br>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
                 <br>
-                <a type="submit" class="waves-effect waves-light btn" th:href="'/administrations/flight/' + ${el.id} + '/del'">Удалить рейс</a>
+                <a type="submit" class="waves-effect waves-light btn" th:href="'/administrations/administrator/flight/' + ${el.id} + '/del'">Удалить рейс</a>
             </div>
         </div>
     </div>

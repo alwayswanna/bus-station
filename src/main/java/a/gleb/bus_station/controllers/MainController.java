@@ -2,7 +2,6 @@ package a.gleb.bus_station.controllers;
 
 import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.repositories.FlightRepo;
-import a.gleb.bus_station.repositories.TypeBusRepo;
 import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,11 +16,9 @@ import java.util.Optional;
 public class MainController {
 
     private final FlightRepo flightRepo;
-    private final TypeBusRepo typeBusRepo;
 
-    public MainController(FlightRepo flightRepo, TypeBusRepo typeBusRepo) {
+    public MainController(FlightRepo flightRepo) {
         this.flightRepo = flightRepo;
-        this.typeBusRepo = typeBusRepo;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -46,16 +43,16 @@ public class MainController {
 
     @RequestMapping(value = "/flights/arrival", method = RequestMethod.GET)
     public String getAllArrivalFlights(Map<String, Object> model){
-        Iterable<BusFlights> arrivalFlights = flightRepo.findAllByRouteType("Прибывающий");
-        model.put("arrival", arrivalFlights);
-        return "arrivalFlights";
+        Iterable<BusFlights> flights = flightRepo.findAllByRouteType("Прибывающий");
+        model.put("flights", flights);
+        return "clientAnyFlights";
     }
 
     @RequestMapping(value = "/flights/departure", method = RequestMethod.GET)
     public String getAllDepartureFlights(Map<String, Object> model){
-        Iterable<BusFlights> departureFlights = flightRepo.findAllByRouteType("Отбывающий");
-        model.put("departure", departureFlights);
-        return "departureFlights";
+        Iterable<BusFlights> flights = flightRepo.findAllByRouteType("Отбывающий");
+        model.put("flights", flights);
+        return "clientAnyFlights";
     }
 
 

@@ -67,7 +67,7 @@ public class PassengerAdminController {
         return "administrationEditPassenger";
     }
 
-    @RequestMapping(value = "/administrator/passenger/{id}/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
     public String administratorPassengerEditPost(@PathVariable(value = "id") Integer id,
                                                  @RequestParam String passengerSurname,
                                                  @RequestParam String passengerName,
@@ -129,7 +129,7 @@ public class PassengerAdminController {
         String uuid = UUID.randomUUID().toString();
         String redirectLink = "/administrations/administrator/buy_ticket";
         if (passengerName.equals("") | passengerSurname.equals("") | passengerBirthday.equals("") |
-                passengerPhone.equals("") | passengerDocNum.equals("") | passengerRegistration.equals("")) {
+                passengerPhone.equals("") | passengerDocNum.equals("") | passengerRegistration.equals("") | numberFlightUnique.equals("")) {
             String errorStr = "Вы заполнили не все поля! Обновите страницу";
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirectLink;

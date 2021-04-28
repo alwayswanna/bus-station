@@ -15,13 +15,12 @@
         <div class="col s3">
             <h4>Доступные разделы:</h4>
             <div class="collection">
+                <a href="#" class="collection-item"><span class="badge"></span>Пользователи</a>
                 <a href="/administrations/administrator/flights" class="collection-item"><span class="badge"></span>Рейсы</a>
                 <a href="/administrations/administrator/drivers" class="collection-item"><span class="badge"></span>Водители</a>
                 <a href="/administrations/administrator/passengers" class="collection-item"><span class="badge"></span>Пасажиры</a>
                 <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Автобусы</a>
-                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Типы
-                    автобусов</a>
-                <a href="/administrations/administrator/buses" class="collection-item"><span class="badge"></span>Билеты</a>
+                <a href="/administrations/administrator/type_flights" class="collection-item"><span class="badge"></span>Типы рейсов</a>
             </div>
         </div>
 
@@ -54,14 +53,14 @@
                         <a th:href="'/flight/' + ${el.id}" class="waves-effect waves-light btn">Подробнее</a>
                     </td>
                     <td>
-                        <a th:href="'/administrations/flight/' + ${el.id} + '/edit'"
+                        <a th:href="'/administrations/administrator/flight/' + ${el.id} + '/edit'"
                            class="waves-effect waves-light btn">Редактировать</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
             <br><br>
-            <a href="/administrations/add_flight" class="waves-effect waves-light btn">Добавить рейс</a>
+            <a href="/administrations/administrator/add_flight" class="waves-effect waves-light btn">Добавить рейс</a>
         </div>
 
     </div>
