@@ -36,17 +36,17 @@
 
                 <tbody>
                 <tr th:each="el : ${user}">
-                    <td th:text="${el.login}"/>
-                    <td th:text="${el.userSurname}"/>
                     <td th:text="${el.userName}"/>
+                    <td th:text="${el.userSurname}"/>
+                    <td th:text="${el.name}"/>
                     <td th:text="${el.userPhone}"/>
                     <td th:text="${el.userEmail}"/>
                     <th th:text="${el.getRoles()}"/>
                     <th>
-                        <a th:href="'/administrations/administrator/users/' + ${el.login} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
+                        <a th:href="'/administrations/administrator/users/' + ${el.name} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
                     </th>
                     <th>
-                        <a th:href="'/administrations/administrator/users/' + ${el.login} + '/del'" class="waves-effect waves-light btn">Удалить</a>
+                        <a th:href="'/administrations/administrator/users/' + ${el.name} + '/del'" class="waves-effect waves-light btn">Удалить</a>
                     </th>
                 </tr>
                 </tbody>

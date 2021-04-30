@@ -14,9 +14,9 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String login;
-    private String password;
     private String userName;
+    private String password;
+    private String name;
     private String userSurname;
     private String userPhone;
     private String userEmail;
@@ -27,9 +27,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public User(String login, String password, String userName, String userSurname,
+    public User(String userName, String password, String name, String userSurname,
                 String userPhone, String userEmail, boolean active, Set<Role> roles) {
-        this.login = login;
+        this.name = name;
         this.password = password;
         this.userName = userName;
         this.userSurname = userSurname;
@@ -43,12 +43,12 @@ public class User implements UserDetails {
 
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setName(String login) {
+        this.name = login;
     }
 
     @Override

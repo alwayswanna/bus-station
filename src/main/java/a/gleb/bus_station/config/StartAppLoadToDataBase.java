@@ -41,7 +41,7 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         //Add default user administrator:
         User defaultAdministrator = new User("Administrator", passwordEncoder.encode("administrator"), "Евгений", "Шаповников",
                 "+79006506060", "e.shapovnikov@busstation.ru", true, Collections.singleton(Role.ADMINISTRATOR));
-        if (administratorRepo.findByUserName("Евгений") == null){
+        if (administratorRepo.findByUserName("Administrator") == null){
             administratorRepo.save(defaultAdministrator);
             System.out.println("Пользователь [Administrator] успешно создан. Administrator:administrator");
         }else {
