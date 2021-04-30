@@ -9,6 +9,7 @@ import a.gleb.bus_station.repositories.PassengerPassportRepo;
 import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
 import a.gleb.bus_station.service.SystemMethods;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "/administrations")
+@PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
 public class PassengerAdminController {
 
     private final PassengerPassportRepo passengerPassportRepo;
@@ -37,6 +39,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/passengers", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengersGet(Map<String, Object> model) {
         Iterable<PassengerPassport> passengers = passengerPassportRepo.findAll();
         Iterable<Passengers> passengersNumTicket = passengersRepo.findAll();
@@ -46,6 +49,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/passenger/{id}/del", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerDelete(@PathVariable(value = "id") Integer id,
                                                Map<String, Object> model) {
         int passengerId = id;
@@ -55,6 +59,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         int passengerId = id;
         PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
@@ -69,6 +74,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditPost(@PathVariable(value = "id") Integer id,
                                                  @RequestParam String passengerSurname,
                                                  @RequestParam String passengerName,
@@ -119,6 +125,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBuyTicketGet(Map<String, Object> model) {
         Iterable<BusFlights> flights = flightRepo.findAll();
         model.put("flights", flights);
@@ -126,6 +133,7 @@ public class PassengerAdminController {
     }
 
     @RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBuyTicketPost(@RequestParam String passengerName,
                                              @RequestParam String passengerSurname,
                                              @RequestParam String passengerPhone,

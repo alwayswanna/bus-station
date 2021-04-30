@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/administrations")
-@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+@PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
 public class BusAdminController {
 
     private final TypeBusRepo busRepo;
@@ -25,7 +25,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBusesGet(Map<String, Object> model) {
         Iterable<TypeBus> buses = busRepo.findAll();
         model.put("buses", buses);
@@ -33,7 +33,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBusesEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         int busId = id;
         TypeBus typeBus = busRepo.findById(busId);
@@ -44,7 +44,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBusesEditPost(@PathVariable(value = "id") Integer id,
                                              @RequestParam String busModel,
                                              @RequestParam String numberOfSeats,
@@ -68,7 +68,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses/{id}/del", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorRemoveBus(@PathVariable(value = "id") Integer id,
                                          Map<String, Object> model) {
         int busId = id;
@@ -84,13 +84,13 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorAddBusGet(Map<String, Object> model) {
         return "administrationAddBus";
     }
 
     @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorAddBusPost(@RequestParam String busModel,
                                           @RequestParam String type,
                                           @RequestParam String numberOfSeats,

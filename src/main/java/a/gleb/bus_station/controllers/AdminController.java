@@ -4,6 +4,7 @@ import a.gleb.bus_station.dto.Role;
 import a.gleb.bus_station.dto.User;
 import a.gleb.bus_station.repositories.AdministratorRepo;
 import a.gleb.bus_station.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/administrations")
+@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 public class AdminController {
 
     private final AdministratorRepo administratorRepo;
@@ -30,6 +32,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/administrator/users", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorUsersGet(Map<String, Object> model) {
         Iterable<User> users = administratorRepo.findAll();
         model.put("user", users);
@@ -37,11 +40,13 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/administrator/add_user", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorUserAddGet(Map<String, Object> model) {
         return "administratorAddUser";
     }
 
     @RequestMapping(value = "/administrator/add_user", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorUserAddPost(@RequestParam String userName,
                                            @RequestParam String password,
                                            @RequestParam String name,
@@ -69,6 +74,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/administrator/users/{userName}/del", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorUserDelete(@PathVariable(value = "userName") String userName, Map<String, Object> model) {
         User user = administratorRepo.findByUserName(userName);
         administratorRepo.delete(user);

@@ -1,7 +1,6 @@
 package a.gleb.bus_station.config;
 
 import a.gleb.bus_station.service.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -9,8 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.persistence.Basic;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/static/**").permitAll()
-                .antMatchers("/administrations/administrator/**", "/administrations/administrator/passengers/**").hasAuthority("ADMINISTRATOR")
+                .antMatchers("/administrations/administrator/users", "/administrations/administrator/add_user/", "/administrations/administrator/users/**").hasAuthority("ADMINISTRATOR")
+                .antMatchers("/administrations/administrator/passengers", "/administrations/administrator/buy_ticket", "/administrations/administrator/flights").hasAnyAuthority("OPERATOR", "ADMINISTRATOR")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
