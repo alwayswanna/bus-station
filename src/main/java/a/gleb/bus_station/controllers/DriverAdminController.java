@@ -65,8 +65,10 @@ public class DriverAdminController {
         Optional<Drivers> driver = driversRepo.findById(id);
         ArrayList<Drivers> driverModel = new ArrayList<>();
         driver.ifPresent(driverModel::add);
+        Iterable<BusFlights> flights = driverModel.get(0).getBusFlights();
+        model.put("flights", flights);
         model.put("driver", driverModel);
-        return "administratorEditDriver";
+        return "administrationBusOrDriverEdit";
     }
 
     @RequestMapping(value = "/administrator/drivers/{id}/edit", method = RequestMethod.POST)

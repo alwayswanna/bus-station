@@ -40,7 +40,7 @@ public class BusAdminController {
         Iterable<BusFlights> flightsOfBus = typeBus.getBusFlights();
         model.put("bus", typeBus);
         model.put("flights", flightsOfBus);
-        return "administrationBusEdit";
+        return "administrationBusOrDriverEdit";
     }
 
     @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.POST)
