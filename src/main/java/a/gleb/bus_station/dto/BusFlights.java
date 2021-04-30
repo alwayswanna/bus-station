@@ -38,7 +38,7 @@ public class BusFlights {
     @JoinColumn(name = "type_flight")
     private TypeFlight typeFlight;
 
-    @OneToMany(mappedBy = "busFlights", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "busFlights", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Ticket> tickets;
 
     public BusFlights(String routeType, String fromCity, String toCity,
