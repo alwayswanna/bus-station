@@ -55,6 +55,14 @@ public class MainController {
         return "clientAnyFlights";
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String loginPost(){
+        return "redirect:/administration/administrator/flights";
+    }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginGet(){
+        return "login";
+    }
 
 }

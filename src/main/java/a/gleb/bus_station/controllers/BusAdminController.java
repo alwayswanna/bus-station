@@ -3,6 +3,7 @@ package a.gleb.bus_station.controllers;
 import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.dto.TypeBus;
 import a.gleb.bus_station.repositories.TypeBusRepo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/administrations")
+@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 public class BusAdminController {
 
     private final TypeBusRepo busRepo;
@@ -23,6 +25,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorBusesGet(Map<String, Object> model) {
         Iterable<TypeBus> buses = busRepo.findAll();
         model.put("buses", buses);
@@ -30,6 +33,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorBusesEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         int busId = id;
         TypeBus typeBus = busRepo.findById(busId);
@@ -40,6 +44,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorBusesEditPost(@PathVariable(value = "id") Integer id,
                                              @RequestParam String busModel,
                                              @RequestParam String numberOfSeats,
@@ -63,6 +68,7 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/buses/{id}/del", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorRemoveBus(@PathVariable(value = "id") Integer id,
                                          Map<String, Object> model) {
         int busId = id;
@@ -78,11 +84,13 @@ public class BusAdminController {
     }
 
     @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorAddBusGet(Map<String, Object> model) {
         return "administrationAddBus";
     }
 
     @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public String administratorAddBusPost(@RequestParam String busModel,
                                           @RequestParam String type,
                                           @RequestParam String numberOfSeats,
