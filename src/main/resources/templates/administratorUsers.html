@@ -43,10 +43,10 @@
                     <td th:text="${el.userEmail}"/>
                     <th th:text="${el.getRoles()}"/>
                     <th>
-                        <a th:href="'/administrations/administrator/users/' + ${el.name} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
+                        <a href="#" class="waves-effect waves-light btn">Редактировать</a>
                     </th>
                     <th>
-                        <a th:href="'/administrations/administrator/users/' + ${el.name} + '/del'" class="waves-effect waves-light btn">Удалить</a>
+                        <a th:href="'/administrations/administrator/users/' + ${el.userName} + '/del'" class="waves-effect waves-light btn">Удалить</a>
                     </th>
                 </tr>
                 </tbody>
