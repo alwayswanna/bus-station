@@ -1,13 +1,7 @@
 package a.gleb.bus_station.controllers;
 
-import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.Drivers;
-import a.gleb.bus_station.dto.TypeBus;
-import a.gleb.bus_station.dto.TypeFlight;
-import a.gleb.bus_station.repositories.DriversRepo;
-import a.gleb.bus_station.repositories.FlightRepo;
-import a.gleb.bus_station.repositories.TypeBusRepo;
-import a.gleb.bus_station.repositories.TypeFlightsRepo;
+import a.gleb.bus_station.dto.*;
+import a.gleb.bus_station.repositories.*;
 import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,12 +24,16 @@ public class FlightAdminController {
     private final TypeBusRepo typeBusRepo;
     private final TypeFlightsRepo typeFlightsRepo;
     private final FlightRepo flightRepo;
+    private final TicketRepo ticketRepo;
+    private final PassengersRepo passengersRepo;
 
-    public FlightAdminController(DriversRepo driversRepo, TypeBusRepo typeBusRepo, TypeFlightsRepo typeFlightsRepo, FlightRepo flightRepo) {
+    public FlightAdminController(DriversRepo driversRepo, TypeBusRepo typeBusRepo, TypeFlightsRepo typeFlightsRepo, FlightRepo flightRepo, TicketRepo ticketRepo, PassengersRepo passengersRepo) {
         this.driversRepo = driversRepo;
         this.typeBusRepo = typeBusRepo;
         this.typeFlightsRepo = typeFlightsRepo;
         this.flightRepo = flightRepo;
+        this.ticketRepo = ticketRepo;
+        this.passengersRepo = passengersRepo;
     }
 
     @RequestMapping(value = "/administrator/add_flight", method = RequestMethod.GET)
@@ -155,6 +153,14 @@ public class FlightAdminController {
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorRemoveFlightPost(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         BusFlights busFlight = flightRepo.findById(id).orElseThrow();
+        Iterable<Ticket> ticketsOnFlight = busFlight.getTickets();
+        for (Ticket ticket:ticketsOnFlight){
+            ticket.setBusFlights(flightRepo.findAllByFromCity("null"));
+            Passengers passengers = ticket.getPassengers();
+            passengers.setNumTicket("Рейс снят!");
+            ticketRepo.save(ticket);
+            passengersRepo.save(passengers);
+        }
         flightRepo.delete(busFlight);
         return "redirect:/administrations/administrator/flights";
     }

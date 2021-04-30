@@ -105,6 +105,10 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
 
         }
         // Adding flights for BusFlights:
+        BusFlights defaultFlight = new BusFlights("null", "null", "null", "null", "null", "null", "null");
+        defaultFlight.setDrivers(defaultDriver);
+        defaultFlight.setTypeBus(defaultBus);
+        defaultFlight.setTypeFlight(suburbanTypeFlight);
         BusFlights firstBusFlight = new BusFlights("Прибывающий", "Белорец", "Уфа", "10:00", "12:55", dateOfFlight, "УБ-45");
         firstBusFlight.setDrivers(firstDriver);
         firstBusFlight.setTypeBus(thirdTypeBus);
@@ -127,6 +131,7 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
         fifthBusFlight.setTypeFlight(intercityTypeFlight);
         try{
             if (flightRepo.findAllByFromCity("Уфа") == null){
+                flightRepo.save(defaultFlight);
                 flightRepo.save(firstBusFlight);
                 flightRepo.save(secondBusFlight);
                 flightRepo.save(thirdBusFlight);
