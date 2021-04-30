@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор: пользователи</title>
+    <link rel="icon" href="/static/img/bus.png">
+</head>
+<body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h5>Добавить пользователя:</h5>
+                <form action="/administrations/administrator/add_user" method="post">
+                    <input placeholder="Логин:" type="text" name="userName">
+                    <input placeholder="Пароль:" type="text" name="password">
+                    <input placeholder="Имя пользователя:" type="text" name="name">
+                    <input placeholder="Фамилия пользователя:" type="text" name="userSurname">
+                    <input placeholder="Телефон:" type="text" name="userPhone">
+                    <input placeholder="E-mail:" type="text" name="userEmail">
+                    <label>Роль:</label>
+                    <select name="role">
+                        <option name="role">ADMINISTRATOR</option>
+                        <option name="role">OPERATOR</option>
+                    </select>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
+                    <button class="waves-effect waves-light btn" type="submit">Добавить пользователя</button>
+                </form>
+                <div>
+                    <br>
+                    <h6 class="red-text" th:if="${error}" th:text="${error}"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript" src="/static/js/index.js"></script>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer">
+</footer>
+</body>
+</html>

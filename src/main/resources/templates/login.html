@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Войти</title>
+    <link rel="icon" href="/static/img/bus.png">
+</head>
+<body>
+<header th:insert="blocks/header.html :: header">
+</header>
+<main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <form th:action="@{/login}" method="post">
+                        <input type="text" name="username" class="validate">
+                        <br>
+                        <input type="password" name="password" class="validate">
+                        <br>
+                        <br>
+                        <div><a href="/administrations/administrator/flights">
+                            <input type="submit" value="Sign In" class="btn btn-success"/>
+                        </a></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+</main>
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+<footer th:insert="blocks/footer.html :: footer" >
+</footer>
+</body>
+
+</html>

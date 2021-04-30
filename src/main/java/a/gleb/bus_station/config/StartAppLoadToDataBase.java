@@ -1,18 +1,14 @@
 package a.gleb.bus_station.config;
 
-import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.Drivers;
-import a.gleb.bus_station.dto.TypeBus;
-import a.gleb.bus_station.dto.TypeFlight;
-import a.gleb.bus_station.repositories.DriversRepo;
-import a.gleb.bus_station.repositories.FlightRepo;
-import a.gleb.bus_station.repositories.TypeBusRepo;
-import a.gleb.bus_station.repositories.TypeFlightsRepo;
+import a.gleb.bus_station.dto.*;
+import a.gleb.bus_station.repositories.*;
+import a.gleb.bus_station.service.UserService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Driver;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 
 @Component
@@ -22,21 +18,36 @@ public class StartAppLoadToDataBase implements CommandLineRunner {
     private final DriversRepo driversRepo;
     private final TypeBusRepo typeBusRepo;
     private final TypeFlightsRepo typeFlightsRepo;
+    private final AdministratorRepo administratorRepo;
+    private final PasswordEncoder passwordEncoder;
 
     Date date = new Date();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     String dateOfFlight = simpleDateFormat.format(date);
 
-    public StartAppLoadToDataBase(FlightRepo flightRepo, DriversRepo driversRepo,
-                                  TypeBusRepo typeBusRepo, TypeFlightsRepo typeFlightsRepo) {
+
+    public StartAppLoadToDataBase(FlightRepo flightRepo, DriversRepo driversRepo, TypeBusRepo typeBusRepo,
+                                  TypeFlightsRepo typeFlightsRepo, AdministratorRepo administratorRepo, PasswordEncoder passwordEncoder) {
         this.flightRepo = flightRepo;
         this.driversRepo = driversRepo;
         this.typeBusRepo = typeBusRepo;
         this.typeFlightsRepo = typeFlightsRepo;
+        this.administratorRepo = administratorRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        //Add default user administrator:
+        User defaultAdministrator = new User("Administrator", passwordEncoder.encode("administrator"), "Евгений", "Шаповников",
+                "+79006506060", "e.shapovnikov@busstation.ru", true, Collections.singleton(Role.ADMINISTRATOR));
+        if (administratorRepo.findByUserName("Administrator") == null){
+            administratorRepo.save(defaultAdministrator);
+            System.out.println("Пользователь [Administrator] успешно создан. Administrator:administrator");
+        }else {
+            System.out.println("Пользователь [Administrator] уже создан. Administrator:administrator");
+        }
+
         // Adding default values for Drivers:
         Drivers defaultDriver = new Drivers("смена водителя", "Идет", "Не определен");
         Drivers firstDriver = new Drivers("Олег", "Иванов", "+79068568585");

@@ -9,6 +9,7 @@ import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.TypeBusRepo;
 import a.gleb.bus_station.repositories.TypeFlightsRepo;
 import a.gleb.bus_station.service.SystemMethods;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/administrations")
+@PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
 public class FlightAdminController {
 
     private final DriversRepo driversRepo;
@@ -37,6 +39,7 @@ public class FlightAdminController {
     }
 
     @RequestMapping(value = "/administrator/add_flight", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorAddFlightGet(Map<String, Object> model) {
         Iterable<Drivers> drivers = driversRepo.findAll();
         Iterable<TypeBus> typeBuses = typeBusRepo.findAll();
@@ -48,6 +51,7 @@ public class FlightAdminController {
     }
 
     @RequestMapping(value = "/administrator/add_flight", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorAddFlightPost(
             @RequestParam String fromCity,
             @RequestParam String toCity,
@@ -91,6 +95,7 @@ public class FlightAdminController {
     }
 
     @RequestMapping(value = "/administrator/flight/{id}/edit", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorEditFlightGet(@PathVariable(value = "id") Integer id,
                                      Map<String, Object> model) {
         if (SystemMethods.checkIdForFlight(id, model, flightRepo)) {
@@ -111,6 +116,7 @@ public class FlightAdminController {
     }
 
     @RequestMapping(value = "/administrator/flight/{id}/edit", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorEditFlightPost(@PathVariable(value = "id") Integer id,
                                       @RequestParam String fromCity,
                                       @RequestParam String toCity,
@@ -146,6 +152,7 @@ public class FlightAdminController {
     }
 
     @RequestMapping(value = "/administrator/flight/{id}/del", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorRemoveFlightPost(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         BusFlights busFlight = flightRepo.findById(id).orElseThrow();
         flightRepo.delete(busFlight);
@@ -153,6 +160,7 @@ public class FlightAdminController {
     }
 
     @RequestMapping(value = "/administrator/flights", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPageFlight(Map<String, Object> model) {
         Iterable<BusFlights> busFlights = flightRepo.findAll();
         model.put("flights", busFlights);

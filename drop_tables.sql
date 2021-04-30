@@ -6,3 +6,6 @@ drop table bus_station.passengers;
 drop table bus_station.ticket;
 drop table bus_station.type_bus;
 drop table bus_station.type_flight;
+drop table bus_station.user_role;
+drop table bus_station.usr;
+drop table bus_station.hibernate_sequence;
