@@ -1,5 +1,7 @@
 package a.gleb.bus_station.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Drivers {
     private String driverPhone;
 
     @OneToMany(mappedBy = "drivers", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonManagedReference
     private List<BusFlights> busFlights;
 
     public Drivers(String driverName, String driverSurname, String driverPhone) {

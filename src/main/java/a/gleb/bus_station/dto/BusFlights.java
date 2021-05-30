@@ -1,5 +1,8 @@
 package a.gleb.bus_station.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -27,18 +30,22 @@ public class BusFlights {
     private String numberFlightUnique;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "driver_info")
     private Drivers drivers;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "type_bus")
     private TypeBus typeBus;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "type_flight")
     private TypeFlight typeFlight;
 
     @OneToMany(mappedBy = "busFlights", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonManagedReference
     private List<Ticket> tickets;
 
     public BusFlights(String routeType, String fromCity, String toCity,

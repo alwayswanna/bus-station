@@ -1,6 +1,9 @@
 package a.gleb.bus_station.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,10 +20,12 @@ public class Ticket {
     private String ticketPassenger;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     @JoinColumn(name = "passenger_id", referencedColumnName = "id_passengers")
     private Passengers passengers;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "num_flight", referencedColumnName = "number_flight")
     private BusFlights busFlights;
 

@@ -1,5 +1,7 @@
 package a.gleb.bus_station.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class TypeFlight {
     private String typeOfFlight;
 
     @OneToMany(mappedBy = "typeFlight")
+    @JsonManagedReference
     private List<BusFlights> busFlights;
 
     public TypeFlight(String typeOfFlight) {

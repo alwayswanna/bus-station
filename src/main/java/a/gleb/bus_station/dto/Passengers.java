@@ -1,6 +1,8 @@
 package a.gleb.bus_station.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,6 +17,7 @@ public class Passengers {
     private String numTicket;
 
     @OneToOne(mappedBy = "passengers", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Ticket ticket;
 
     @OneToOne(cascade = CascadeType.ALL)
