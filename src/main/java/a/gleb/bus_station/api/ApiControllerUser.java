@@ -1,33 +1,37 @@
 package a.gleb.bus_station.api;
 
 import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.service.FlightService;
+import a.gleb.bus_station.dto.PassengerPassport;
+import a.gleb.bus_station.dto.Ticket;
+import a.gleb.bus_station.service.FlightUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.NoSuchElementException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
 public class ApiControllerUser {
 
-    private final FlightService flightService;
+    private final FlightUserService flightUserService;
 
     @Autowired
-    public ApiControllerUser(FlightService flightService) {
-        this.flightService = flightService;
+    public ApiControllerUser(FlightUserService flightUserService) {
+        this.flightUserService = flightUserService;
     }
 
     @GetMapping("/flights")
     public Iterable<BusFlights> allFlightsGet(){
-        return flightService.allFlights();
+        return flightUserService.allFlights();
     }
 
     @GetMapping("/flight/{id}")
     public BusFlights getFlightById(@PathVariable Integer id){
-        return flightService.busFlightsById(id);
+        return flightUserService.busFlightsById(id);
     }
+
+    @PostMapping("/ticket")
+    public Ticket buyTicketForPassenger(@RequestBody BusFlights bf, @RequestBody PassengerPassport pp){
+
+        return null;
+    }
+
 }
