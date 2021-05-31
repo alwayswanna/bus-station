@@ -21,6 +21,7 @@ public class Passengers {
     private Ticket ticket;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     @JoinColumn(name = "passenger_info", referencedColumnName = "id_passenger_passport")
     private PassengerPassport passengerInfo;
 

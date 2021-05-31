@@ -30,8 +30,7 @@ public class ApiControllerUser {
 
     @PostMapping("/ticket")
     public Ticket buyTicketForPassenger(@RequestBody BusFlights bf, @RequestBody PassengerPassport pp){
-
-        return null;
+        return flightUserService.buyTicketOnSelectedFlight(bf, pp);
     }
 
 }

@@ -1,5 +1,7 @@
 package a.gleb.bus_station.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,6 +26,7 @@ public class PassengerPassport {
     private String passengerBirthday;
 
     @OneToOne(mappedBy = "passengerInfo", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Passengers passengers;
 
     public PassengerPassport(String passengerName, String passengerSurname, String passengerPhone, String passengerDocNum, String passengerRegistration, String passengerBirthday) {
