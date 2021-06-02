@@ -43,7 +43,7 @@ public class FlightUserService {
         }
     }
 
-    public Ticket buyTicketOnSelectedFlight(BusFlights fl, PassengerPassport ps){
+    /*public Ticket buyTicketOnSelectedFlight(BusFlights fl, PassengerPassport ps){
         Ticket ticket = new Ticket();
         Iterable<BusFlights> selectedFlightsIt = flightRepo.findAllById(fl.getId());
         if (selectedFlightsIt == null){
@@ -73,6 +73,6 @@ public class FlightUserService {
             }
         }
      return ticket;
-    }
+    }*/
 
 }

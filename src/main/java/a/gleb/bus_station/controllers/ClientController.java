@@ -44,7 +44,7 @@ public class ClientController {
         return "buyTicket";
     }
 
-    @RequestMapping(value = "/flight/{id}/buy_ticket", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/flight/{id}/buy_ticket", method = RequestMethod.POST)
     public String buyTicketPost(@PathVariable(value = "id") Integer id,
                                 @RequestParam String passengerName,
                                 @RequestParam String passengerSurname,
@@ -100,14 +100,14 @@ public class ClientController {
             }
             return "redirect:" + redirect;
         }
-    }
+    }*/
 
     @RequestMapping(value = "/check_ticket", method = RequestMethod.GET)
     public String checkTicketGet(Map<String, Object> model) {
         return "checkTicket";
     }
 
-    @RequestMapping(value = "/check_ticket", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/check_ticket", method = RequestMethod.POST)
     public String checkTicketPost(@RequestParam String passengerDocNum,
                                   @RequestParam String numTicket,
                                   Map<String, Object> model,
@@ -138,5 +138,5 @@ public class ClientController {
             return "checkTicket";
         }
         return "checkTicket";
-    }
+    }*/
 }

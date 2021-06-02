@@ -52,7 +52,7 @@ public class DriverAdminController {
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:/administrations/administrator/drivers/add_driver";
         } else {
-            Drivers driver = new Drivers(driverName, driverSurname, driverPhone);
+            Drivers driver = new Drivers(driverName, driverSurname, driverPhone, null);
             driversRepo.save(driver);
             return "redirect:/administrations/administrator/drivers";
         }

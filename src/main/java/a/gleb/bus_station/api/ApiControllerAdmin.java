@@ -1,23 +1,29 @@
 package a.gleb.bus_station.api;
 
-import a.gleb.bus_station.dto.PassengerPassport;
+import a.gleb.bus_station.dto.BusFlights;
+import a.gleb.bus_station.dto.Drivers;
 import a.gleb.bus_station.service.FlightAdminService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/")
+@RequestMapping("/api/admin")
 public class ApiControllerAdmin {
 
     private final FlightAdminService flightAdminService;
 
+    @Autowired
     public ApiControllerAdmin(FlightAdminService flightAdminService) {
         this.flightAdminService = flightAdminService;
     }
 
-    @GetMapping("passengers_information")
-    public Iterable<PassengerPassport> allPassengersInformation(){
-        return flightAdminService.getAllPassengersInformation();
+    @PostMapping("/driver")
+    public Drivers addNewDriver(@RequestBody Drivers driver){
+        return flightAdminService.addNewDriver(driver);
+    }
+
+    @GetMapping("/flights")
+    public Iterable<BusFlights> getAllFlights(){
+        return flightAdminService.getAllFlights();
     }
 }

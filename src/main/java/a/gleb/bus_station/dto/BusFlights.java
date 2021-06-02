@@ -1,13 +1,17 @@
 package a.gleb.bus_station.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "flights")
+@Data
 public class BusFlights {
 
     @Id
@@ -34,149 +38,42 @@ public class BusFlights {
     @JoinColumn(name = "driver_info")
     private Drivers drivers;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "type_bus")
-    private TypeBus typeBus;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "bus_info")
+    @JoinColumn(name = "bus_info")
+    private TypeBus typeBus;
+
+
+    @ManyToOne
+    @JsonBackReference(value = "type_flight")
     @JoinColumn(name = "type_flight")
     private TypeFlight typeFlight;
 
-    @OneToMany(mappedBy = "busFlights", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonManagedReference
-    private List<Ticket> tickets;
 
-    public BusFlights(String routeType, String fromCity, String toCity,
-                      String timeDeparture, String timeArrival, String dateFlight, String numberFlightUnique) {
-        this.numberFlightUnique = numberFlightUnique;
-        this.dateFlight = dateFlight;
+    @OneToMany(mappedBy = "busFlights", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonManagedReference(value = "ticket_list")
+    private Collection<Ticket> tickets;
+
+
+    public BusFlights(String routeType, String fromCity, String toCity, String timeDeparture, String timeArrival, String dateFlight,
+                      String numberFlightUnique, Drivers drivers, TypeBus typeBus, TypeFlight typeFlight, Collection<Ticket> tickets) {
         this.routeType = routeType;
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.timeDeparture = timeDeparture;
         this.timeArrival = timeArrival;
+        this.dateFlight = dateFlight;
+        this.numberFlightUnique = numberFlightUnique;
+        this.drivers = drivers;
+        this.typeBus = typeBus;
+        this.typeFlight = typeFlight;
+        this.tickets = tickets;
     }
-
 
     public BusFlights() {
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getRouteType() {
-        return routeType;
-    }
-
-    public void setRouteType(String routeType) {
-        this.routeType = routeType;
-    }
-
-    public String getFromCity() {
-        return fromCity;
-    }
-
-    public void setFromCity(String fromCity) {
-        this.fromCity = fromCity;
-    }
-
-    public String getToCity() {
-        return toCity;
-    }
-
-    public void setToCity(String toCity) {
-        this.toCity = toCity;
-    }
-
-    public String getTimeDeparture() {
-        return timeDeparture;
-    }
-
-    public void setTimeDeparture(String timeDeparture) {
-        this.timeDeparture = timeDeparture;
-    }
-
-    public String getTimeArrival() {
-        return timeArrival;
-    }
-
-    public void setTimeArrival(String timeArrival) {
-        this.timeArrival = timeArrival;
-    }
-
-    public Drivers getDrivers() {
-        return drivers;
-    }
-
-    public String getDateFlight() {
-        return dateFlight;
-    }
-
-    public void setDateFlight(String dateFlight) {
-        this.dateFlight = dateFlight;
-    }
-
-    public void setDrivers(Drivers drivers) {
-        this.drivers = drivers;
-    }
-
-    public TypeBus getType() {
-        return typeBus;
-    }
-
-    public void setType(TypeBus type) {
-        this.typeBus = type;
-    }
-
-    public TypeBus getTypeBus() {
-        return typeBus;
-    }
-
-    public String getNumberFlightUnique() {
-        return numberFlightUnique;
-    }
-
-    public void setNumberFlightUnique(String numberFlightUnique) {
-        this.numberFlightUnique = numberFlightUnique;
-    }
-
-    public void setTypeBus(TypeBus typeBus) {
-        this.typeBus = typeBus;
-    }
-
-    public TypeFlight getTypeFlight() {
-        return typeFlight;
-    }
-
-    public void setTypeFlight(TypeFlight typeFlight) {
-        this.typeFlight = typeFlight;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
-
-    @Override
-    public String toString() {
-        return "BusFlights{" +
-                "id=" + id +
-                ", routeType='" + routeType + '\'' +
-                ", fromCity='" + fromCity + '\'' +
-                ", toCity='" + toCity + '\'' +
-                ", timeDeparture='" + timeDeparture + '\'' +
-                ", timeArrival='" + timeArrival + '\'' +
-                '}';
-    }
 
 }

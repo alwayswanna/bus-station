@@ -1,11 +1,14 @@
 package a.gleb.bus_station.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "type_flight")
 public class TypeFlight {
 
@@ -17,45 +20,14 @@ public class TypeFlight {
     private String typeOfFlight;
 
     @OneToMany(mappedBy = "typeFlight")
-    @JsonManagedReference
-    private List<BusFlights> busFlights;
+    @JsonManagedReference(value = "type_flight")
+    private Collection<BusFlights> busFlights;
 
-    public TypeFlight(String typeOfFlight) {
+    public TypeFlight(String typeOfFlight, Collection<BusFlights> busFlights) {
         this.typeOfFlight = typeOfFlight;
-    }
-
-    public TypeFlight() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTypeOfFlight() {
-        return typeOfFlight;
-    }
-
-    public void setTypeOfFlight(String type) {
-        this.typeOfFlight = type;
-    }
-
-    public List<BusFlights> getBusFlights() {
-        return busFlights;
-    }
-
-    public void setBusFlights(List<BusFlights> busFlights) {
         this.busFlights = busFlights;
     }
 
-    @Override
-    public String toString() {
-        return "TypeFlight{" +
-                "id=" + id +
-                ", type='" + typeOfFlight + '\'' +
-                '}';
+    public TypeFlight() {
     }
 }

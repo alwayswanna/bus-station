@@ -32,7 +32,7 @@ public class BusAdminController {
         return "administrationBuses";
     }
 
-    @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBusesEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         int busId = id;
@@ -41,7 +41,7 @@ public class BusAdminController {
         model.put("bus", typeBus);
         model.put("flights", flightsOfBus);
         return "administrationBusOrDriverEdit";
-    }
+    }*/
 
     @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
@@ -67,7 +67,7 @@ public class BusAdminController {
         }
     }
 
-    @RequestMapping(value = "/administrator/buses/{id}/del", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/administrator/buses/{id}/del", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorRemoveBus(@PathVariable(value = "id") Integer id,
                                          Map<String, Object> model) {
@@ -81,7 +81,7 @@ public class BusAdminController {
         busRepo.delete(typeBus);
         return "redirect:/administrations/administrator/buses";
 
-    }
+    }*/
 
     @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
@@ -89,7 +89,7 @@ public class BusAdminController {
         return "administrationAddBus";
     }
 
-    @RequestMapping(value = "/administrator/add_bus", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/administrator/add_bus", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorAddBusPost(@RequestParam String busModel,
                                           @RequestParam String type,
@@ -113,6 +113,6 @@ public class BusAdminController {
             busRepo.save(bus);
             return "redirect:/administrations/administrator/buses";
         }
-    }
+    }*/
 
 }

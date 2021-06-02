@@ -48,7 +48,7 @@ public class FlightAdminController {
         return "addFlight";
     }
 
-    @RequestMapping(value = "/administrator/add_flight", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/administrator/add_flight", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorAddFlightPost(
             @RequestParam String fromCity,
@@ -82,15 +82,14 @@ public class FlightAdminController {
                 type = "Проездной";
             }
             BusFlights busFlight = new BusFlights(type, fromCity, toCity,
-                    timeDeparture, timeArrival, dateFlight, numberFlightUnique);
-            busFlight.setDrivers(driver);
+                    timeDeparture, timeArrival, dateFlight, numberFlightUnique, driver, typeBus, typeOfFlight, null);
             busFlight.setTypeBus(typeBus);
             busFlight.setTypeFlight(typeOfFlight);
             flightRepo.save(busFlight);
 
             return "redirect:/administrations/administrator/flights";
         }
-    }
+    }*/
 
     @RequestMapping(value = "/administrator/flight/{id}/edit", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
@@ -137,8 +136,8 @@ public class FlightAdminController {
             TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
             BusFlights busFlights = flightRepo.findById(id).orElseThrow();
             busFlights.setDrivers(driver);
-            busFlights.setTypeBus(typeBus);
-            busFlights.setTypeFlight(typeFlight);
+           /* busFlights.setTypeBus(typeBus);
+            busFlights.setTypeFlight(typeFlight);*/
             busFlights.setFromCity(fromCity);
             busFlights.setToCity(toCity);
             busFlights.setTimeDeparture(timeDeparture);
@@ -149,7 +148,7 @@ public class FlightAdminController {
         }
     }
 
-    @RequestMapping(value = "/administrator/flight/{id}/del", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/administrator/flight/{id}/del", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorRemoveFlightPost(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         BusFlights busFlight = flightRepo.findById(id).orElseThrow();
@@ -163,7 +162,7 @@ public class FlightAdminController {
         }
         flightRepo.delete(busFlight);
         return "redirect:/administrations/administrator/flights";
-    }
+    }*/
 
     @RequestMapping(value = "/administrator/flights", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")

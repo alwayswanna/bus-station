@@ -28,9 +28,9 @@ public class ApiControllerUser {
         return flightUserService.busFlightsById(id);
     }
 
-    @PostMapping("/ticket")
+    /*@PostMapping("/ticket")
     public Ticket buyTicketForPassenger(@RequestBody BusFlights bf, @RequestBody PassengerPassport pp){
         return flightUserService.buyTicketOnSelectedFlight(bf, pp);
-    }
+    }*/
 
 }

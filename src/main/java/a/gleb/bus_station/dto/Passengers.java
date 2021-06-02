@@ -1,11 +1,14 @@
 package a.gleb.bus_station.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
+@Data
 @Table(name = "passengers")
 public class Passengers {
 
@@ -17,59 +20,20 @@ public class Passengers {
     private String numTicket;
 
     @OneToOne(mappedBy = "passengers", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference(value = "passenger_list")
     private Ticket ticket;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference(value = "passenger_info")
     @JoinColumn(name = "passenger_info", referencedColumnName = "id_passenger_passport")
     private PassengerPassport passengerInfo;
 
-    public Passengers(String numTicket) {
+    public Passengers(String numTicket, Ticket ticket, PassengerPassport passengerInfo) {
         this.numTicket = numTicket;
-    }
-
-    public Passengers() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNumTicket() {
-        return numTicket;
-    }
-
-    public void setNumTicket(String numTicket) {
-        this.numTicket = numTicket;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
         this.ticket = ticket;
-    }
-
-    public PassengerPassport getPassengerInfo() {
-        return passengerInfo;
-    }
-
-    public void setPassengerInfo(PassengerPassport passengerInfo) {
         this.passengerInfo = passengerInfo;
     }
 
-    @Override
-    public String toString() {
-        return "Passengers{" +
-                "id=" + id +
-                ", numTicket='" + numTicket + '\'' +
-                ", ticket=" + ticket +
-                '}';
+    public Passengers() {
     }
 }

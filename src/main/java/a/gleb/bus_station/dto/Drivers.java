@@ -1,12 +1,13 @@
 package a.gleb.bus_station.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 @Entity
+@Data
 @Table(name = "drivers")
 public class Drivers {
 
@@ -23,63 +24,16 @@ public class Drivers {
 
     @OneToMany(mappedBy = "drivers", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonManagedReference
-    private List<BusFlights> busFlights;
+    private Collection<BusFlights> busFlights;
 
-    public Drivers(String driverName, String driverSurname, String driverPhone) {
+    public Drivers(String driverName, String driverSurname, String driverPhone, Collection<BusFlights> busFlights) {
         this.driverName = driverName;
         this.driverSurname = driverSurname;
         this.driverPhone = driverPhone;
+        this.busFlights = busFlights;
     }
 
     public Drivers() {
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDriverName() {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
-    }
-
-    public String getDriverSurname() {
-        return driverSurname;
-    }
-
-    public void setDriverSurname(String driverSurname) {
-        this.driverSurname = driverSurname;
-    }
-
-    public String getDriverPhone() {
-        return driverPhone;
-    }
-
-    public void setDriverPhone(String driverPhone) {
-        this.driverPhone = driverPhone;
-    }
-
-    public List<BusFlights> getBusFlights() {
-        return busFlights;
-    }
-
-    public void setBusFlights(List<BusFlights> busFlights) {
-        this.busFlights = busFlights;
-    }
-
-    public void addRouteToList(BusFlights busFlight){
-        if (busFlights == null){
-            busFlights = new ArrayList<>();
-        }else{
-            busFlights.add(busFlight);
-        }
-
-    }
 }

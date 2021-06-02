@@ -58,7 +58,7 @@ public class PassengerAdminController {
         return "redirect:/administrations/administrator/passengers";
     }
 
-    @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
         int passengerId = id;
@@ -71,9 +71,9 @@ public class PassengerAdminController {
         model.put("passenger_info", passenger);
         model.put("passenger", passengerPassport);
         return "administrationEditPassenger";
-    }
+    }*/
 
-    @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
+   /* @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditPost(@PathVariable(value = "id") Integer id,
                                                  @RequestParam String passengerSurname,
@@ -122,7 +122,7 @@ public class PassengerAdminController {
                 return "redirect:" + redirectLink;
             }
         }
-    }
+    }*/
 
     @RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
@@ -132,7 +132,7 @@ public class PassengerAdminController {
         return "administrationBuyTicket";
     }
 
-    @RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBuyTicketPost(@RequestParam String passengerName,
                                              @RequestParam String passengerSurname,
@@ -185,5 +185,5 @@ public class PassengerAdminController {
                 return "redirect:" + redirectLink;
             }
         }
-    }
+    }*/
 }
