@@ -12,4 +12,6 @@ public interface TypeBusRepo extends CrudRepository<TypeBus, Integer> {
     TypeBus findByBusModel(String busModel);
 
     TypeBus findById(int i);
+
+    TypeBus findAllById(Integer id);
 }

@@ -29,6 +29,12 @@ public class GlobalUserApiExceptionHandler {
         IncorrectData incorrectData = new IncorrectData();
         incorrectData.setInfo(duplicateFlightException.getMessage());
         return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+    }
 
+    @ExceptionHandler
+    public ResponseEntity<IncorrectData> handleException(DuplicateBusException duplicateBusException){
+        IncorrectData incorrectData = new IncorrectData();
+        incorrectData.setInfo(duplicateBusException.getMessage());
+        return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
     }
 }
