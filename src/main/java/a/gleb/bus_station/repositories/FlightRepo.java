@@ -15,4 +15,6 @@ public interface FlightRepo extends CrudRepository<BusFlights, Integer> {
 
     BusFlights findByNumberFlightUnique(String numberFlightUnique);
 
+    BusFlights findAllById(Integer id);
+
 }

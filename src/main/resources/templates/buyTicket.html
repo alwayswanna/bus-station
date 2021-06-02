@@ -63,8 +63,8 @@
                                 <td><h6>Номер телефона:</h6></td>
                             </tr>
                             <tr>
-                                <td th:text="${el.getDrivers().getDriverSurname()} + ' ' + ${el.getDrivers().getDriverName()}"/>
-                                <td th:text="${el.getDrivers().getDriverPhone()}"/>
+                                <td th:text="${el.getBusDriver().getDriverSurname()} + ' ' + ${el.getBusDriver().getDriverName()}"/>
+                                <td th:text="${el.getBusDriver().getDriverPhone()}"/>
                             </tr>
                             </tbody>
                         </table>

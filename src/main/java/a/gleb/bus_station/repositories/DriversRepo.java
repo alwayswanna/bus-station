@@ -1,15 +1,16 @@
 package a.gleb.bus_station.repositories;
 
-import a.gleb.bus_station.dto.Drivers;
+import a.gleb.bus_station.dto.BusDriver;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DriversRepo extends CrudRepository<Drivers, Integer> {
+public interface DriversRepo extends CrudRepository<BusDriver, Integer> {
 
-    Iterable<Drivers> findAllById(int i);
-    Drivers findByDriverSurname(String surname);
-    Drivers findById(int i);
-    Drivers findByDriverNameAndDriverSurname(String driverSurname, String driverName);
+    Iterable<BusDriver> findAllById(int i);
+    BusDriver findByDriverSurname(String surname);
+    BusDriver findById(int i);
+    BusDriver findByDriverNameAndDriverSurname(String driverSurname, String driverName);
+    BusDriver findAllByDriverLicense(String driverLicense);
 
 }

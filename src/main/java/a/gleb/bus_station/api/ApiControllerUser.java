@@ -1,9 +1,6 @@
 package a.gleb.bus_station.api;
 
 import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.PassengerPassport;
-import a.gleb.bus_station.dto.Ticket;
-import a.gleb.bus_station.service.FlightUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class ApiControllerUser {
 
-    private final FlightUserService flightUserService;
+    /*private final FlightUserService flightUserService;
 
     @Autowired
     public ApiControllerUser(FlightUserService flightUserService) {
@@ -26,7 +23,7 @@ public class ApiControllerUser {
     @GetMapping("/flight/{id}")
     public BusFlights getFlightById(@PathVariable Integer id){
         return flightUserService.busFlightsById(id);
-    }
+    }*/
 
     /*@PostMapping("/ticket")
     public Ticket buyTicketForPassenger(@RequestBody BusFlights bf, @RequestBody PassengerPassport pp){

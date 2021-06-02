@@ -1,13 +1,11 @@
 package a.gleb.bus_station.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "flights")
@@ -36,7 +34,7 @@ public class BusFlights {
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "driver_info")
-    private Drivers drivers;
+    private BusDriver busDriver;
 
 
     @ManyToOne
@@ -57,7 +55,7 @@ public class BusFlights {
 
 
     public BusFlights(String routeType, String fromCity, String toCity, String timeDeparture, String timeArrival, String dateFlight,
-                      String numberFlightUnique, Drivers drivers, TypeBus typeBus, TypeFlight typeFlight, Collection<Ticket> tickets) {
+                      String numberFlightUnique, BusDriver busDriver, TypeBus typeBus, TypeFlight typeFlight, Collection<Ticket> tickets) {
         this.routeType = routeType;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -65,7 +63,7 @@ public class BusFlights {
         this.timeArrival = timeArrival;
         this.dateFlight = dateFlight;
         this.numberFlightUnique = numberFlightUnique;
-        this.drivers = drivers;
+        this.busDriver = busDriver;
         this.typeBus = typeBus;
         this.typeFlight = typeFlight;
         this.tickets = tickets;

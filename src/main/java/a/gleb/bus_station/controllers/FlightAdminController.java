@@ -39,7 +39,7 @@ public class FlightAdminController {
     @RequestMapping(value = "/administrator/add_flight", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorAddFlightGet(Map<String, Object> model) {
-        Iterable<Drivers> drivers = driversRepo.findAll();
+        Iterable<BusDriver> drivers = driversRepo.findAll();
         Iterable<TypeBus> typeBuses = typeBusRepo.findAll();
         Iterable<TypeFlight> typeFlights = typeFlightsRepo.findAll();
         model.put("type", typeFlights);
@@ -101,7 +101,7 @@ public class FlightAdminController {
             Optional<BusFlights> flight = flightRepo.findById(id);
             ArrayList<BusFlights> flightModel = new ArrayList<>();
             flight.ifPresent(flightModel::add);
-            Iterable<Drivers> drivers = driversRepo.findAll();
+            Iterable<BusDriver> drivers = driversRepo.findAll();
             Iterable<TypeBus> typeBus = typeBusRepo.findAll();
             Iterable<TypeFlight> typeFlight = typeFlightsRepo.findAll();
             model.put("type", typeFlight);
@@ -131,11 +131,11 @@ public class FlightAdminController {
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:/administrations/administrator/flight/"+ id + "/edit";
         } else {
-            Drivers driver = driversRepo.findByDriverSurname(driverSurname);
+            BusDriver driver = driversRepo.findByDriverSurname(driverSurname);
             TypeFlight typeFlight = typeFlightsRepo.findByTypeOfFlight(typeOfFlight);
             TypeBus typeBus = typeBusRepo.findByBusModel(busModel);
             BusFlights busFlights = flightRepo.findById(id).orElseThrow();
-            busFlights.setDrivers(driver);
+            busFlights.setBusDriver(driver);
            /* busFlights.setTypeBus(typeBus);
             busFlights.setTypeFlight(typeFlight);*/
             busFlights.setFromCity(fromCity);

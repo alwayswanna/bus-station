@@ -1,7 +1,7 @@
 package a.gleb.bus_station.controllers;
 
+import a.gleb.bus_station.dto.BusDriver;
 import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.Drivers;
 import a.gleb.bus_station.repositories.DriversRepo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -29,12 +29,12 @@ public class DriverAdminController {
     @RequestMapping(value = "/administrator/drivers", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPageDrivers(Map<String, Object> model) {
-        Iterable<Drivers> drivers = driversRepo.findAll();
+        Iterable<BusDriver> drivers = driversRepo.findAll();
         model.put("drivers", drivers);
         return "administratorDrivers";
     }
 
-    @RequestMapping(value = "/administrator/drivers/add_driver", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/administrator/drivers/add_driver", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String adminAddDriverGet(Map<String, Object> model) {
         return "administrationAddDriver";
@@ -52,18 +52,18 @@ public class DriverAdminController {
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:/administrations/administrator/drivers/add_driver";
         } else {
-            Drivers driver = new Drivers(driverName, driverSurname, driverPhone, null);
+            BusDriver driver = new BusDriver(driverName, driverSurname, driverPhone, null);
             driversRepo.save(driver);
             return "redirect:/administrations/administrator/drivers";
         }
-    }
+    }*/
 
     @RequestMapping(value = "/administrator/drivers/{id}/edit", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorDriverEditGet(@PathVariable(value = "id") Integer id,
                                              Map<String, Object> model) {
-        Optional<Drivers> driver = driversRepo.findById(id);
-        ArrayList<Drivers> driverModel = new ArrayList<>();
+        Optional<BusDriver> driver = driversRepo.findById(id);
+        ArrayList<BusDriver> driverModel = new ArrayList<>();
         driver.ifPresent(driverModel::add);
         Iterable<BusFlights> flights = driverModel.get(0).getBusFlights();
         model.put("flights", flights);
@@ -85,7 +85,7 @@ public class DriverAdminController {
             return "redirect:/administrations/administrator/drivers/" + id + "/edit";
         } else {
             int driverId = id;
-            Drivers driver = driversRepo.findById(driverId);
+            BusDriver driver = driversRepo.findById(driverId);
             driver.setDriverName(driverName);
             driver.setDriverSurname(driverSurname);
             driver.setDriverPhone(driverPhone);
@@ -99,10 +99,10 @@ public class DriverAdminController {
     public String administratorDriverDelete(@PathVariable(value = "id") Integer id,
                                             Map<String, Object> model) {
         int driverId = id;
-        Drivers driver = driversRepo.findById(driverId);
+        BusDriver driver = driversRepo.findById(driverId);
         Iterable<BusFlights> flights = driver.getBusFlights();
         for (BusFlights flight : flights) {
-            flight.setDrivers(driversRepo.findById(1));
+            flight.setBusDriver(driversRepo.findById(1));
         }
         driversRepo.delete(driver);
         return "redirect:/administrations/administrator/drivers";
@@ -113,9 +113,9 @@ public class DriverAdminController {
     public String administratorDriverGetFlightsGet(@PathVariable(value = "id") Integer id,
                                                    Map<String, Object> model) {
         int driverId = id;
-        Drivers drivers = driversRepo.findById(driverId);
-        Iterable<BusFlights> flights = drivers.getBusFlights();
-        model.put("driver", drivers);
+        BusDriver busDriver = driversRepo.findById(driverId);
+        Iterable<BusFlights> flights = busDriver.getBusFlights();
+        model.put("driver", busDriver);
         model.put("flights", flights);
         return "administratorDriverFlights";
 
