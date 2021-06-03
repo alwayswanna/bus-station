@@ -6,14 +6,19 @@ import a.gleb.bus_station.dto.Passengers;
 import a.gleb.bus_station.dto.Ticket;
 import a.gleb.bus_station.exceptions.IncorrectPassengerInformationException;
 import a.gleb.bus_station.exceptions.NoFreeSpaceException;
+import a.gleb.bus_station.exceptions.NoSuchPassengerSurnameException;
+import a.gleb.bus_station.exceptions.NoSuchPassengerWithDocNumberException;
 import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.PassengerPassportRepo;
 import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -66,4 +71,51 @@ public class PassengerPassportService {
             return allPassengers;
         }
     }
+
+    public List<Object> getPassengerBySurname(String surname){
+        Iterable<PassengerPassport> passengersWithSurname = passengerPassportRepo.findAllByPassengerSurname(surname);
+        if (passengersWithSurname.iterator().next() == null){
+            throw new NoSuchPassengerSurnameException("NoSuchPassengerSurnameException: there are no passengers with [SURNAME]: " + surname);
+        }else{
+            return SystemMethods.getObjects(passengersWithSurname);
+        }
+    }
+
+    public List<Object> getPassengerByDocNum(String passengerDocNum){
+        Iterable<PassengerPassport> passengerWithDocNum = passengerPassportRepo.findAllByPassengerDocNum(passengerDocNum);
+        if (passengerWithDocNum.iterator().next() == null){
+            throw new NoSuchPassengerWithDocNumberException("NoSuchPassengerWithDocNumberException: there are no passenger with [Document Number]: " + passengerDocNum);
+        }else{
+            return SystemMethods.getObjects(passengerWithDocNum);
+        }
+    }
+
+    public Iterable<PassengerPassport> deleteSelectedPassenger(Integer id){
+        PassengerPassport passenger = passengerPassportRepo.findAllById(id);
+        if (passenger == null){
+            throw new NoSuchElementException();
+        }else{
+            passengerPassportRepo.delete(passenger);
+            return getAllPassengersInfo();
+        }
+    }
+
+    public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport){
+        PassengerPassport passenger = passengerPassportRepo.findAllById(passengerPassport.getId());
+        if (passenger == null){
+            throw new NoSuchElementException();
+        }else {
+            passenger.setPassengerName(passengerPassport.getPassengerName());
+            passenger.setPassengerSurname(passengerPassport.getPassengerSurname());
+            passenger.setPassengerBirthday(passengerPassport.getPassengerBirthday());
+            passenger.setPassengerPhone(passengerPassport.getPassengerPhone());
+            passenger.setPassengerDocNum(passengerPassport.getPassengerDocNum());
+            passenger.setPassengerRegistration(passengerPassport.getPassengerRegistration());
+            passenger.setPassengers(passengerPassport.getPassengers());
+            passengerPassportRepo.save(passenger);
+            return passenger;
+        }
+    }
+
+
 }

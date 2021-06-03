@@ -52,4 +52,11 @@ public class GlobalUserApiExceptionHandler {
         return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<IncorrectData> handleException(NoSuchPassengerSurnameException noSuchPassengerSurnameException){
+        IncorrectData incorrectData = new IncorrectData();
+        incorrectData.setInfo(noSuchPassengerSurnameException.getMessage());
+        return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface PassengersRepo extends CrudRepository<Passengers, Integer> {
 
     Iterable<Passengers> findAllById(int i);
+
     Passengers findByNumTicket(String uniqueIdTicket);
+
 }

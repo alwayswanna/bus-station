@@ -1,13 +1,12 @@
 package a.gleb.bus_station.service;
 
-import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.PassengerPassport;
-import a.gleb.bus_station.dto.Ticket;
-import a.gleb.bus_station.dto.TypeBus;
+import a.gleb.bus_station.dto.*;
 import a.gleb.bus_station.repositories.FlightRepo;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -42,5 +41,15 @@ public class SystemMethods {
     public static String generateUniqNumTicket(BusFlights busFlight){
         String uuid = UUID.randomUUID().toString();
         return busFlight.getNumberFlightUnique() + "_" + uuid.substring(0, 4);
+    }
+
+    @NotNull
+    public static List<Object> getObjects(Iterable<PassengerPassport> passengerWithDocNum) {
+        List<Object> callBack = new ArrayList<>();
+        callBack.add(passengerWithDocNum.iterator().next());
+        Passengers passenger = passengerWithDocNum.iterator().next().getPassengers();
+        callBack.add(passenger);
+        callBack.add(passenger.getTicket());
+        return callBack;
     }
 }
