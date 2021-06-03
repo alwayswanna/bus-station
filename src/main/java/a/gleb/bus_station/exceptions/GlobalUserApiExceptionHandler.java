@@ -59,4 +59,11 @@ public class GlobalUserApiExceptionHandler {
         return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<IncorrectData> handleException(DuplicateUserNameException duplicateUserNameException){
+        IncorrectData incorrectData = new IncorrectData();
+        incorrectData.setInfo(duplicateUserNameException.getMessage());
+        return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+    }
+
 }

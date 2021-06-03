@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface AdministratorRepo extends JpaRepository<User, Integer> {
 
     User findByUserName(String login);
+
+    User findUserById(Integer id);
 }

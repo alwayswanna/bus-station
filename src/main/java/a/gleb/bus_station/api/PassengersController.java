@@ -26,13 +26,13 @@ public class PassengersController {
         return passengerPassportService.buyTicketForPassenger(id, passengerPassport);
     }
 
-    @RequestMapping(value = "/passenger", method = RequestMethod.GET)
+    @RequestMapping(value = "/passengers_surname", method = RequestMethod.GET)
     public List<Object> getPassengerBySurname(String surname){
         return passengerPassportService.getPassengerBySurname(surname);
     }
 
-    @RequestMapping(value = "/passenger", method = RequestMethod.GET)
-    public List<Object> getPassengerByDocNum(String docNum){
+    @RequestMapping(value = "/passengers_doc", method = RequestMethod.GET)
+    public List<Object> getPassengerByDoc(String docNum){
         return passengerPassportService.getPassengerByDocNum(docNum);
     }
 
