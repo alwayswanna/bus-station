@@ -37,4 +37,19 @@ public class GlobalUserApiExceptionHandler {
         incorrectData.setInfo(duplicateBusException.getMessage());
         return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<IncorrectData> handleException(NoFreeSpaceException noFreeSpaceException){
+        IncorrectData incorrectData = new IncorrectData();
+        incorrectData.setInfo(noFreeSpaceException.getMessage());
+        return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<IncorrectData> handleException(IncorrectPassengerInformationException incorrectPassengerInformationException){
+        IncorrectData incorrectData = new IncorrectData();
+        incorrectData.setInfo(incorrectPassengerInformationException.getMessage());
+        return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
+    }
+
 }
