@@ -14,6 +14,7 @@ import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -114,6 +115,46 @@ public class PassengerPassportService {
             passenger.setPassengers(passengerPassport.getPassengers());
             passengerPassportRepo.save(passenger);
             return passenger;
+        }
+    }
+
+    public List<Object> checkTicket(String passengerDocNum, String numTicket){
+        List<Object> response = new ArrayList<>();
+        String result = SystemMethods.checkDocAndTicketNumber(passengerDocNum, numTicket);
+        if (result.equals("TICKET")){
+            Passengers passenger = passengersRepo.findByNumTicket(numTicket);
+            if (passenger == null){
+                response.add("Incorrect ticket data");
+                return response;
+            }else {
+                PassengerPassport passport = passenger.getPassengerInfo();
+                Ticket ticket = passenger.getTicket();
+                BusFlights flight = ticket.getBusFlights();
+                response.add(passenger);
+                response.add(passport);
+                response.add(ticket);
+                response.add(flight);
+                return response;
+            }
+        }else if(result.equals("PASSENGER")){
+            PassengerPassport passport = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
+            if (passport == null){
+                response.add("Incorrect data of document number");
+                return response;
+            }else{
+                Passengers passenger = passport.getPassengers();
+                Ticket ticket = passenger.getTicket();
+                BusFlights flight = ticket.getBusFlights();
+                response.add(passenger);
+                response.add(passport);
+                response.add(ticket);
+                response.add(flight);
+                return response;
+            }
+        }else{
+            String responseError = "Empty data from user";
+            response.add(responseError);
+            return response;
         }
     }
 

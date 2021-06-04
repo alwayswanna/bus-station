@@ -52,4 +52,14 @@ public class SystemMethods {
         callBack.add(passenger.getTicket());
         return callBack;
     }
+
+    public static String  checkDocAndTicketNumber(String passenger, String ticket){
+        if (passenger == null | passenger.equals("")){
+            return "TICKET";
+        }else if(ticket == null | ticket.equals("")){
+            return "PASSENGER";
+        }else{
+            return "ERROR";
+        }
+    }
 }

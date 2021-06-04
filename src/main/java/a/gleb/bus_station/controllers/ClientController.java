@@ -2,6 +2,8 @@ package a.gleb.bus_station.controllers;
 
 import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.dto.PassengerPassport;
+import a.gleb.bus_station.dto.Passengers;
+import a.gleb.bus_station.dto.Ticket;
 import a.gleb.bus_station.service.FlightService;
 import a.gleb.bus_station.service.PassengerPassportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -72,36 +75,28 @@ public class ClientController {
         return "checkTicket";
     }
 
-    /*@RequestMapping(value = "/check_ticket", method = RequestMethod.POST)
+    @RequestMapping(value = "/check_ticket", method = RequestMethod.POST)
     public String checkTicketPost(@RequestParam String passengerDocNum,
                                   @RequestParam String numTicket,
                                   Map<String, Object> model,
                                   RedirectAttributes redirectAttributes) {
-        PassengerPassport passport = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
-        Passengers passenger = passengersRepo.findByNumTicket(numTicket);
-        if (passport == null & passenger == null) {
-            String errorMsg = "Вы не указали требуемых данных или данные оказались некорректными. Попробуйте повторить попытку вновь.";
-            redirectAttributes.addFlashAttribute("error", errorMsg);
+        List<Object> models = passengerPassportService.checkTicket(passengerDocNum, numTicket);
+        if (models.get(0).equals("Empty data from user")){
+            redirectAttributes.addFlashAttribute("error", "You are input empty data");
             return "redirect:/check_ticket";
-        } else if (passport == null | passengerDocNum.equals("")) {
-            PassengerPassport passengerPassport = passenger.getPassengerInfo();
-            Ticket ticket = passenger.getTicket();
-            BusFlights flight = ticket.getBusFlights();
-            model.put("passport", passengerPassport);
+        }else if(models.get(0).equals("Incorrect data of document number") | models.get(0).equals("Incorrect ticket data")){
+            redirectAttributes.addFlashAttribute("error", "You are input incorrect data for ticket or passenger document number");
+            return "redirect:/check_ticket";
+        }else{
+            Passengers passenger = (Passengers) models.get(0);
+            PassengerPassport passport = (PassengerPassport) models.get(1);
+            Ticket ticket = (Ticket) models.get(2);
+            BusFlights flight = (BusFlights) models.get(3);
+            model.put("passport", passport);
             model.put("ticket", ticket);
             model.put("passenger", passenger);
             model.put("flight", flight);
             return "checkTicket";
-        } else if (passenger == null | numTicket.equals("")) {
-            Passengers passengerFormDoc = passport.getPassengers();
-            Ticket ticket = passengerFormDoc.getTicket();
-            BusFlights flight = ticket.getBusFlights();
-            model.put("passport", passport);
-            model.put("ticket", ticket);
-            model.put("passenger", passengerFormDoc);
-            model.put("flight", flight);
-            return "checkTicket";
         }
-        return "checkTicket";
-    }*/
+    }
 }
