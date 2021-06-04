@@ -1,30 +1,22 @@
 package a.gleb.bus_station.controllers;
 
 import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.repositories.FlightRepo;
-import a.gleb.bus_station.service.BusService;
 import a.gleb.bus_station.service.FlightService;
-import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 public class MainController {
 
-    private final FlightRepo flightRepo;
     private final FlightService flightService;
 
     @Autowired
-    public MainController(FlightRepo flightRepo, FlightService flightService) {
-        this.flightRepo = flightRepo;
+    public MainController(FlightService flightService) {
         this.flightService = flightService;
     }
 
