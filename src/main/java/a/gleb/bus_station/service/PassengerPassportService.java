@@ -35,26 +35,30 @@ public class PassengerPassportService {
 
     public PassengerPassport buyTicketForPassenger(Integer id, PassengerPassport passengerPassport){
         BusFlights selectedFlight = flightRepo.findAllById(id);
-        int busSeats = selectedFlight.getTypeBus().getNumberOfSeats();
-        int tickets = selectedFlight.getTickets().size();
-        if (tickets >= busSeats){
-            throw new NoFreeSpaceException("NoFreeSpaceException: all tickets are over");
-        }else{
-            if (!SystemMethods.checkPassengerInformation(passengerPassport)){
-                throw new IncorrectPassengerInformationException("IncorrectPassengerInformationException: some data of passenger is empty or incorrect");
-            }else{
-                Ticket ticket = new Ticket();
-                Passengers passenger = new Passengers();
-                passenger.setNumTicket(SystemMethods.generateUniqNumTicket(selectedFlight));
-                ticket.setPassengers(passenger);
-                ticket.setTicketPassenger(passengerPassport.getPassengerSurname());
-                ticket.setTicketPlace("Sitting place");
-                ticket.setBusFlights(selectedFlight);
-                passenger.setPassengerInfo(passengerPassport);
-                ticketRepo.save(ticket);
-                passengersRepo.save(passenger);
-                passengerPassportRepo.save(passengerPassport);
-                return passengerPassport;
+        if (selectedFlight == null){
+            throw new NoSuchElementException();
+        }else {
+            int busSeats = selectedFlight.getTypeBus().getNumberOfSeats();
+            int tickets = selectedFlight.getTickets().size();
+            if (tickets >= busSeats) {
+                throw new NoFreeSpaceException("NoFreeSpaceException: all tickets are over");
+            } else {
+                if (!SystemMethods.checkPassengerInformation(passengerPassport)) {
+                    throw new IncorrectPassengerInformationException("IncorrectPassengerInformationException: some data of passenger is empty or incorrect");
+                } else {
+                    Ticket ticket = new Ticket();
+                    Passengers passenger = new Passengers();
+                    passenger.setNumTicket(SystemMethods.generateUniqNumTicket(selectedFlight));
+                    ticket.setPassengers(passenger);
+                    ticket.setTicketPassenger(passengerPassport.getPassengerSurname());
+                    ticket.setTicketPlace("Sitting place");
+                    ticket.setBusFlights(selectedFlight);
+                    passenger.setPassengerInfo(passengerPassport);
+                    ticketRepo.save(ticket);
+                    passengersRepo.save(passenger);
+                    passengerPassportRepo.save(passengerPassport);
+                    return passengerPassport;
+                }
             }
         }
     }
