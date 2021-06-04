@@ -75,6 +75,14 @@ public class FlightService {
             flightRepo.delete(flight);
             return allFlights();
         }
+    }
 
+    public Iterable<BusFlights> flightsByType(String type){
+        Iterable<BusFlights> flightsByType = flightRepo.findAllByRouteType(type);
+        if (flightsByType.iterator().next() == null){
+            throw new NoSuchElementException();
+        }else{
+            return flightsByType;
+        }
     }
 }

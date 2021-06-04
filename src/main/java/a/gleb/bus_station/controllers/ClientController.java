@@ -5,6 +5,7 @@ import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.PassengerPassportRepo;
 import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
+import a.gleb.bus_station.service.PassengerPassportService;
 import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +23,15 @@ public class ClientController {
     private final TicketRepo ticketRepo;
     private final PassengerPassportRepo passengerPassportRepo;
     private final PassengersRepo passengersRepo;
+    private final PassengerPassportService passengerPassportService;
 
     public ClientController(FlightRepo flightRepo, TicketRepo ticketRepo,
-                            PassengerPassportRepo passengerPassportRepo, PassengersRepo passengersRepo) {
+                            PassengerPassportRepo passengerPassportRepo, PassengersRepo passengersRepo, PassengerPassportService passengerPassportService) {
         this.flightRepo = flightRepo;
         this.ticketRepo = ticketRepo;
         this.passengerPassportRepo = passengerPassportRepo;
         this.passengersRepo = passengersRepo;
+        this.passengerPassportService = passengerPassportService;
     }
 
     @RequestMapping(value = "/flight/{id}/buy_ticket", method = RequestMethod.GET)
