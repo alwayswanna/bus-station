@@ -94,4 +94,13 @@ public class FlightService {
             return flights;
         }
     }
+
+    public Iterable<BusFlights> returnFlightsByRouteType(String routeType){
+        Iterable<BusFlights> flights = flightRepo.findAllByRouteType(routeType);
+        if (flights.iterator().next() == null){
+            throw new NoSuchElementException();
+        }else {
+            return flights;
+        }
+    }
 }

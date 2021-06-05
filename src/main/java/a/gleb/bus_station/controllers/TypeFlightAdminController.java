@@ -2,8 +2,8 @@ package a.gleb.bus_station.controllers;
 
 
 import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.repositories.FlightRepo;
-import a.gleb.bus_station.repositories.TypeFlightsRepo;
+import a.gleb.bus_station.service.FlightService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,18 +16,17 @@ import java.util.Map;
 @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
 public class TypeFlightAdminController {
 
-    private final TypeFlightsRepo typeFlightsRepo;
-    private final FlightRepo flightRepo;
+   private final FlightService flightService;
 
-    public TypeFlightAdminController(TypeFlightsRepo typeFlightsRepo, FlightRepo flightRepo) {
-        this.typeFlightsRepo = typeFlightsRepo;
-        this.flightRepo = flightRepo;
+   @Autowired
+    public TypeFlightAdminController(FlightService flightService) {
+        this.flightService = flightService;
     }
 
     @RequestMapping(value = "/administrator/type_flights", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorTypeFlightGet(Map<String, Object> model){
-        Iterable<BusFlights> flights =  flightRepo.findAll();
+        Iterable<BusFlights> flights =  flightService.allFlights();
         model.put("type_flight", flights);
         return "administrationTypeFlight";
     }
@@ -35,7 +34,7 @@ public class TypeFlightAdminController {
     @RequestMapping(value = "/administrator/type_flight/arrival", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorArrivalFlightGet(Map<String, Object> model){
-        Iterable<BusFlights> flightsArrival = flightRepo.findAllByRouteType("Прибывающий");
+        Iterable<BusFlights> flightsArrival = flightService.returnFlightsByRouteType("Прибывающий");
         model.put("type_flight", flightsArrival);
         return "administrationTypeFlight";
     }
@@ -43,7 +42,7 @@ public class TypeFlightAdminController {
     @RequestMapping(value = "/administrator/type_flight/departure", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorDepartureFlightGet(Map<String, Object> model){
-        Iterable<BusFlights> flightsArrival = flightRepo.findAllByRouteType("Отбывающий");
+        Iterable<BusFlights> flightsArrival = flightService.flightsByType("Отбывающий");
         model.put("type_flight", flightsArrival);
         return "administrationTypeFlight";
     }
