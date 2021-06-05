@@ -73,4 +73,13 @@ public class DriverService {
             return getAllDrivers();
         }
     }
+
+    public BusDriver driverBySurname(String surname){
+        BusDriver driver = driversRepo.findByDriverSurname(surname);
+        if (driver == null){
+            throw new NoSuchElementException();
+        }else{
+            return driver;
+        }
+    }
 }

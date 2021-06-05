@@ -85,4 +85,13 @@ public class FlightService {
             return flightsByType;
         }
     }
+
+    public BusFlights findFlightByFromCity(String city){
+        BusFlights flights = flightRepo.findAllByFromCity(city);
+        if (flights == null){
+            throw new NoSuchElementException();
+        }else {
+            return flights;
+        }
+    }
 }

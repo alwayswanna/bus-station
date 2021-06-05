@@ -68,5 +68,14 @@ public class BusService {
         }
     }
 
+    public TypeBus busByNameModel(String modelName){
+        TypeBus bus = busRepo.findByBusModel(modelName);
+        if (bus == null){
+            throw new NoSuchElementException();
+        }else{
+            return bus;
+        }
+    }
+
 
 }
