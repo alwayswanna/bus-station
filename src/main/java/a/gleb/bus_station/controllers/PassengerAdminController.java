@@ -8,6 +8,8 @@ import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.PassengerPassportRepo;
 import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
+import a.gleb.bus_station.service.PassengerPassportService;
+import a.gleb.bus_station.service.PassengerService;
 import a.gleb.bus_station.service.SystemMethods;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,19 +32,24 @@ public class PassengerAdminController {
     private final FlightRepo flightRepo;
     private final TicketRepo ticketRepo;
 
+    private final PassengerService passengerService;
+    private final PassengerPassportService passengerPassportService;
+
     public PassengerAdminController(PassengerPassportRepo passengerPassportRepo, PassengersRepo passengersRepo,
-                                    FlightRepo flightRepo, TicketRepo ticketRepo) {
+                                    FlightRepo flightRepo, TicketRepo ticketRepo, PassengerPassportService passengerPassportService, PassengerService passengerService) {
         this.passengerPassportRepo = passengerPassportRepo;
         this.passengersRepo = passengersRepo;
         this.flightRepo = flightRepo;
         this.ticketRepo = ticketRepo;
+        this.passengerService = passengerService;
+        this.passengerPassportService = passengerPassportService;
     }
 
     @RequestMapping(value = "/administrator/passengers", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengersGet(Map<String, Object> model) {
-        Iterable<PassengerPassport> passengers = passengerPassportRepo.findAll();
-        Iterable<Passengers> passengersNumTicket = passengersRepo.findAll();
+        Iterable<PassengerPassport> passengers = passengerPassportService.getAllPassengersInfo();
+        Iterable<Passengers> passengersNumTicket = passengerService.getAllPassengers();
         model.put("passenger_ticket", passengersNumTicket);
         model.put("passengers", passengers);
         return "administratorPassengers";
@@ -52,9 +59,7 @@ public class PassengerAdminController {
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerDelete(@PathVariable(value = "id") Integer id,
                                                Map<String, Object> model) {
-        int passengerId = id;
-        PassengerPassport passenger = passengerPassportRepo.findById(passengerId);
-        passengerPassportRepo.delete(passenger);
+        passengerService.deleteSelectedPassenger(id);
         return "redirect:/administrations/administrator/passengers";
     }
 

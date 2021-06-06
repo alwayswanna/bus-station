@@ -11,4 +11,6 @@ public interface PassengersRepo extends CrudRepository<Passengers, Integer> {
 
     Passengers findByNumTicket(String uniqueIdTicket);
 
+    Passengers findAllById(Integer id);
+
 }
