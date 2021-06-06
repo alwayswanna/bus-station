@@ -34,4 +34,8 @@ public class TypeFlightService {
             return typeFlight;
         }
     }
+
+    public void addNewTypeOfFlight(TypeFlight typeFlight){
+        typeFlightsRepo.save(typeFlight);
+    }
 }

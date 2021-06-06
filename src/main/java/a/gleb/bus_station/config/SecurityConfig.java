@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/static/**", "/api/user/**", "/api/**", "/flight/**").permitAll()
+                .antMatchers("/", "/static/**", "/api/user/**", "/api/**", "/flight/**", "/flights/**").permitAll()
                 .antMatchers("/administrations/administrator/users", "/administrations/administrator/add_user/", "/administrations/administrator/users/**").hasAuthority("ADMINISTRATOR")
                 .antMatchers("/administrations/administrator/passengers", "/administrations/administrator/buy_ticket", "/administrations/administrator/flights").hasAnyAuthority("OPERATOR", "ADMINISTRATOR")
                 .anyRequest().authenticated()
