@@ -55,6 +55,7 @@ public class PassengerPassportService {
                     ticket.setTicketPlace("Sitting place");
                     ticket.setBusFlights(selectedFlight);
                     passenger.setPassengerInfo(passengerPassport);
+                    passengerPassport.setPassengers(passenger);
                     ticketRepo.save(ticket);
                     passengersRepo.save(passenger);
                     passengerPassportRepo.save(passengerPassport);
