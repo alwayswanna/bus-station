@@ -14,28 +14,9 @@ import java.util.UUID;
 @Component
 public class SystemMethods {
 
-    public static boolean checkIdForFlight(@PathVariable("id") Integer id, Map<String, Object> model, FlightRepo flightRepo) {
-        if (!flightRepo.existsById(id)){
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean checkSpaceForTicket(TypeBus typeBus, List<Ticket> tickets){
-        if (typeBus.getNumberOfSeats() - tickets.size() > 0){
-            return true;
-        }
-        return false;
-    }
-
     public static boolean checkPassengerInformation(PassengerPassport passengerPassport){
-        if (passengerPassport.getPassengerName().equals("") | passengerPassport.getPassengerSurname().equals("") | passengerPassport.getPassengerBirthday().equals("") | passengerPassport.getPassengerPhone().equals("")
-                | passengerPassport.getPassengerDocNum().equals("") | passengerPassport.getPassengerRegistration().equals("")){
-            return false;
-        }else{
-            return true;
-        }
+        return !(passengerPassport.getPassengerName().equals("") | passengerPassport.getPassengerSurname().equals("") | passengerPassport.getPassengerBirthday().equals("") | passengerPassport.getPassengerPhone().equals("")
+                | passengerPassport.getPassengerDocNum().equals("") | passengerPassport.getPassengerRegistration().equals(""));
     }
 
     public static String generateUniqNumTicket(BusFlights busFlight){
