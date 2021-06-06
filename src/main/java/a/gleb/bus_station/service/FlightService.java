@@ -103,4 +103,13 @@ public class FlightService {
             return flights;
         }
     }
+
+    public BusFlights returnFlightByUniqueNumber(String number){
+        BusFlights flight = flightRepo.findByNumberFlightUnique(number);
+        if (flight == null){
+            throw new NoSuchElementException();
+        }else {
+            return flight;
+        }
+    }
 }

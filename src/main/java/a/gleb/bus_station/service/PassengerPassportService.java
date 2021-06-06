@@ -158,5 +158,14 @@ public class PassengerPassportService {
         }
     }
 
+    public PassengerPassport getPassengerById(Integer id){
+        PassengerPassport passenger = passengerPassportRepo.findAllById(id);
+        if (passenger == null){
+            throw new NoSuchElementException();
+        }else{
+            return passenger;
+        }
+    }
+
 
 }
