@@ -2,7 +2,8 @@ package a.gleb.bus_station.controllers;
 
 import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.dto.TypeBus;
-import a.gleb.bus_station.repositories.TypeBusRepo;
+import a.gleb.bus_station.service.BusService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,16 +19,17 @@ import java.util.Map;
 @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
 public class BusAdminController {
 
-    private final TypeBusRepo busRepo;
+    private final BusService busService;
 
-    public BusAdminController(TypeBusRepo busRepo) {
-        this.busRepo = busRepo;
+    @Autowired
+    public BusAdminController(BusService busService) {
+        this.busService = busService;
     }
 
     @RequestMapping(value = "/administrator/buses", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBusesGet(Map<String, Object> model) {
-        Iterable<TypeBus> buses = busRepo.findAll();
+        Iterable<TypeBus> buses = busService.allBuses();
         model.put("buses", buses);
         return "administrationBuses";
     }
@@ -35,11 +37,10 @@ public class BusAdminController {
     @RequestMapping(value = "/administrator/buses/{id}/edit", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBusesEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
-        int busId = id;
-        TypeBus typeBus = busRepo.findById(busId);
-        Iterable<BusFlights> flightsOfBus = typeBus.getBusFlights();
-        model.put("bus", typeBus);
-        model.put("flights", flightsOfBus);
+        TypeBus bus = busService.editSelectedBus(busService.returnBusById(id));
+        Iterable<BusFlights> flights = bus.getBusFlights();
+        model.put("bus", bus);
+        model.put("flights", flights);
         return "administrationBusOrDriverEdit";
     }
 
@@ -51,18 +52,13 @@ public class BusAdminController {
                                              @RequestParam String type,
                                              Map<String, Object> model,
                                              RedirectAttributes redirectAttributes) {
-        int busId = id;
-        String redirectLink = "/administrations/administrator/buses/" + busId + "/edit";
+        String redirectLink = "/administrations/administrator/buses/" + id + "/edit";
         if (busModel.equals("") | numberOfSeats.equals("") | type.equals("")) {
             String errorMsg = "Вы заполнили не все поля. Обновите страницу и повторите вновь.";
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:" + redirectLink;
         } else {
-            TypeBus bus = busRepo.findById(busId);
-            bus.setBusModel(busModel);
-            bus.setNumberOfSeats(Integer.parseInt(numberOfSeats));
-            bus.setType(type);
-            busRepo.save(bus);
+            busService.editSelectedBus(busService.returnBusById(id));
             return "redirect:/administrations/administrator/buses/";
         }
     }
@@ -71,14 +67,7 @@ public class BusAdminController {
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorRemoveBus(@PathVariable(value = "id") Integer id,
                                          Map<String, Object> model) {
-        int busId = id;
-        TypeBus typeBus = busRepo.findById(busId);
-        Iterable<BusFlights> flights = typeBus.getBusFlights();
-        for (BusFlights flight : flights) {
-            flight.setTypeBus(busRepo.findById(1));
-
-        }
-        busRepo.delete(typeBus);
+        busService.deleteSelectedBus(id);
         return "redirect:/administrations/administrator/buses";
 
     }
@@ -109,8 +98,8 @@ public class BusAdminController {
                 redirectAttributes.addFlashAttribute("error", errorMsg);
                 return "redirect:/administrations/administrator/add_bus";
             }
-            TypeBus bus = new TypeBus(type, seats, busModel);
-            busRepo.save(bus);
+            TypeBus bus = new TypeBus(type, seats, busModel, null);
+            busService.addNewTypeBus(bus);
             return "redirect:/administrations/administrator/buses";
         }
     }

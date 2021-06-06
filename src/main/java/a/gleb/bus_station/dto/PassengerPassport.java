@@ -1,8 +1,13 @@
 package a.gleb.bus_station.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 @Table(name = "passenger_passport")
 public class PassengerPassport {
 
@@ -24,94 +29,21 @@ public class PassengerPassport {
     private String passengerBirthday;
 
     @OneToOne(mappedBy = "passengerInfo", cascade = CascadeType.ALL)
+    @JsonBackReference(value = "passenger_info")
     private Passengers passengers;
 
-    public PassengerPassport(String passengerName, String passengerSurname, String passengerPhone, String passengerDocNum, String passengerRegistration, String passengerBirthday) {
+    public PassengerPassport(String passengerName, String passengerSurname, String passengerPhone, String passengerDocNum, String passengerRegistration,
+                             String passengerBirthday, Passengers passengers) {
         this.passengerName = passengerName;
         this.passengerSurname = passengerSurname;
         this.passengerPhone = passengerPhone;
         this.passengerDocNum = passengerDocNum;
         this.passengerRegistration = passengerRegistration;
         this.passengerBirthday = passengerBirthday;
+        this.passengers = passengers;
     }
 
     public PassengerPassport() {
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getPassengerName() {
-        return passengerName;
-    }
-
-    public void setPassengerName(String passengerName) {
-        this.passengerName = passengerName;
-    }
-
-    public String getPassengerSurname() {
-        return passengerSurname;
-    }
-
-    public void setPassengerSurname(String passengerSurname) {
-        this.passengerSurname = passengerSurname;
-    }
-
-    public String getPassengerPhone() {
-        return passengerPhone;
-    }
-
-    public void setPassengerPhone(String passengerPhone) {
-        this.passengerPhone = passengerPhone;
-    }
-
-    public String getPassengerDocNum() {
-        return passengerDocNum;
-    }
-
-    public void setPassengerDocNum(String passengerDocNum) {
-        this.passengerDocNum = passengerDocNum;
-    }
-
-    public String getPassengerRegistration() {
-        return passengerRegistration;
-    }
-
-    public void setPassengerRegistration(String passengerRegistration) {
-        this.passengerRegistration = passengerRegistration;
-    }
-
-    public String getPassengerBirthday() {
-        return passengerBirthday;
-    }
-
-    public void setPassengerBirthday(String passengerBirthday) {
-        this.passengerBirthday = passengerBirthday;
-    }
-
-    public Passengers getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(Passengers passengers) {
-        this.passengers = passengers;
-    }
-
-    @Override
-    public String toString() {
-        return "PassengerPassport{" +
-                "id=" + id +
-                ", passengerName='" + passengerName + '\'' +
-                ", passengerSurname='" + passengerSurname + '\'' +
-                ", passengerPhone='" + passengerPhone + '\'' +
-                ", passengerDocNum='" + passengerDocNum + '\'' +
-                ", passengerRegistration='" + passengerRegistration + '\'' +
-                ", passengerBirthday='" + passengerBirthday + '\'' +
-                '}';
-    }
 }

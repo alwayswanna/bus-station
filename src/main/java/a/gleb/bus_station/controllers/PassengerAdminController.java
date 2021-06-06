@@ -3,12 +3,10 @@ package a.gleb.bus_station.controllers;
 import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.dto.PassengerPassport;
 import a.gleb.bus_station.dto.Passengers;
-import a.gleb.bus_station.dto.Ticket;
-import a.gleb.bus_station.repositories.FlightRepo;
-import a.gleb.bus_station.repositories.PassengerPassportRepo;
-import a.gleb.bus_station.repositories.PassengersRepo;
-import a.gleb.bus_station.repositories.TicketRepo;
-import a.gleb.bus_station.service.SystemMethods;
+import a.gleb.bus_station.service.FlightService;
+import a.gleb.bus_station.service.PassengerPassportService;
+import a.gleb.bus_station.service.PassengerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,24 +24,23 @@ import java.util.UUID;
 @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
 public class PassengerAdminController {
 
-    private final PassengerPassportRepo passengerPassportRepo;
-    private final PassengersRepo passengersRepo;
-    private final FlightRepo flightRepo;
-    private final TicketRepo ticketRepo;
 
-    public PassengerAdminController(PassengerPassportRepo passengerPassportRepo, PassengersRepo passengersRepo,
-                                    FlightRepo flightRepo, TicketRepo ticketRepo) {
-        this.passengerPassportRepo = passengerPassportRepo;
-        this.passengersRepo = passengersRepo;
-        this.flightRepo = flightRepo;
-        this.ticketRepo = ticketRepo;
+    private final PassengerService passengerService;
+    private final PassengerPassportService passengerPassportService;
+    private final FlightService flightService;
+
+    @Autowired
+    public PassengerAdminController(PassengerService passengerService, PassengerPassportService passengerPassportService, FlightService flightService) {
+        this.passengerService = passengerService;
+        this.passengerPassportService = passengerPassportService;
+        this.flightService = flightService;
     }
 
     @RequestMapping(value = "/administrator/passengers", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengersGet(Map<String, Object> model) {
-        Iterable<PassengerPassport> passengers = passengerPassportRepo.findAll();
-        Iterable<Passengers> passengersNumTicket = passengersRepo.findAll();
+        Iterable<PassengerPassport> passengers = passengerPassportService.getAllPassengersInfo();
+        Iterable<Passengers> passengersNumTicket = passengerService.getAllPassengers();
         model.put("passenger_ticket", passengersNumTicket);
         model.put("passengers", passengers);
         return "administratorPassengers";
@@ -52,20 +50,18 @@ public class PassengerAdminController {
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerDelete(@PathVariable(value = "id") Integer id,
                                                Map<String, Object> model) {
-        int passengerId = id;
-        PassengerPassport passenger = passengerPassportRepo.findById(passengerId);
-        passengerPassportRepo.delete(passenger);
+        passengerService.deleteSelectedPassenger(id);
         return "redirect:/administrations/administrator/passengers";
     }
 
-    @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.GET)
+   @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditGet(@PathVariable(value = "id") Integer id, Map<String, Object> model) {
-        int passengerId = id;
-        PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
-        Passengers passenger = passengerPassport.getPassengers();
-        Iterable<BusFlights> flight = flightRepo.findAll();
-        BusFlights currentBusFlight = passenger.getTicket().getBusFlights();
+        List<Object> responseList = passengerService.getEditPassengerData(id);
+        PassengerPassport passengerPassport = (PassengerPassport) responseList.get(0);
+        Passengers passenger = (Passengers) responseList.get(1);
+        Iterable<BusFlights> flight = (Iterable<BusFlights>) responseList.get(2);
+        BusFlights currentBusFlight = (BusFlights) responseList.get(3);
         model.put("currentBusFlight", currentBusFlight);
         model.put("flight", flight);
         model.put("passenger_info", passenger);
@@ -73,7 +69,8 @@ public class PassengerAdminController {
         return "administrationEditPassenger";
     }
 
-    @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
+    // TODO : there are bad logic!
+   @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditPost(@PathVariable(value = "id") Integer id,
                                                  @RequestParam String passengerSurname,
@@ -92,42 +89,19 @@ public class PassengerAdminController {
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirectLink;
         } else {
-            BusFlights busFlights = flightRepo.findByNumberFlightUnique(numberFlightUnique);
+            PassengerPassport data = passengerPassportService.getPassengerById(id);
+            PassengerPassport dataPassenger = new PassengerPassport(passengerName, passengerSurname, passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday, data.getPassengers());
+            dataPassenger.setId(id);
+            PassengerPassport result = passengerPassportService.editSelectedPassenger(dataPassenger);
 
-            if (SystemMethods.checkSpaceForTicket(busFlights.getTypeBus(), busFlights.getTickets())) {
-
-                int passengerId = id;
-                String uuid = UUID.randomUUID().toString();
-                PassengerPassport passengerPassport = passengerPassportRepo.findById(passengerId);
-                Passengers passenger = passengerPassport.getPassengers();
-                Ticket ticket = passenger.getTicket();
-                String numTicket_new = numberFlightUnique + "_" + uuid.substring(0, 4);
-
-                passenger.setNumTicket(numTicket_new);
-                passenger.setPassengerInfo(passengerPassport);
-                ticket.setPassengers(passenger);
-                ticket.setBusFlights(busFlights);
-                ticket.setTicketPassenger(passengerSurname);
-                passengerPassport.setPassengerSurname(passengerSurname);
-                passengerPassport.setPassengerName(passengerName);
-                passengerPassport.setPassengerPhone(passengerPhone);
-                passengerPassport.setPassengerDocNum(passengerDocNum);
-                passengerPassport.setPassengerBirthday(passengerBirthday);
-                passengerPassport.setPassengerRegistration(passengerRegistration);
-                passengerPassportRepo.save(passengerPassport);
                 return "redirect:/administrations/administrator/passengers";
-            } else {
-                String errorMsg = "К сожалению все места на данный рейс заняты. Приносим свои извинения";
-                redirectAttributes.addFlashAttribute("error", errorMsg);
-                return "redirect:" + redirectLink;
             }
-        }
     }
 
     @RequestMapping(value = "/administrator/buy_ticket", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorBuyTicketGet(Map<String, Object> model) {
-        Iterable<BusFlights> flights = flightRepo.findAll();
+        Iterable<BusFlights> flights = flightService.allFlights();
         model.put("flights", flights);
         return "administrationBuyTicket";
     }
@@ -151,25 +125,9 @@ public class PassengerAdminController {
             redirectAttributes.addFlashAttribute("error", errorStr);
             return "redirect:" + redirectLink;
         } else {
-            BusFlights flight = flightRepo.findByNumberFlightUnique(numberFlightUnique);
-
-            if (SystemMethods.checkSpaceForTicket(flight.getTypeBus(), flight.getTickets())){
-
-                PassengerPassport passengerPassport = new PassengerPassport(passengerName, passengerSurname,
-                        passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday);
-                Passengers passenger = new Passengers();
-                passenger.setPassengerInfo(passengerPassport);
-                passenger.setNumTicket(
-                        flight.getNumberFlightUnique() + "_" + uuid.substring(0, 4)
-                );
-                Ticket ticket = new Ticket();
-                ticket.setTicketPlace("Сидячее");
-                ticket.setTicketPassenger(passengerSurname);
-                ticket.setPassengers(passenger);
-                ticket.setBusFlights(flight);
-                passengerPassportRepo.save(passengerPassport);
-                passengersRepo.save(passenger);
-                ticketRepo.save(ticket);
+            BusFlights flight = flightService.returnFlightByUniqueNumber(numberFlightUnique);
+            PassengerPassport result = passengerPassportService.buyTicketForPassenger(flight.getId(), new PassengerPassport(passengerName, passengerSurname, passengerPhone,
+                    passengerDocNum, passengerRegistration, passengerBirthday, null));
                 String callBack = "Билет успешно приобретен." +
                         "\n Сверьте данные, в случае неточности обратитесь в службу техничесой поддержки автовокзала:" +
                         "\n Фамилия пассажира - " + passengerSurname +
@@ -179,11 +137,7 @@ public class PassengerAdminController {
                         " Обновите страницу если хотите приобрести еще!";
                 redirectAttributes.addFlashAttribute("message", callBack);
                 return "redirect:" + redirectLink;
-            }else{
-                String errorMsg = "К сожалению все места на данный рейс заняты. Приносим свои извинения.";
-                redirectAttributes.addFlashAttribute("error", errorMsg);
-                return "redirect:" + redirectLink;
             }
         }
-    }
+
 }

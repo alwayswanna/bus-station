@@ -1,5 +1,5 @@
 use bus_station;
-drop table bus_station.drivers;
+drop table bus_station.busDriver;
 drop table bus_station.flights;
 drop table bus_station.passenger_passport;
 drop table bus_station.passengers;

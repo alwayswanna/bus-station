@@ -1,9 +1,13 @@
 package a.gleb.bus_station.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 @Table(name = "ticket")
 public class Ticket {
 
@@ -17,58 +21,22 @@ public class Ticket {
     private String ticketPassenger;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference(value = "passenger_list")
     @JoinColumn(name = "passenger_id", referencedColumnName = "id_passengers")
     private Passengers passengers;
 
     @ManyToOne
+    @JsonBackReference(value = "ticket_list")
     @JoinColumn(name = "num_flight", referencedColumnName = "number_flight")
     private BusFlights busFlights;
 
-    public Ticket(String ticketPlace, String ticketPassenger) {
+    public Ticket(String ticketPlace, String ticketPassenger, Passengers passengers, BusFlights busFlights) {
         this.ticketPlace = ticketPlace;
         this.ticketPassenger = ticketPassenger;
+        this.passengers = passengers;
+        this.busFlights = busFlights;
     }
 
     public Ticket() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTicketPlace() {
-        return ticketPlace;
-    }
-
-    public void setTicketPlace(String ticketPlace) {
-        this.ticketPlace = ticketPlace;
-    }
-
-    public String getTicketPassenger() {
-        return ticketPassenger;
-    }
-
-    public void setTicketPassenger(String ticketPassenger) {
-        this.ticketPassenger = ticketPassenger;
-    }
-
-    public Passengers getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(Passengers passengers) {
-        this.passengers = passengers;
-    }
-
-    public BusFlights getBusFlights() {
-        return busFlights;
-    }
-
-    public void setBusFlights(BusFlights busFlights) {
-        this.busFlights = busFlights;
     }
 }

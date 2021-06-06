@@ -26,7 +26,7 @@
                     </select>
                     <label>Водитель:</label>
                     <select name="driverSurname">
-                        <option th:each="el : ${drivers}" th:text="${el.driverSurname}" name="driverSurname"></option>
+                        <option th:each="el : ${busDriver}" th:text="${el.driverSurname}" name="driverSurname"></option>
                     </select>
                     <label>Тип рейса:</label>
                     <select name="typeFlight">
