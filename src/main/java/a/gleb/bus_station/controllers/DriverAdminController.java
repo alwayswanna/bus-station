@@ -29,8 +29,8 @@ public class DriverAdminController {
     @RequestMapping(value = "/administrator/drivers", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPageDrivers(Map<String, Object> model) {
-        Iterable<BusDriver> drivers = driverService.getAllDrivers();
-        model.put("drivers", drivers);
+        Iterable<BusDriver> busDrivers = driverService.getAllDrivers();
+        model.put("drivers", busDrivers);
         return "administratorDrivers";
     }
 

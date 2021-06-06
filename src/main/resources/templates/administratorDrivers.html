@@ -32,7 +32,7 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="el : ${busDriver}">
+                <tr th:each="el : ${drivers}">
                     <td th:text="${el.driverSurname}"/>
                     <td th:text="${el.driverName}">
                     <td th:text="${el.driverPhone}"/>
@@ -40,16 +40,16 @@
                         <a th:href="'/administrations/administrator/driver/' + ${el.id} + '/get_flights'" class="waves-effect waves-light btn">Рейсы</a>
                     </td>
                     <td>
-                        <a th:href="'/administrations/administrator/busDriver/' + ${el.id} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
+                        <a th:href="'/administrations/administrator/drivers/' + ${el.id} + '/edit'" class="waves-effect waves-light btn">Редактировать</a>
                     </td>
                     <td>
-                        <a th:href="'/administrations/administrator/busDriver/' + ${el.id} + '/del'" class="waves-effect waves-light btn">Удалить</a>
+                        <a th:href="'/administrations/administrator/drivers/' + ${el.id} + '/del'" class="waves-effect waves-light btn">Удалить</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
             <br><br>
-            <a href="/administrations/administrator/busDriver/add_driver" class="waves-effect waves-light btn">Добавить водителя</a>
+            <a href="/administrations/administrator/drivers/add_driver" class="waves-effect waves-light btn">Добавить водителя</a>
         </div>
 
     </div>
