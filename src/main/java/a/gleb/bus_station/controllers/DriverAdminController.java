@@ -83,7 +83,7 @@ public class DriverAdminController {
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:/administrations/administrator/drivers/" + id + "/edit";
         } else {
-            driverService.editSelectedDriver(new BusDriver(driverName, driverSurname, driverPhone, driverLicense, driverService.getSelectedDriver(id).getBusFlights()));
+            driverService.editSelectedDriver(id, new BusDriver(driverName, driverSurname, driverPhone, driverLicense, driverService.getSelectedDriver(id).getBusFlights()));
             return "redirect:/administrations/administrator/drivers";
         }
     }

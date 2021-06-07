@@ -1,8 +1,11 @@
 package a.gleb.bus_station.service;
 
 import a.gleb.bus_station.dto.BusFlights;
+import a.gleb.bus_station.dto.Passengers;
+import a.gleb.bus_station.dto.Ticket;
 import a.gleb.bus_station.exceptions.DuplicateFlightException;
 import a.gleb.bus_station.repositories.FlightRepo;
+import a.gleb.bus_station.repositories.TicketRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +15,12 @@ import java.util.NoSuchElementException;
 public class FlightService {
 
     private final FlightRepo flightRepo;
+    private final TicketRepo ticketRepo;
 
     @Autowired
-    public FlightService(FlightRepo flightRepo) {
+    public FlightService(FlightRepo flightRepo, TicketRepo ticketRepo) {
         this.flightRepo = flightRepo;
+        this.ticketRepo = ticketRepo;
     }
 
     public Iterable<BusFlights> allFlights(){
@@ -72,6 +77,11 @@ public class FlightService {
         if (flight == null){
             throw new NoSuchElementException("NoSuchElementException: no flight with [ID]: " + id);
         }else{
+            Iterable<Ticket> tickets = flight.getTickets();
+            for (Ticket ticket : tickets){
+                ticket.setBusFlights(returnFlightById(1));
+                ticketRepo.save(ticket);
+            }
             flightRepo.delete(flight);
             return allFlights();
         }

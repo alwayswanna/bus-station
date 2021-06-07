@@ -1,8 +1,10 @@
 package a.gleb.bus_station.service;
 
 import a.gleb.bus_station.dto.BusDriver;
+import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.exceptions.DuplicateOfDriverLicenseException;
 import a.gleb.bus_station.repositories.DriversRepo;
+import a.gleb.bus_station.repositories.FlightRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,12 @@ import java.util.NoSuchElementException;
 public class DriverService {
 
     private final DriversRepo driversRepo;
+    private final FlightRepo flightRepo;
 
     @Autowired
-    public DriverService(DriversRepo driversRepo) {
+    public DriverService(DriversRepo driversRepo, FlightRepo flightRepo) {
         this.driversRepo = driversRepo;
+        this.flightRepo = flightRepo;
     }
 
     public BusDriver addNewDriver(BusDriver driver){
@@ -47,10 +51,8 @@ public class DriverService {
         }
     }
 
-
-    public BusDriver editSelectedDriver(BusDriver driver) {
-        int driverId = driver.getId();
-        BusDriver driverForEdit = driversRepo.findById(driverId);
+    public BusDriver editSelectedDriver(Integer id, BusDriver driver) {
+        BusDriver driverForEdit = driversRepo.findAllById(id);
         if (driverForEdit == null){
             throw new NoSuchElementException();
         }else{
@@ -69,6 +71,11 @@ public class DriverService {
         if (driverForDelete == null){
             throw new NoSuchElementException("NoSuchElementException: no driver with [ID]: " + driverId);
         }else{
+            Iterable<BusFlights> flights = driverForDelete.getBusFlights();
+            for (BusFlights flight : flights){
+                flight.setBusDriver(getSelectedDriver(1));
+                flightRepo.save(flight);
+            }
             driversRepo.delete(driverForDelete);
             return getAllDrivers();
         }

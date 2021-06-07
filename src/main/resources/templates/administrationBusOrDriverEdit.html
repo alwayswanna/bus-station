@@ -28,10 +28,11 @@
             </div>
             <div class="col s12" th:each="el : ${driver}">
                 <h5>Редактировать водителя:</h5>
-                <form th:action="'/administrations/administrator/busDriver/' + ${el.id} + '/edit'" method="post">
+                <form th:action="'/administrations/administrator/drivers/' + ${el.id} + '/edit'" method="post">
                     <input th:placeholder="${el.driverName}" type="text" name="driverName">
                     <input th:placeholder="${el.driverSurname}" type="text" name="driverSurname">
                     <input th:placeholder="${el.driverPhone}" type="text" name="driverPhone">
+                    <input th:placeholder="${el.driverLicense}" type="text" name="driverLicense">
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}}">
                     <button class="waves-effect waves-light btn" type="submit">Изменить водителя</button>
                 </form>

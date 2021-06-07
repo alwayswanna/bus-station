@@ -12,5 +12,6 @@ public interface DriversRepo extends CrudRepository<BusDriver, Integer> {
     BusDriver findById(int i);
     BusDriver findByDriverNameAndDriverSurname(String driverSurname, String driverName);
     BusDriver findAllByDriverLicense(String driverLicense);
+    BusDriver findAllById(Integer id);
 
 }
