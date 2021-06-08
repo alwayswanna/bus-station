@@ -1,9 +1,9 @@
 package a.gleb.bus_station.service;
 
 import a.gleb.bus_station.dto.User;
+import a.gleb.bus_station.exceptions.DuplicateUserException;
 import a.gleb.bus_station.repositories.AdministratorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -39,7 +39,7 @@ public class AdministratorService {
     public Iterable<User> addNewUser(User user){
         User addUser = administratorRepo.findUserById(user.getId());
         if (addUser != null){
-            throw new RuntimeException("User with this id already exist");
+            throw new DuplicateUserException("User with this id already exist");
         }else{
             administratorRepo.save(user);
             return returnAllUsers();

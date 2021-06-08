@@ -58,7 +58,9 @@ public class BusAdminController {
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:" + redirectLink;
         } else {
-            busService.editSelectedBus(busService.returnBusById(id));
+            TypeBus bus = new TypeBus(type, Integer.parseInt(numberOfSeats), busModel, busService.returnBusById(id).getBusFlights());
+            bus.setId(id);
+            busService.editSelectedBus(bus);
             return "redirect:/administrations/administrator/buses/";
         }
     }
