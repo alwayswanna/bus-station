@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping(value = "/administrations")
@@ -26,24 +27,36 @@ public class TypeFlightAdminController {
     @RequestMapping(value = "/administrator/type_flights", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorTypeFlightGet(Map<String, Object> model){
-        Iterable<BusFlights> flights =  flightService.allFlights();
-        model.put("type_flight", flights);
+      try{
+          Iterable<BusFlights> flights =  flightService.allFlights();
+          model.put("type_flight", flights);
+      }catch (NoSuchElementException noSuchElementException){
+          model.put("type_flight", null);
+      }
         return "administrationTypeFlight";
     }
 
     @RequestMapping(value = "/administrator/type_flight/arrival", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorArrivalFlightGet(Map<String, Object> model){
-        Iterable<BusFlights> flightsArrival = flightService.returnFlightsByRouteType("Прибывающий");
-        model.put("type_flight", flightsArrival);
+        try{
+            Iterable<BusFlights> flightsArrival = flightService.returnFlightsByRouteType("Прибывающий");
+            model.put("type_flight", flightsArrival);
+        }catch (NoSuchElementException noSuchElementException){
+            model.put("type_flight", null);
+        }
         return "administrationTypeFlight";
     }
 
     @RequestMapping(value = "/administrator/type_flight/departure", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorDepartureFlightGet(Map<String, Object> model){
-        Iterable<BusFlights> flightsArrival = flightService.flightsByType("Отбывающий");
-        model.put("type_flight", flightsArrival);
+        try{
+            Iterable<BusFlights> flightsArrival = flightService.flightsByType("Отбывающий");
+            model.put("type_flight", flightsArrival);
+        }catch (NoSuchElementException noSuchElementException){
+            model.put("type_flight", null);
+        }
         return "administrationTypeFlight";
     }
 }
