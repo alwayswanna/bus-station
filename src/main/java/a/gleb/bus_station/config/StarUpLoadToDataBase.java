@@ -97,7 +97,7 @@ public class StarUpLoadToDataBase implements CommandLineRunner {
             TypeFlight suburbanTypeFlight = new TypeFlight("Пригородный", null);
             try{
                try{
-                   typeFlightService.selectedTypeOfFlight("Пригорогодный");
+                   typeFlightService.returnTypeFlightById(1);
                }catch (NoSuchElementException noSuchElementException){
                    typeFlightService.addNewTypeOfFlight(intercityTypeFlight);
                    typeFlightService.addNewTypeOfFlight(suburbanTypeFlight);

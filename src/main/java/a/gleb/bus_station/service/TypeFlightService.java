@@ -3,6 +3,7 @@ package a.gleb.bus_station.service;
 import a.gleb.bus_station.dto.TypeFlight;
 import a.gleb.bus_station.repositories.TypeFlightsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -32,6 +33,15 @@ public class TypeFlightService {
             throw new NoSuchElementException();
         }else{
             return typeFlight;
+        }
+    }
+
+    public TypeFlight returnTypeFlightById(Integer id){
+        TypeFlight type = typeFlightsRepo.findAllById(id);
+        if (type == null){
+            throw new NoSuchElementException();
+        }else{
+            return type;
         }
     }
 

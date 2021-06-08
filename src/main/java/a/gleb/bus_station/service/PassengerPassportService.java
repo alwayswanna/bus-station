@@ -1,9 +1,6 @@
 package a.gleb.bus_station.service;
 
-import a.gleb.bus_station.dto.BusFlights;
-import a.gleb.bus_station.dto.PassengerPassport;
-import a.gleb.bus_station.dto.Passengers;
-import a.gleb.bus_station.dto.Ticket;
+import a.gleb.bus_station.dto.*;
 import a.gleb.bus_station.exceptions.IncorrectPassengerInformationException;
 import a.gleb.bus_station.exceptions.NoFreeSpaceException;
 import a.gleb.bus_station.exceptions.NoSuchPassengerSurnameException;

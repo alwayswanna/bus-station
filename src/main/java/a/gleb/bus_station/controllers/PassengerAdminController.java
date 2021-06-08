@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Controller
@@ -39,10 +40,15 @@ public class PassengerAdminController {
     @RequestMapping(value = "/administrator/passengers", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengersGet(Map<String, Object> model) {
-        Iterable<PassengerPassport> passengers = passengerPassportService.getAllPassengersInfo();
-        Iterable<Passengers> passengersNumTicket = passengerService.getAllPassengers();
-        model.put("passenger_ticket", passengersNumTicket);
-        model.put("passengers", passengers);
+        try{
+            Iterable<PassengerPassport> passengers = passengerPassportService.getAllPassengersInfo();
+            Iterable<Passengers> passengersNumTicket = passengerService.getAllPassengers();
+            model.put("passenger_ticket", passengersNumTicket);
+            model.put("passengers", passengers);
+        }catch (NoSuchElementException noSuchElementException){
+            model.put("passengers", null);
+            model.put("passenger_ticket", null);
+        }
         return "administratorPassengers";
     }
 
