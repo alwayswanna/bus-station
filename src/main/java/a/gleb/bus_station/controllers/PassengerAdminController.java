@@ -75,7 +75,6 @@ public class PassengerAdminController {
         return "administrationEditPassenger";
     }
 
-    // TODO : there are bad logic!
    @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditPost(@PathVariable(value = "id") Integer id,
@@ -98,7 +97,7 @@ public class PassengerAdminController {
             PassengerPassport data = passengerPassportService.getPassengerById(id);
             PassengerPassport dataPassenger = new PassengerPassport(passengerName, passengerSurname, passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday, data.getPassengers());
             dataPassenger.setId(id);
-            PassengerPassport result = passengerPassportService.editSelectedPassenger(dataPassenger);
+            PassengerPassport result = passengerPassportService.editSelectedPassenger(dataPassenger, numberFlightUnique);
 
                 return "redirect:/administrations/administrator/passengers";
             }

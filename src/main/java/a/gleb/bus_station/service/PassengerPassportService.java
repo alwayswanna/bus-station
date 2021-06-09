@@ -116,6 +116,32 @@ public class PassengerPassportService {
         }
     }
 
+    public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport, String numFlight){
+        PassengerPassport passenger = passengerPassportRepo.findAllById(passengerPassport.getId());
+        if (passenger == null){
+            throw new NoSuchElementException();
+        }else {
+            BusFlights newFlight = flightRepo.findByNumberFlightUnique(numFlight);
+            Passengers pasEdit = passenger.getPassengers();
+            Ticket ticket = pasEdit.getTicket();
+            passenger.setPassengerName(passengerPassport.getPassengerName());
+            passenger.setPassengerSurname(passengerPassport.getPassengerSurname());
+            passenger.setPassengerBirthday(passengerPassport.getPassengerBirthday());
+            passenger.setPassengerPhone(passengerPassport.getPassengerPhone());
+            passenger.setPassengerDocNum(passengerPassport.getPassengerDocNum());
+            passenger.setPassengerRegistration(passengerPassport.getPassengerRegistration());
+            passenger.setPassengers(passengerPassport.getPassengers());
+            pasEdit.setPassengerInfo(passenger);
+            ticket.setBusFlights(newFlight);
+            ticket.setTicketPassenger(passengerPassport.getPassengerSurname());
+            pasEdit.setNumTicket(SystemMethods.generateUniqNumTicket(newFlight));
+            passengerPassportRepo.save(passenger);
+            ticketRepo.save(ticket);
+            passengersRepo.save(pasEdit);
+            return passenger;
+        }
+    }
+
     public List<Object> checkTicket(String passengerDocNum, String numTicket){
         List<Object> response = new ArrayList<>();
         String result = SystemMethods.checkDocAndTicketNumber(passengerDocNum, numTicket);
