@@ -1,6 +1,8 @@
 package a.gleb.bus_station.service;
 
+import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.dto.TypeBus;
+import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.TypeBusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ import java.util.NoSuchElementException;
 public class BusService {
 
     private final TypeBusRepo busRepo;
+    private final FlightRepo flightRepo;
 
     @Autowired
-    public BusService(TypeBusRepo busRepo) {
+    public BusService(TypeBusRepo busRepo, FlightRepo flightRepo) {
         this.busRepo = busRepo;
+        this.flightRepo = flightRepo;
     }
 
     public Iterable<TypeBus> allBuses(){
@@ -40,6 +44,12 @@ public class BusService {
         if (busForDelete == null){
             throw new NoSuchElementException();
         }else {
+            Iterable<BusFlights> listFlights = busForDelete.getBusFlights();
+            for (BusFlights flight : listFlights){
+                flight.setTypeBus(returnBusById(1));
+                flightRepo.save(flight);
+            }
+            busRepo.delete(busForDelete);
             return allBuses();
         }
     }

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Controller
@@ -39,10 +40,15 @@ public class PassengerAdminController {
     @RequestMapping(value = "/administrator/passengers", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengersGet(Map<String, Object> model) {
-        Iterable<PassengerPassport> passengers = passengerPassportService.getAllPassengersInfo();
-        Iterable<Passengers> passengersNumTicket = passengerService.getAllPassengers();
-        model.put("passenger_ticket", passengersNumTicket);
-        model.put("passengers", passengers);
+        try{
+            Iterable<PassengerPassport> passengers = passengerPassportService.getAllPassengersInfo();
+            Iterable<Passengers> passengersNumTicket = passengerService.getAllPassengers();
+            model.put("passenger_ticket", passengersNumTicket);
+            model.put("passengers", passengers);
+        }catch (NoSuchElementException noSuchElementException){
+            model.put("passengers", null);
+            model.put("passenger_ticket", null);
+        }
         return "administratorPassengers";
     }
 
@@ -69,7 +75,6 @@ public class PassengerAdminController {
         return "administrationEditPassenger";
     }
 
-    // TODO : there are bad logic!
    @RequestMapping(value = "/administrator/passenger/{id}/edit_data", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPassengerEditPost(@PathVariable(value = "id") Integer id,
@@ -92,7 +97,7 @@ public class PassengerAdminController {
             PassengerPassport data = passengerPassportService.getPassengerById(id);
             PassengerPassport dataPassenger = new PassengerPassport(passengerName, passengerSurname, passengerPhone, passengerDocNum, passengerRegistration, passengerBirthday, data.getPassengers());
             dataPassenger.setId(id);
-            PassengerPassport result = passengerPassportService.editSelectedPassenger(dataPassenger);
+            PassengerPassport result = passengerPassportService.editSelectedPassenger(dataPassenger, numberFlightUnique);
 
                 return "redirect:/administrations/administrator/passengers";
             }

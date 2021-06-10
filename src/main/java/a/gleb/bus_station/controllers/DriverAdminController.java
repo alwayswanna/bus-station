@@ -29,8 +29,8 @@ public class DriverAdminController {
     @RequestMapping(value = "/administrator/drivers", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMINISTRATOR')")
     public String administratorPageDrivers(Map<String, Object> model) {
-        Iterable<BusDriver> drivers = driverService.getAllDrivers();
-        model.put("drivers", drivers);
+        Iterable<BusDriver> busDrivers = driverService.getAllDrivers();
+        model.put("drivers", busDrivers);
         return "administratorDrivers";
     }
 
@@ -83,7 +83,7 @@ public class DriverAdminController {
             redirectAttributes.addFlashAttribute("error", errorMsg);
             return "redirect:/administrations/administrator/drivers/" + id + "/edit";
         } else {
-            driverService.editSelectedDriver(new BusDriver(driverName, driverSurname, driverPhone, driverLicense, driverService.getSelectedDriver(id).getBusFlights()));
+            driverService.editSelectedDriver(id, new BusDriver(driverName, driverSurname, driverPhone, driverLicense, driverService.getSelectedDriver(id).getBusFlights()));
             return "redirect:/administrations/administrator/drivers";
         }
     }

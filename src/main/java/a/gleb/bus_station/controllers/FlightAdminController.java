@@ -134,8 +134,10 @@ public class FlightAdminController {
             BusDriver driver = driverService.driverBySurname(driverSurname);
             TypeFlight typeFlight = typeFlightsService.selectedTypeOfFlight(typeOfFlight);
             TypeBus typeBus = busService.busByNameModel(busModel);
-            flightService.editSelectedFlight(new BusFlights(type, fromCity, toCity, timeDeparture, timeArrival, dateFlight, numberFlightUnique,
-                    driver, typeBus, typeFlight, flightService.returnFlightById(id).getTickets()));
+            BusFlights flight = new BusFlights(type, fromCity, toCity, timeDeparture, timeArrival, dateFlight, numberFlightUnique,
+                    driver, typeBus, typeFlight, flightService.returnFlightById(id).getTickets());
+            flight.setId(id);
+            flightService.editSelectedFlight(flight);
             return "redirect:/administrations/administrator/flights";
         }
     }

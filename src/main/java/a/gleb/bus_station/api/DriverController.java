@@ -33,7 +33,7 @@ public class DriverController {
 
     @RequestMapping(value = "/drivers", method = RequestMethod.PUT)
     public BusDriver editBusDriver(@RequestBody BusDriver driver){
-        return driverService.editSelectedDriver(driver);
+        return driverService.editSelectedDriver(driver.getId(), driver);
     }
 
     @RequestMapping(value = "/driver/{id}", method = RequestMethod.DELETE)

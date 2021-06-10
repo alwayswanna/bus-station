@@ -28,7 +28,7 @@
     </div>
 
     <div class="container">
-        <div class="row"  th:each="el: ${passport}">
+        <div class="row" th:each="el: ${passport}">
             <h4>Информация о билете:</h4>
             <table>
                 <thead>
@@ -41,9 +41,9 @@
 
                 <tbody>
                 <tr>
-                    <td><h6 th:text="${el.passengerName}"/></td>
-                    <td><h6 th:text="${el.passengerSurname}"/></td>
-                    <td><h6 th:text="${el.passengerDocNum}"/></td>
+                    <td><h6 th:text="${el.passengerName}"></h6></td>
+                    <td><h6 th:text="${el.passengerSurname}"></h6></td>
+                    <td><h6 th:text="${el.passengerDocNum}"></h6></td>
                 </tr>
                 <tr>
                     <td><h6 class="green-text">Пункт отправления:</h6></td>
@@ -51,18 +51,18 @@
                     <td><h6 class="green-text">Дата поездки:</h6></td>
                 </tr>
                 <tr th:each="flight : ${flight}">
-                    <td><h6 th:text="${flight.fromCity}"/></td>
-                    <td><h6 th:text="${flight.toCity}"/></td>
-                    <td><h6 th:text="${flight.dateFlight}"/></td>
+                    <td><h6 th:text="${flight.fromCity}"></h6></td>
+                    <td><h6 th:text="${flight.toCity}"></h6></td>
+                    <td><h6 th:text="${flight.dateFlight}"></h6></td>
                 </tr>
                 <tr>
                     <td><h6 class="green-text">Время отправления:</h6></td>
                     <td><h6 class="green-text">Время прибытия:</h6></td>
                     <td><h6></h6></td>
                 </tr>
-                <tr th:each="flight : ${flight}">
-                    <td><h6 th:text="${flight.timeDeparture}"/></td>
-                    <td><h6 th:text="${flight.timeArrival}"/></td>
+                <tr th:each="flightTime : ${flight}">
+                    <td><h6 th:text="${flightTime.timeDeparture}"></h6></td>
+                    <td><h6 th:text="${flightTime.timeArrival}"></h6></td>
                     <td><h6></h6></td>
                 </tr>
                 <tr>
@@ -71,7 +71,7 @@
                     <td><h6></h6></td>
                 </tr>
                 <tr th:each="ticket : ${ticket}">
-                    <td><h6 th:text="${ticket.ticketPlace}"/></td>
+                    <td><h6 th:text="${ticket.ticketPlace}"></h6></td>
                     <td><h6></h6></td>
                     <td><h6></h6></td>
                 </tr>
@@ -88,22 +88,10 @@
                 <tr>
                     <td><h6 class="green-text">Автобус:</h6></td>
                     <td><h6 class="green-text">Количество мест:</h6></td>
-                    <td><h6 class="green-text">Водитель:</h6></td>
                 </tr>
-                <tr th:each="flight : ${flight}">
-                    <td><h6 th:text="${flight.getTypeBus().getBusModel()}"/></td>
-                    <td><h6 th:text="${flight.getTypeBus().getNumberOfSeats()}"/></td>
-                    <td><h6 th:text="${flight.getDrivers().getDriverName()} + ' ' + ${flight.getDrivers().getDriverSurname()}"/></td>
-                </tr>
-                <tr>
-                    <td><h6 class="green-text">Тип автобуса:</h6></td>
-                    <td><h6></h6></td>
-                    <td><h6></h6></td>
-                </tr>
-                <tr th:each="flight : ${flight}">
-                    <td><h6 th:text="${flight.getTypeBus().getType()}"/></td>
-                    <td><h6/></td>
-                    <td><h6/></td>
+                <tr th:each="bus : ${bus}">
+                    <td><h6 th:text="${bus.busModel}"></h6></td>
+                    <td><h6 th:text="${bus.numberOfSeats}"></h6></td>
                 </tr>
                 </tbody>
             </table>
