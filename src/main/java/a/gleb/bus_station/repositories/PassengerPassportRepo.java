@@ -11,8 +11,6 @@ public interface PassengerPassportRepo extends CrudRepository<PassengerPassport,
 
     PassengerPassport findByPassengerDocNum(String docNum);
 
-    PassengerPassport findById(int i);
-
     Iterable<PassengerPassport> findAllByPassengerSurname(String surname);
 
     Iterable<PassengerPassport> findAllByPassengerDocNum(String docNum);

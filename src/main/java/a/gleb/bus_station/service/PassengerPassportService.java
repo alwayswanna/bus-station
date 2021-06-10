@@ -11,8 +11,9 @@ import a.gleb.bus_station.repositories.PassengersRepo;
 import a.gleb.bus_station.repositories.TicketRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -31,11 +32,11 @@ public class PassengerPassportService {
         this.passengersRepo = passengersRepo;
     }
 
-    public PassengerPassport buyTicketForPassenger(Integer id, PassengerPassport passengerPassport){
+    public PassengerPassport buyTicketForPassenger(Integer id, PassengerPassport passengerPassport) {
         BusFlights selectedFlight = flightRepo.findAllById(id);
-        if (selectedFlight == null){
+        if (selectedFlight == null) {
             throw new NoSuchElementException();
-        }else {
+        } else {
             int busSeats = selectedFlight.getTypeBus().getNumberOfSeats();
             int tickets = selectedFlight.getTickets().size();
             if (tickets >= busSeats) {
@@ -62,48 +63,48 @@ public class PassengerPassportService {
         }
     }
 
-    public Iterable<PassengerPassport> getAllPassengersInfo(){
+    public Iterable<PassengerPassport> getAllPassengersInfo() {
         Iterable<PassengerPassport> allPassengers = passengerPassportRepo.findAll();
-        if (allPassengers.iterator().next() == null){
+        if (allPassengers.iterator().next() == null) {
             throw new NoSuchElementException();
-        }else{
+        } else {
             return allPassengers;
         }
     }
 
-    public List<Object> getPassengerBySurname(String surname){
+    public List<Object> getPassengerBySurname(String surname) {
         Iterable<PassengerPassport> passengersWithSurname = passengerPassportRepo.findAllByPassengerSurname(surname);
-        if (passengersWithSurname.iterator().next() == null){
+        if (passengersWithSurname.iterator().next() == null) {
             throw new NoSuchPassengerSurnameException("NoSuchPassengerSurnameException: there are no passengers with [SURNAME]: " + surname);
-        }else{
+        } else {
             return SystemMethods.getObjects(passengersWithSurname);
         }
     }
 
-    public List<Object> getPassengerByDocNum(String passengerDocNum){
+    public List<Object> getPassengerByDocNum(String passengerDocNum) {
         Iterable<PassengerPassport> passengerWithDocNum = passengerPassportRepo.findAllByPassengerDocNum(passengerDocNum);
-        if (passengerWithDocNum.iterator().next() == null){
+        if (passengerWithDocNum.iterator().next() == null) {
             throw new NoSuchPassengerWithDocNumberException("NoSuchPassengerWithDocNumberException: there are no passenger with [Document Number]: " + passengerDocNum);
-        }else{
+        } else {
             return SystemMethods.getObjects(passengerWithDocNum);
         }
     }
 
-    public Iterable<PassengerPassport> deleteSelectedPassenger(Integer id){
+    public Iterable<PassengerPassport> deleteSelectedPassenger(Integer id) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(id);
-        if (passenger == null){
+        if (passenger == null) {
             throw new NoSuchElementException();
-        }else{
+        } else {
             passengerPassportRepo.delete(passenger);
             return getAllPassengersInfo();
         }
     }
 
-    public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport){
+    public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(passengerPassport.getId());
-        if (passenger == null){
+        if (passenger == null) {
             throw new NoSuchElementException();
-        }else {
+        } else {
             passenger.setPassengerName(passengerPassport.getPassengerName());
             passenger.setPassengerSurname(passengerPassport.getPassengerSurname());
             passenger.setPassengerBirthday(passengerPassport.getPassengerBirthday());
@@ -116,11 +117,11 @@ public class PassengerPassportService {
         }
     }
 
-    public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport, String numFlight){
+    public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport, String numFlight) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(passengerPassport.getId());
-        if (passenger == null){
+        if (passenger == null) {
             throw new NoSuchElementException();
-        }else {
+        } else {
             BusFlights newFlight = flightRepo.findByNumberFlightUnique(numFlight);
             Passengers pasEdit = passenger.getPassengers();
             Ticket ticket = pasEdit.getTicket();
@@ -142,51 +143,49 @@ public class PassengerPassportService {
         }
     }
 
-    public List<Object> checkTicket(String passengerDocNum, String numTicket){
-        List<Object> response = new ArrayList<>();
-        String result = SystemMethods.checkDocAndTicketNumber(passengerDocNum, numTicket);
-        if (result.equals("TICKET")){
-            Passengers passenger = passengersRepo.findByNumTicket(numTicket);
-            if (passenger == null){
-                response.add("Incorrect ticket data");
-                return response;
-            }else {
-                PassengerPassport passport = passenger.getPassengerInfo();
-                Ticket ticket = passenger.getTicket();
-                BusFlights flight = ticket.getBusFlights();
-                response.add(passenger);
-                response.add(passport);
-                response.add(ticket);
-                response.add(flight);
-                return response;
-            }
-        }else if(result.equals("PASSENGER")){
-            PassengerPassport passport = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
-            if (passport == null){
-                response.add("Incorrect data of document number");
-                return response;
-            }else{
-                Passengers passenger = passport.getPassengers();
-                Ticket ticket = passenger.getTicket();
-                BusFlights flight = ticket.getBusFlights();
-                response.add(passenger);
-                response.add(passport);
-                response.add(ticket);
-                response.add(flight);
-                return response;
-            }
-        }else{
-            String responseError = "Empty data from user";
-            response.add(responseError);
+    public Map<String, Object> checkTicketPassport(String passengerDocNum) {
+        Map<String, Object> model = new HashMap<>();
+        PassengerPassport passenger = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
+        if (passenger == null) {
+            throw new NoSuchElementException();
+        } else {
+            Passengers passport = passenger.getPassengers();
+            Ticket ticket = passport.getTicket();
+            BusFlights flight = ticket.getBusFlights();
+            TypeBus bus = flight.getTypeBus();
+            model.put("bus", bus);
+            model.put("passport", passenger);
+            model.put("ticket", ticket);
+            model.put("passenger", passport);
+            model.put("flight", flight);
+            return model;
+        }
+    }
+
+    public Map<String, Object> checkTicketNumber(String numberTicket) {
+        Map<String, Object> response = new HashMap<>();
+        Passengers passport = passengersRepo.findByNumTicket(numberTicket);
+        if (passport == null) {
+            throw new NoSuchElementException();
+        } else {
+            Ticket ticket = passport.getTicket();
+            PassengerPassport passenger = passport.getPassengerInfo();
+            BusFlights flight = ticket.getBusFlights();
+            TypeBus bus = flight.getTypeBus();
+            response.put("bus", bus);
+            response.put("passport", passenger);
+            response.put("ticket", ticket);
+            response.put("passenger", passport);
+            response.put("flight", flight);
             return response;
         }
     }
 
-    public PassengerPassport getPassengerById(Integer id){
+    public PassengerPassport getPassengerById(Integer id) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(id);
-        if (passenger == null){
+        if (passenger == null) {
             throw new NoSuchElementException();
-        }else{
+        } else {
             return passenger;
         }
     }

@@ -1,14 +1,13 @@
 package a.gleb.bus_station.service;
 
-import a.gleb.bus_station.dto.*;
-import a.gleb.bus_station.repositories.FlightRepo;
+import a.gleb.bus_station.dto.BusFlights;
+import a.gleb.bus_station.dto.PassengerPassport;
+import a.gleb.bus_station.dto.Passengers;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -32,15 +31,5 @@ public class SystemMethods {
         callBack.add(passenger);
         callBack.add(passenger.getTicket());
         return callBack;
-    }
-
-    public static String  checkDocAndTicketNumber(String passenger, String ticket){
-        if (passenger == null | passenger.equals("")){
-            return "TICKET";
-        }else if(ticket == null | ticket.equals("")){
-            return "PASSENGER";
-        }else{
-            return "ERROR";
-        }
     }
 }
