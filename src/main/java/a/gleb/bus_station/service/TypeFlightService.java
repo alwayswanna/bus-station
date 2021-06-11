@@ -21,7 +21,7 @@ public class TypeFlightService {
     public Iterable<TypeFlight> allTypesOfFlights(){
         Iterable<TypeFlight> typesOfFlights = typeFlightsRepo.findAll();
         if (typesOfFlights.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find  typesOfFlights in database");
         }else {
             return typesOfFlights;
         }
@@ -30,7 +30,7 @@ public class TypeFlightService {
     public TypeFlight selectedTypeOfFlight(String type){
         TypeFlight typeFlight = typeFlightsRepo.findByTypeOfFlight(type);
         if (typeFlight == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find type of flight with [Type]: " + type);
         }else{
             return typeFlight;
         }
@@ -39,7 +39,7 @@ public class TypeFlightService {
     public TypeFlight returnTypeFlightById(Integer id){
         TypeFlight type = typeFlightsRepo.findAllById(id);
         if (type == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find typeOfFlight by [ID]: " + id);
         }else{
             return type;
         }

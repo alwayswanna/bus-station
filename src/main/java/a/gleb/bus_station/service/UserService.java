@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
     private final AdministratorRepo administratorRepo;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserService(AdministratorRepo administratorRepo, PasswordEncoder passwordEncoder) {
+    public UserService(AdministratorRepo administratorRepo) {
         this.administratorRepo = administratorRepo;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override

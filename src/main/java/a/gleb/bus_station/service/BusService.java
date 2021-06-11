@@ -2,6 +2,7 @@ package a.gleb.bus_station.service;
 
 import a.gleb.bus_station.dto.BusFlights;
 import a.gleb.bus_station.dto.TypeBus;
+import a.gleb.bus_station.exceptions.DuplicateBusException;
 import a.gleb.bus_station.repositories.FlightRepo;
 import a.gleb.bus_station.repositories.TypeBusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class BusService {
     public Iterable<TypeBus> allBuses(){
         Iterable<TypeBus> busList = busRepo.findAll();
         if (busList.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find buses in database");
         }else {
             return busList;
         }
@@ -33,7 +34,7 @@ public class BusService {
     public TypeBus returnBusById(Integer id){
         TypeBus bus = busRepo.findAllById(id);
         if (bus == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find bus with [ID]: " + id);
         }else {
             return bus;
         }
@@ -42,7 +43,7 @@ public class BusService {
     public Iterable<TypeBus> deleteSelectedBus(Integer id){
         TypeBus busForDelete = busRepo.findAllById(id);
         if (busForDelete == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find bus with [ID]: " + id + " for delete");
         }else {
             Iterable<BusFlights> listFlights = busForDelete.getBusFlights();
             for (BusFlights flight : listFlights){
@@ -60,14 +61,14 @@ public class BusService {
             busRepo.save(typeBus);
             return typeBus;
         }else {
-            throw new RuntimeException();
+            throw new DuplicateBusException("DuplicateBusException: bus with [ID]: " + typeBus.getId() + " already exist");
         }
     }
 
     public TypeBus editSelectedBus(TypeBus bus){
         TypeBus checkBus = busRepo.findAllById(bus.getId());
         if (checkBus == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find bus with [ID]: " + bus.getId() + " for edit");
         }else {
             checkBus.setType(bus.getType());
             checkBus.setNumberOfSeats(bus.getNumberOfSeats());
@@ -81,7 +82,7 @@ public class BusService {
     public TypeBus busByNameModel(String modelName){
         TypeBus bus = busRepo.findByBusModel(modelName);
         if (bus == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find bus with [ModelName]: " + modelName);
         }else{
             return bus;
         }

@@ -21,7 +21,7 @@ public class AdministratorService {
     public User getUserById(Integer id){
         User user = administratorRepo.findUserById(id);
         if (user == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find USER with [ID]: " + id);
         }else {
             return user;
         }
@@ -30,7 +30,7 @@ public class AdministratorService {
     public User getUserByLogin(String login){
         User user = administratorRepo.findByUserName(login);
         if (user == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find USER with [Login]: " + login);
         }else{
             return user;
         }
@@ -39,7 +39,7 @@ public class AdministratorService {
     public Iterable<User> addNewUser(User user){
         User addUser = administratorRepo.findUserById(user.getId());
         if (addUser != null){
-            throw new DuplicateUserException("User with this id already exist");
+            throw new DuplicateUserException("DuplicateUserException: USER with [ID]: " + user.getId() + " already exist");
         }else{
             administratorRepo.save(user);
             return returnAllUsers();
@@ -49,7 +49,7 @@ public class AdministratorService {
     public Iterable<User> returnAllUsers(){
         Iterable<User> allUsers = administratorRepo.findAll();
         if (allUsers.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find USERs in database");
         }else{
             return allUsers;
         }

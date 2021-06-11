@@ -34,7 +34,7 @@ public class PassengerService {
     public Iterable<Passengers> getAllPassengers(){
         Iterable<Passengers> passengers = passengersRepo.findAll();
         if (passengers.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passengers in database");
         }else{
             return passengers;
         }
@@ -43,7 +43,7 @@ public class PassengerService {
     public void deleteSelectedPassenger(Integer id){
         Passengers selectedPassenger = passengersRepo.findAllById(id);
         if (selectedPassenger == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passenger with [ID]: " + id);
         }else {
             passengersRepo.delete(selectedPassenger);
         }
@@ -53,7 +53,7 @@ public class PassengerService {
         List<Object> response = new ArrayList<>();
         PassengerPassport passport = passengerPassportRepo.findAllById(id);
         if (passport == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t passenger with [ID]: " + id + " for edit");
         }else {
             Passengers passenger = passport.getPassengers();
             Iterable<BusFlights> listOfFlights = flightRepo.findAll();

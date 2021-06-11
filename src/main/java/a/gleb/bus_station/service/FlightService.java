@@ -26,7 +26,7 @@ public class FlightService {
     public Iterable<BusFlights> allFlights(){
         Iterable<BusFlights> allFlights = flightRepo.findAll();
         if (allFlights.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find flights in database");
         }else{
             return allFlights;
         }
@@ -35,7 +35,7 @@ public class FlightService {
     public BusFlights returnFlightById(Integer id){
         BusFlights selectedFlight = flightRepo.findAllById(id);
         if (selectedFlight == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find flight with [ID]: " + id);
         }else{
             return selectedFlight;
         }
@@ -54,7 +54,7 @@ public class FlightService {
     public BusFlights editSelectedFlight(BusFlights busFlight){
         BusFlights flight = flightRepo.findAllById(busFlight.getId());
         if (flight == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find flight with [ID]: " + busFlight.getId() + " for edit");
         }else{
             flight.setRouteType(busFlight.getRouteType());
             flight.setFromCity(busFlight.getFromCity());
@@ -90,7 +90,7 @@ public class FlightService {
     public Iterable<BusFlights> flightsByType(String type){
         Iterable<BusFlights> flightsByType = flightRepo.findAllByRouteType(type);
         if (flightsByType.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t flight with [type]: " + type);
         }else{
             return flightsByType;
         }
@@ -99,7 +99,7 @@ public class FlightService {
     public BusFlights findFlightByFromCity(String city){
         BusFlights flights = flightRepo.findAllByFromCity(city);
         if (flights == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find flight with [fromCity]: " + city);
         }else {
             return flights;
         }
@@ -108,7 +108,7 @@ public class FlightService {
     public Iterable<BusFlights> returnFlightsByRouteType(String routeType){
         Iterable<BusFlights> flights = flightRepo.findAllByRouteType(routeType);
         if (flights.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find flight with [routeType]: " + routeType);
         }else {
             return flights;
         }
@@ -117,7 +117,7 @@ public class FlightService {
     public BusFlights returnFlightByUniqueNumber(String number){
         BusFlights flight = flightRepo.findByNumberFlightUnique(number);
         if (flight == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find flight with [number]: " + number);
         }else {
             return flight;
         }
