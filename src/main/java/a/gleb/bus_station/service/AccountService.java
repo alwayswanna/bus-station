@@ -21,7 +21,7 @@ public class AccountService {
     public Iterable<User> getAllUsers(){
         Iterable<User> userList = administratorRepo.findAll();
         if (userList.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find [USERS] in database");
         }else{
             return userList;
         }
@@ -30,7 +30,7 @@ public class AccountService {
     public User getSelectedUserById(Integer id){
         User selectedUser = administratorRepo.findUserById(id);
         if (selectedUser == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find user with [ID]: " + id);
         }else {
             return selectedUser;
         }
@@ -39,7 +39,7 @@ public class AccountService {
     public User editSelectedUser(User user){
         User editUser = administratorRepo.findUserById(user.getId());
         if (editUser == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find user with [ID]: " + user.getId() + " for edit");
         }else{
             editUser.setUserName(user.getUserName());
             editUser.setPassword(user.getPassword());
@@ -66,7 +66,7 @@ public class AccountService {
     public Iterable<User> deleteSelectedUser(Integer id){
         User deleteUser = administratorRepo.findUserById(id);
         if (deleteUser == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find user with [ID]: " + id + " for delete");
         }else {
             administratorRepo.delete(deleteUser);
             return administratorRepo.findAll();

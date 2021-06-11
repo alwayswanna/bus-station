@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingApiAspect {
 
-    @Pointcut("execution(* a.gleb.bus_station.api.*.*())")
+    @Pointcut("execution(* a.gleb.bus_station.api.*.*(..))")
     private void allMethodInApiPackage(){}
 
     @Before("allMethodInApiPackage()")
@@ -23,10 +23,9 @@ public class LoggingApiAspect {
         log.info("User work with API method: " + signature.getMethod().getName());
     }
 
-    @AfterThrowing(pointcut = "allMethodInApiPackage()", throwing = "exception", argNames = "exception,joinPoint")
-    public void afterApiMethodThrowException(RuntimeException exception, JoinPoint joinPoint) throws Throwable{
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        log.warn("User work with API method: " + signature.getMethod().getName() + ". Throws exception: "
+    @AfterThrowing(pointcut = "allMethodInApiPackage()", throwing = "exception")
+    public void afterApiMethodThrowException(RuntimeException exception) throws Throwable{
+        log.warn("User work with API method. Throws exception: "
             + exception.getMessage());
 
     }

@@ -45,7 +45,7 @@ public class DriverService {
     public Iterable<BusDriver> getAllDrivers(){
         Iterable<BusDriver> listDrivers = driversRepo.findAll();
         if (listDrivers.iterator().next() == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find drivers in database");
         }else{
             return listDrivers;
         }
@@ -54,7 +54,7 @@ public class DriverService {
     public BusDriver editSelectedDriver(Integer id, BusDriver driver) {
         BusDriver driverForEdit = driversRepo.findAllById(id);
         if (driverForEdit == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find driver with selected [ID]: " + id + " for edit.");
         }else{
             driverForEdit.setDriverName(driver.getDriverName());
             driverForEdit.setDriverSurname(driver.getDriverSurname());
@@ -69,7 +69,7 @@ public class DriverService {
         int driverId = id;
         BusDriver driverForDelete = driversRepo.findById(driverId);
         if (driverForDelete == null){
-            throw new NoSuchElementException("NoSuchElementException: no driver with [ID]: " + driverId);
+            throw new NoSuchElementException("NoSuchElementException: no driver with [ID]: " + driverId + " for delete");
         }else{
             Iterable<BusFlights> flights = driverForDelete.getBusFlights();
             for (BusFlights flight : flights){
@@ -84,7 +84,7 @@ public class DriverService {
     public BusDriver driverBySurname(String surname){
         BusDriver driver = driversRepo.findByDriverSurname(surname);
         if (driver == null){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find driver with [SURNAME]: " + surname);
         }else{
             return driver;
         }

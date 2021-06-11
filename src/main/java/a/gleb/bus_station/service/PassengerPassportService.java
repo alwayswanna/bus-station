@@ -35,7 +35,7 @@ public class PassengerPassportService {
     public PassengerPassport buyTicketForPassenger(Integer id, PassengerPassport passengerPassport) {
         BusFlights selectedFlight = flightRepo.findAllById(id);
         if (selectedFlight == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: when try buy ticket for passenger, can`t find flight with [ID]: " + id);
         } else {
             int busSeats = selectedFlight.getTypeBus().getNumberOfSeats();
             int tickets = selectedFlight.getTickets().size();
@@ -66,7 +66,7 @@ public class PassengerPassportService {
     public Iterable<PassengerPassport> getAllPassengersInfo() {
         Iterable<PassengerPassport> allPassengers = passengerPassportRepo.findAll();
         if (allPassengers.iterator().next() == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find  flights in database");
         } else {
             return allPassengers;
         }
@@ -93,7 +93,7 @@ public class PassengerPassportService {
     public Iterable<PassengerPassport> deleteSelectedPassenger(Integer id) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(id);
         if (passenger == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passenger with [ID]: " + id + " for delete");
         } else {
             passengerPassportRepo.delete(passenger);
             return getAllPassengersInfo();
@@ -103,7 +103,7 @@ public class PassengerPassportService {
     public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(passengerPassport.getId());
         if (passenger == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passenger with [ID]: " + passengerPassport.getId() + " for edit");
         } else {
             passenger.setPassengerName(passengerPassport.getPassengerName());
             passenger.setPassengerSurname(passengerPassport.getPassengerSurname());
@@ -120,7 +120,7 @@ public class PassengerPassportService {
     public PassengerPassport editSelectedPassenger(PassengerPassport passengerPassport, String numFlight) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(passengerPassport.getId());
         if (passenger == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passenger with [ID]: " + passengerPassport.getId() + " for edit");
         } else {
             BusFlights newFlight = flightRepo.findByNumberFlightUnique(numFlight);
             Passengers pasEdit = passenger.getPassengers();
@@ -147,7 +147,7 @@ public class PassengerPassportService {
         Map<String, Object> model = new HashMap<>();
         PassengerPassport passenger = passengerPassportRepo.findByPassengerDocNum(passengerDocNum);
         if (passenger == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passengers with [DocumentNumber]: " + passengerDocNum);
         } else {
             Passengers passport = passenger.getPassengers();
             Ticket ticket = passport.getTicket();
@@ -166,7 +166,7 @@ public class PassengerPassportService {
         Map<String, Object> response = new HashMap<>();
         Passengers passport = passengersRepo.findByNumTicket(numberTicket);
         if (passport == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passenger with [TicketNumber]: " + numberTicket);
         } else {
             Ticket ticket = passport.getTicket();
             PassengerPassport passenger = passport.getPassengerInfo();
@@ -184,7 +184,7 @@ public class PassengerPassportService {
     public PassengerPassport getPassengerById(Integer id) {
         PassengerPassport passenger = passengerPassportRepo.findAllById(id);
         if (passenger == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("NoSuchElementException: can`t find passenger with [ID]: " + id);
         } else {
             return passenger;
         }
